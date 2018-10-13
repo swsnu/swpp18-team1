@@ -1,0 +1,5 @@
+language: python
+
+script:
+    - echo: "Build start"
+    - python ./travis.py
