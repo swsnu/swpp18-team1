@@ -3,5 +3,4 @@ python:
     - "3.6.3"
 
 script:
-    - echo: "Build start"
     - python ./travis.py
