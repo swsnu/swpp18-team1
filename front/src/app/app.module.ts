@@ -7,6 +7,7 @@ import { SignComponent } from './sign/sign.component';
 import { CreateComponent } from './create/create.component';
 import { SelectComponent } from './select/select.component';
 import { QrComponent } from './qr/qr.component';
+import { ChannelComponent } from './channel/channel.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { QrComponent } from './qr/qr.component';
     SignComponent,
     CreateComponent,
     SelectComponent,
-    QrComponent
+    QrComponent,
+    ChannelComponent
   ],
   imports: [
     BrowserModule,
