@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { QRCodeModule } from 'angularx-qrcode';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -9,6 +10,7 @@ import { SelectComponent } from './select/select.component';
 import { QrComponent } from './qr/qr.component';
 import { ChannelComponent } from './channel/channel.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    QRCodeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
