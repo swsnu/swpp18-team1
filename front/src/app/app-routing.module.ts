@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'create'},
   { path: 'select'},
   { path: 'qr'},
-  { path: 'set'},
+  { path: 'channel'},
   { path: '**', redirectTo: '/sign' }
 ];
 
