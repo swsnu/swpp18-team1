@@ -8,6 +8,7 @@ import { CreateComponent } from './create/create.component';
 import { SelectComponent } from './select/select.component';
 import { QrComponent } from './qr/qr.component';
 import { ChannelComponent } from './channel/channel.component';
+import { DirectMessageComponent } from './direct-message/direct-message.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ChannelComponent } from './channel/channel.component';
     CreateComponent,
     SelectComponent,
     QrComponent,
-    ChannelComponent
+    ChannelComponent,
+    DirectMessageComponent
   ],
   imports: [
     BrowserModule,
