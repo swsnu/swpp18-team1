@@ -21,14 +21,26 @@ export class ChannelComponent implements OnInit {
 
   sendMsg(){
     // send message to websocket
-    console.log('send message');
-    this.wsp.open()
-      .then(() => this.wsp.send({"message" : 'foo'}))
-      .then(() => this.wsp.close())
-      .catch(e => console.error(e));
+    if(this.wsp.isOpened){
+      console.log('socket is opened');
+      this.wsp.send(this.message.message)
+    } else {
+      console.log('socket is not opened');
+    }
   }
 
   ngOnInit() {
+    this.wsp.open()
+      .then(() => {
+        this.wsp.onMessage.addListener(message => console.log(message));
+      })
+      .catch(e => console.error(e))
+  }
+
+  ngOnDestroy(){
+    if(this.wsp.isOpened){
+      this.wsp.close()
+    }
   }
 
 }
