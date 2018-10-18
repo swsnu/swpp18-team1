@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -26,6 +27,7 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
     BrowserModule,
     AppRoutingModule,
     QRCodeModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

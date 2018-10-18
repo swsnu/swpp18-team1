@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import WebSocketAsPromised from 'websocket-as-promised';
+import { Snippet } from '../model/Snippet';
 
 @Component({
   selector: 'app-channel',
@@ -8,31 +9,36 @@ import WebSocketAsPromised from 'websocket-as-promised';
 })
 export class ChannelComponent implements OnInit {
 
+  @Input() snippet: Snippet = new Snippet
+  snippets: Snippet[] = []
+
   private wsp: WebSocketAsPromised
   constructor() {
     // websocket init
     this.wsp = new WebSocketAsPromised('ws://localhost:8000/ws/chat');
   }
 
-  private message = {
-    author: "tutorialMaster",
-    message: "this is a message"
-  }
-
   sendMsg(){
     // send message to websocket
     if(this.wsp.isOpened){
-      console.log('socket is opened');
-      this.wsp.send(this.message.message)
+      this.wsp.send(this.snippet.content)
     } else {
-      console.log('socket is not opened');
+      console.log('socket is not opened')
     }
   }
 
   ngOnInit() {
     this.wsp.open()
       .then(() => {
-        this.wsp.onMessage.addListener(message => console.log(message));
+        this.wsp.onMessage.addListener(msg => {
+          if(msg){
+            let delivered_snippet : Snippet = new Snippet
+            let json_msg = JSON.parse(msg)
+            delivered_snippet.content = json_msg.content
+            this.snippets.push(delivered_snippet)
+          }
+          console.log("get Message from back : " +  msg)
+        });
       })
       .catch(e => console.error(e))
   }
@@ -40,6 +46,7 @@ export class ChannelComponent implements OnInit {
   ngOnDestroy(){
     if(this.wsp.isOpened){
       this.wsp.close()
+      console.log('socket is closed')
     }
   }
 

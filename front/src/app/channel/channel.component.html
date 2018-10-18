@@ -1,6 +1,14 @@
 <!-- app.component.html -->
-<h1>
-  Angular 2 WebSockets Tutorial
-</h1>
-
+<div *ngIf="snippet">
+ <div>
+   <label>content:
+     <input [(ngModel)]="snippet.content"/>
+   </label>
+ </div>
+</div>
 <button (click)="sendMsg()">Send Message</button>
+
+<div *ngFor="let sp of snippets">
+    <div>{{sp.content}}</div>
+</div>
+
