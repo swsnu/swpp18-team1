@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
+const CHAT_URL = 'ws://echo.websocket.org/';
+
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketService {
+export class ChatService {
   constructor() { }
 }
