@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import WebSocketAsPromised from 'websocket-as-promised';
-import { Snippet } from '../model/Snippet';
+import { Snippet } from '../model/snippet';
 
 @Component({
   selector: 'app-channel',
@@ -15,13 +15,15 @@ export class ChannelComponent implements OnInit {
   private wsp: WebSocketAsPromised
   constructor() {
     // websocket init
-    this.wsp = new WebSocketAsPromised('ws://localhost:8000/ws/chat');
+    this.wsp = new WebSocketAsPromised('ws://localhost:8000/ws/chat/test');
   }
 
   sendMsg(){
     // send message to websocket
     if(this.wsp.isOpened){
-      this.wsp.send(this.snippet.content)
+      this.wsp.send(JSON.stringify({
+        'message': this.snippet.content
+      }))
     } else {
       console.log('socket is not opened')
     }
@@ -34,7 +36,7 @@ export class ChannelComponent implements OnInit {
           if(msg){
             let delivered_snippet : Snippet = new Snippet
             let json_msg = JSON.parse(msg)
-            delivered_snippet.content = json_msg.content
+            delivered_snippet.content = json_msg.message
             this.snippets.push(delivered_snippet)
           }
           console.log("get Message from back : " +  msg)
