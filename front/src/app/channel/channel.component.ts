@@ -9,7 +9,7 @@ import { Snippet } from '../model/snippet';
 })
 export class ChannelComponent implements OnInit {
 
-  @Input() snippet: Snippet = new Snippet
+  snippet: Snippet = new Snippet
   snippets: Snippet[] = []
 
   private wsp: WebSocketAsPromised
