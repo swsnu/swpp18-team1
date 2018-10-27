@@ -32,6 +32,7 @@ export class ChannelComponent implements OnInit {
   ngOnInit() {
     this.wsp.open()
       .then(() => {
+        // @ts-ignore
         this.wsp.onMessage.addListener(msg => {
           if(msg){
             let delivered_snippet : Snippet = new Snippet
