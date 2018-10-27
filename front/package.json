@@ -23,6 +23,7 @@
     "angularx-qrcode": "^1.2.4",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
+    "shortid": "^2.2.13",
     "websocket-as-promised": "^0.9.0",
     "zone.js": "~0.8.26"
   },
