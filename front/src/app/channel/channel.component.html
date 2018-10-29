@@ -9,6 +9,7 @@
 <button (click)="sendMsg()">Send Message</button>
 
 <div *ngFor="let sp of snippets">
-    <div>{{sp.content}}</div>
+    <div>{{sp.user_id}}: {{sp.content}}</div>
 </div>
 
+<!-- <button (click)="openDM()">Open DM</button> -->
