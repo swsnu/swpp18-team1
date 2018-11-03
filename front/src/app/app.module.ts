@@ -8,7 +8,6 @@ import { AppRoutingModule } from './/app-routing.module';
 import { SignComponent } from './sign/sign.component';
 import { CreateComponent } from './create/create.component';
 import { SelectComponent } from './select/select.component';
-import { QrComponent } from './qr/qr.component';
 import { ChannelComponent } from './channel/channel.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { QrComponent } from './qr/qr.component';
@@ -28,7 +27,6 @@ import { QrComponent } from './qr/qr.component';
     AppRoutingModule,
     QRCodeModule,
     FormsModule,
-    QrComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
