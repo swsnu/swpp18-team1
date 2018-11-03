@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import WebSocketAsPromised from 'websocket-as-promised';
 import { Snippet } from '../model/snippet';
 import shortid from 'shortid'
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-channel',
@@ -15,9 +16,12 @@ export class ChannelComponent implements OnInit {
   id: string
 
   private wsp: WebSocketAsPromised
-  constructor() {
-    // websocket init
-    this.wsp = new WebSocketAsPromised('ws://localhost:8000/ws/chat/test');
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+  ) {
+    const {room_name} = this.activeRoute.snapshot.params
+    this.wsp = new WebSocketAsPromised(`ws://localhost:8000/ws/chat/${room_name}`);
   }
 
   sendMsg(){
