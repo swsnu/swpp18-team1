@@ -38,3 +38,15 @@ def channel_detail(request, channel_id):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+@csrf_exempt
+def channel_message(request, channel_id):
+    if request.method == 'GET':
+        try:
+            channel = Channel.objects.get(id=channel_id)
+        except Channel.DoesNotExist:
+            return HttpResponseNotFound()
+
+        messages = [message for message in ChannelMessage.objects.all().values()]
+        return JsonResponse(messages, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
