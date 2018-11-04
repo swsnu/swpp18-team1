@@ -10,6 +10,7 @@ import { SelectComponent } from './select/select.component';
 import { QrComponent } from './qr/qr.component';
 import { ChannelComponent } from './channel/channel.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
+import { AccessComponent } from './access/access.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
     SelectComponent,
     QrComponent,
     ChannelComponent,
-    DirectMessageComponent
+    DirectMessageComponent,
+    AccessComponent,
   ],
   imports: [
     BrowserModule,

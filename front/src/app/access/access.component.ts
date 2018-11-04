@@ -16,20 +16,14 @@ export class AccessComponent implements OnInit {
   channelHash: string;
 
   constructor(
-    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    // this.getUsers();
     this.channelHash = this.route.snapshot.params['hash'];
   }
 
-  getUsers(): void {
-    this.userService.getUsers()
-      .then(users => this.users = users);
-  }
 
   access(profile_picture: string, nickname: string): boolean {
 
