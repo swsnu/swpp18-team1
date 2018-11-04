@@ -32,7 +32,7 @@ export class ChannelComponent implements OnInit {
       if(this.wsp.isOpened){
         this.wsp.send(JSON.stringify({
         content: this.snippet.content,
-        user: this.userService.user.id,
+        id: this.userService.user.username,
         }))
       } else {
       console.log('socket is not opened')
