@@ -9,7 +9,7 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
 };
 
-type Data = { room_name: string };
+type Data = { id: number };
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +22,10 @@ export class ChatService {
   ) { }
 
   channel: Channel = null;
-  manager_id: number = 10; //TODO: change
+  manager_id: number = 34 //TODO: change
 
   create(title) {
     const { manager_id } = this
     return this.http.post<Data>(this.channelUrl, { title, manager_id }, httpOptions).toPromise() // turn Observable into Promise
-
   }
 }
