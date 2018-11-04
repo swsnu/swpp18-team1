@@ -1,6 +1,5 @@
 export class User {
     id?: number;
-    is_manager: boolean;
 
     // for manager
     email?: string;
@@ -8,6 +7,6 @@ export class User {
     key?: string;
 
     // for user
-    nickname?: string;
-    profile_picture?: string;
+    username?: string;
+    image?: string;
 }

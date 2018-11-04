@@ -10,53 +10,34 @@ const httpOptions = {
 };
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class UserService {
 
-    // TODO: change it as below
-    private userUrl = 'http://localhost:8000/api/user';
-    // private userUrl: string = '/api/user';
+  private managerUrl: string = '/api/user';
+  private userUrl: string = '/api/channel/:channel_id/user';
 
-    id: number = 0;
-    user: User;
+  user: User;
 
-    constructor(
-        private http: HttpClient,
-        private router: Router
-    ) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
-    getUsers(): Promise<User[]> {
-        return this.http.get<User[]>(this.userUrl)
-            .toPromise()
-            .catch(this.handleError('getUsers()'));
-    }
+  createUser(channel_id: number, user: Partial<User>): Promise<User> {
+    return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
+    .toPromise()
+    .then(user => this.user = user)
+  }
 
-    getUser(id: number): Promise<User> {
-        const url = `${this.userUrl}/${id}`;
-        return this.http.get<User>(url)
-            .toPromise()
-            .catch(this.handleError<User>(`getUser()`));
-    }
+  getChannel(manager_id): Promise<Channel> {
+    return this.http.get<Channel>(`${this.managerUrl}/${manager_id}/channel`, httpOptions).toPromise() // turn Observable into Promise
+  }
 
-    updateUser(user: User): Promise<User> {
-        const url = `${this.userUrl}/${user}`;
-        return this.http.put(url, user, httpOptions)
-            .toPromise()
-            .then(() => {
-                this.user = user;
-            })
-            .catch(this.handleError<any>('updateUser()'));
-    }
-
-    getChannel(manager_id) {
-      return this.http.get<Channel>(`${this.userUrl}/${manager_id}/channel`, httpOptions).toPromise() // turn Observable into Promise
-    }
-
-    private handleError<T> (operation = 'operation', result?: T) {
-        return (error: any): Promise<T> => {
-            console.error(error);
-            return Promise.resolve(result as T);
-        };
-    }
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Promise<T> => {
+      console.error(error);
+      return Promise.resolve(result as T);
+    };
+  }
 }
