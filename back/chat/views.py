@@ -17,7 +17,13 @@ def channel(request):
         # FIXME manager_id is always 1
         channel = Channel(title=title, manager_id=1)
         channel.save()
-        return HttpResponse(status=201)  # created
+
+        response_dict = {
+                'id': channel.id,
+                'title': channel.title,
+                'manager_id': channel.manager.id,
+        }
+        return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['POST'])
 
