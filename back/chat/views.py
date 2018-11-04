@@ -112,11 +112,9 @@ def user_channel(request, user_id):
             if not channel: #user dont have channel
                 return JsonResponse([], safe=False)
             response_dict = {
-            'channel': {
                 'id': channel[0].id,
                 'title': channel[0].title,
                 'manager_id': channel[0].manager.id,
-                }
             }
             return JsonResponse(response_dict)
         except Channel.DoesNotExist:

@@ -15,7 +15,6 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { AccessComponent } from './access/access.component';
 import { QrComponent } from './qr/qr.component';
 
-import { ChatService } from './services/chat.service';
 // import { ApiInterceptor } from './HttpInterceptor';
 
 @NgModule({
@@ -37,9 +36,6 @@ import { ChatService } from './services/chat.service';
     FormsModule,
     HttpClientModule,
     // HttpModule,
-  ],
-  providers: [
-    ChatService
   ],
   bootstrap: [AppComponent]
 })
