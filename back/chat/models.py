@@ -19,3 +19,9 @@ class DirectMessage(models.Model):
     content = models.TextField()
     sender = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     direct_channel = models.ForeignKey(DirectChannel, on_delete=models.CASCADE)
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True, on_delete=models.CASCADE)
+    channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
+    image = models.TextField()
+

@@ -30,7 +30,7 @@ class ChatTestCase(TestCase):
         client = Client(enforce_csrf_checks=True)
 
         response = client.get('/api/channel/1')
-        self.assertEqual(response.status_code, 200) # created
+        self.assertEqual(response.status_code, 200) # success
         channel = json.loads(response.content)
         self.assertEqual(self.channel1.id, channel["id"])
         self.assertEqual(self.channel1.manager_id, channel["manager_id"])
@@ -57,5 +57,42 @@ class ChatTestCase(TestCase):
         self.assertEqual(response.status_code, 404) # not found
         response = client.put('/api/channel/1/message')
         self.assertEqual(response.status_code, 405) # not allowed
+
+    def test_channel_user(self):
+        client = Client(enforce_csrf_checks=True)
+
+        response = client.post('/api/channel/1/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
+                 content_type='application/json')
+        self.assertEqual(response.status_code, 201) # success
+        user = json.loads(response.content)
+        self.assertEqual("test+user", user["username"])
+        self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", user["image"])
+
+        response = client.post('/api/channel/100/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 404) # not found
+
+        response = client.post('/api/channel/100/user', json.dumps({'username1': 'test+user', 'image1': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 400) # not found
+
+        response = client.put('/api/channel/100/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 405) # not allowed
+
+    def test_signup(self):
+        client = Client(enforce_csrf_checks=True)
+
+        response = client.post('/api/user', json.dumps({'email': 'iu@iu.com', "password": "iuiu"}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 201) # success
+
+        response = client.post('/api/user', json.dumps({'email2': 'iu@iu.com', "password2": "iuiu"}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 400) # success
+
+        response = client.put('/api/user', json.dumps({'email2': 'iu@iu.com', "password2": "iuiu"}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 405) # success
 
 
