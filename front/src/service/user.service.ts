@@ -13,7 +13,8 @@ const httpOptions = {
 })
 export class UserService {
 
-    private userUrl: string = '/api/user';
+    private managerUrl: string = '/api/user';
+    private userUrl: string = '/api/channel/:channel_id/user';
 
     user: User;
 
@@ -22,34 +23,10 @@ export class UserService {
         private router: Router
     ) { }
 
-    getUsers(): Promise<User[]> {
-        return this.http.get<User[]>(this.userUrl)
-            .toPromise()
-            .catch(this.handleError('getUsers()'));
-    }
-
-    getUser(id: number): Promise<User> {
-        const url = `${this.userUrl}/${id}`;
-        return this.http.get<User>(url)
-            .toPromise()
-            .catch(this.handleError<User>(`getUser()`));
-    }
-
-    createUser(article: Partial<User>): Promise<User> {
-        return this.http.post<User>(this.userUrl, article, httpOptions)
+    createUser(channel_id: number, user: Partial<User>): Promise<User> {
+        return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
             .toPromise()
             .then(user => this.user = user)
-            .catch(this.handleError<User>('createUser()'));
-    }
-
-    updateUser(user: User): Promise<User> {
-        const url = `${this.userUrl}/${user}`;
-        return this.http.put(url, user, httpOptions)
-            .toPromise()
-            .then(() => {
-                this.user = user;
-            })
-            .catch(this.handleError<any>('updateUser()'));
     }
 
     private handleError<T> (operation = 'operation', result?: T) {

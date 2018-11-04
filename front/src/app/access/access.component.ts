@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../service/user.service';
+import { ChannelService } from 'src/service/channel.service';
 import { User } from '../../model/user';
 
 
@@ -12,41 +13,30 @@ import { User } from '../../model/user';
 })
 export class AccessComponent implements OnInit {
 
-  new: User;
-  users: User[] = [];
-  channelHash: string;
+  channelHash: number;
 
   constructor(
     private userService: UserService,
+    private channelService: ChannelService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.channelHash = this.route.snapshot.params['hash'];
+    this.channelService.getChannel(this.channelHash);
   }
 
-  access(image: string, nickname: string): boolean {
-
-    console.log('Input: ' + image + ', ' + nickname);
-    console.log('channelHash: ' + this.channelHash);
+  access(image: string, username: string): boolean {
 
     image = image.trim();
-    nickname = nickname.trim();
+    username = username.trim();
     if(!image) { return; }
-    if(!nickname) { return; }
+    if(!username) { return; }
 
-    this.userService.createUser({image, nickname} as Partial<User>)
-      .then(user => {
-          this.new= user;
-          this.users.push(user);
-          // this.router.navigate([`/user/${user.id}`]);
+    this.userService.createUser(this.channelHash, {image, username} as Partial<User>)
+      .then(() => {
+          this.router.navigate([`/channel/${this.channelHash}`]);
       });
-
-    if(this.userService.getUser(this.new.id)) {
-      return true;
-    } else {
-      return false;
-    }
   }
 }

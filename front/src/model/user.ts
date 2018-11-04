@@ -7,6 +7,6 @@ export class User {
     key?: string;
 
     // for user
-    nickname?: string;
+    username?: string;
     image?: string;
 }
