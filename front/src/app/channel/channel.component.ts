@@ -7,8 +7,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-channel',
   templateUrl: './channel.component.html',
-  styleUrls: ['./channel.component.css'],
+  //styleUrls: ['./channel.component.css']
 })
+
 export class ChannelComponent implements OnInit {
 
   snippet: Snippet = new Snippet

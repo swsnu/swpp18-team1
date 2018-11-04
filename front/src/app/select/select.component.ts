@@ -27,7 +27,7 @@ export class SelectComponent implements OnInit {
   handleGenerate() {
     this.chatService.create(this.title)
     .then(res => {
-      const { room_name } = res
+      const { id } = res
       this.room_name = room_name
       // this.router.navigate([`channel/${room_name}`])
     }).catch(err => {

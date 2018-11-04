@@ -15,7 +15,7 @@ type Data = { room_name: string };
   providedIn: 'root'
 })
 export class ChatService {
-  private channelUrl = 'http://localhost:8000/channel/';
+  private channelUrl = 'http://localhost:8000/api/channel';
   constructor(
     private http: HttpClient,
     private router: Router,

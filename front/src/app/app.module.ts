@@ -12,6 +12,7 @@ import { CreateComponent } from './create/create.component';
 import { SelectComponent } from './select/select.component';
 import { ChannelComponent } from './channel/channel.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
+import { AccessComponent } from './access/access.component';
 import { QrComponent } from './qr/qr.component';
 
 import { ChatService } from './services/chat.service';
@@ -25,7 +26,8 @@ import { ChatService } from './services/chat.service';
     SelectComponent,
     QrComponent,
     ChannelComponent,
-    DirectMessageComponent
+    DirectMessageComponent,
+    AccessComponent,
   ],
   imports: [
     BrowserModule,
