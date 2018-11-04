@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { SignComponent } from './sign/sign.component';
 import { CreateComponent } from './create/create.component';
-import { SelectComponent } from './select/select.component';
+import { MainComponent } from './main/main.component';
 import { ChannelComponent } from './channel/channel.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { AccessComponent } from './access/access.component';
@@ -23,11 +23,12 @@ import { ChatService } from './services/chat.service';
     AppComponent,
     SignComponent,
     CreateComponent,
-    SelectComponent,
+    MainComponent,
     QrComponent,
     ChannelComponent,
     DirectMessageComponent,
     AccessComponent,
+    MainComponent,
   ],
   imports: [
     BrowserModule,

@@ -27,6 +27,5 @@ export class ChatService {
   create(title) {
     const { manager_id } = this
     return this.http.post<Data>(this.channelUrl, { title, manager_id }, httpOptions).toPromise() // turn Observable into Promise
-
   }
 }
