@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Channel } from '../model/channel';
 
 import { User } from '../model/user';
 
@@ -13,7 +14,9 @@ const httpOptions = {
 })
 export class UserService {
 
-    private userUrl: string = '/api/user';
+    // TODO: change it as below
+    private userUrl = 'http://localhost:8000/api/user';
+    // private userUrl: string = '/api/user';
 
     id: number = 0;
     user: User;
@@ -46,6 +49,10 @@ export class UserService {
             .catch(this.handleError<any>('updateUser()'));
     }
 
+    getChannel(manager_id) {
+      return this.http.get<Channel>(`${this.userUrl}/${manager_id}/channel`, httpOptions).toPromise() // turn Observable into Promise
+    }
+
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Promise<T> => {
             console.error(error);
@@ -53,6 +60,3 @@ export class UserService {
         };
     }
 }
-
-
-

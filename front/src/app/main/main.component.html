@@ -5,11 +5,15 @@
   <a href="/qr"> to qr </a>
 </div>
 <div>
-  <div>
-    title <input type='text' [(ngModel)]="title" />
-    <button (click)="handleGenerate()"> generate</button>
+  <div *ngIf="channel; else go_to_channel" >
+    <div>
+      <button (click)="moveToChannel(channel.id)"> goto channel</button>
+    </div>
   </div>
-  <div>
-      <button (click)="moveToChannel()"> goto channel</button>
-  </div>
+  <ng-template #go_to_channel>
+    <div class="article--create">
+      title <input type='text' [(ngModel)]="title" />
+      <button (click)="handleGenerate()"> generate</button>
+    </div>
+  </ng-template>
 </div>
