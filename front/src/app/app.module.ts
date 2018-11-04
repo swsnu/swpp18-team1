@@ -11,7 +11,6 @@ import { SelectComponent } from './select/select.component';
 import { QrComponent } from './qr/qr.component';
 import { ChannelComponent } from './channel/channel.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
-import { QrComponent } from './qr/qr.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,6 @@ import { QrComponent } from './qr/qr.component';
     AppRoutingModule,
     QRCodeModule,
     FormsModule,
-    QrComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
