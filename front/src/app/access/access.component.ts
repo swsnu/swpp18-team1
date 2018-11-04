@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../service/user.service';
 import { User } from '../../model/user';
 
+
 @Component({
   selector: 'app-access',
   templateUrl: './access.component.html',
@@ -16,6 +17,7 @@ export class AccessComponent implements OnInit {
   channelHash: string;
 
   constructor(
+    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
@@ -24,20 +26,17 @@ export class AccessComponent implements OnInit {
     this.channelHash = this.route.snapshot.params['hash'];
   }
 
+  access(image: string, nickname: string): boolean {
 
-  access(profile_picture: string, nickname: string): boolean {
-
-    console.log('Input: ' + profile_picture + ', ' + nickname);
+    console.log('Input: ' + image + ', ' + nickname);
     console.log('channelHash: ' + this.channelHash);
 
-    /*
-    profile_picture = profile_picture.trim();
+    image = image.trim();
     nickname = nickname.trim();
-    if(!profile_picture) { return; }
+    if(!image) { return; }
     if(!nickname) { return; }
 
-    var is_manager = false;
-    this.userService.createUser({is_manager, profile_picture, nickname} as Partial<User>)
+    this.userService.createUser({image, nickname} as Partial<User>)
       .then(user => {
           this.new= user;
           this.users.push(user);
@@ -49,8 +48,5 @@ export class AccessComponent implements OnInit {
     } else {
       return false;
     }
-
-    */
-    return true;
   }
 }

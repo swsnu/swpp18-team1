@@ -15,7 +15,6 @@ export class UserService {
 
     private userUrl: string = '/api/user';
 
-    id: number = 0;
     user: User;
 
     constructor(
@@ -34,6 +33,13 @@ export class UserService {
         return this.http.get<User>(url)
             .toPromise()
             .catch(this.handleError<User>(`getUser()`));
+    }
+
+    createUser(article: Partial<User>): Promise<User> {
+        return this.http.post<User>(this.userUrl, article, httpOptions)
+            .toPromise()
+            .then(user => this.user = user)
+            .catch(this.handleError<User>('createUser()'));
     }
 
     updateUser(user: User): Promise<User> {
