@@ -1,0 +1,44 @@
+import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../services/chat.service';
+import { UserService } from '../../service/user.service';
+import { Router } from '@angular/router';
+import { Channel } from '../model/channel';
+
+@Component({
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.css']
+})
+export class MainComponent implements OnInit {
+
+  constructor(
+    private chatService: ChatService,
+    private userService: UserService,
+    private router: Router,
+  ) { }
+  title: string;
+  room_name: number;
+  channel: Channel;
+
+  ngOnInit() {
+    const manager_id = 2 //TODO: remove
+    this.userService.getChannel(manager_id)
+    .then((res) => {
+        this.channel = res.channel
+    })
+  }
+  moveToChannel(channel_id) {
+    this.router.navigate([`channel/${channel_id}`])
+  }
+
+  handleGenerate() {
+    this.chatService.create(this.title)
+    .then(res => {
+      const { id } = res //TODO: send room_name , not id
+      this.room_name = id
+      this.router.navigate([`channel/${this.room_name}`])
+    }).catch(err => {
+      console.log('err:', err)
+    })
+  }
+}

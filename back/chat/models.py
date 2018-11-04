@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Channel(models.Model):
     title = models.TextField()
-    manager = models.ForeignKey(User, on_delete=models.CASCADE)
+    manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name="channel")
 
 class ChannelMessage(models.Model):
     content = models.TextField()
