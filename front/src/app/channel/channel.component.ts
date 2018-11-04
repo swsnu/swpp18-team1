@@ -1,26 +1,14 @@
-<<<<<<< HEAD
-import { Component, OnInit } from '@angular/core';
-=======
 import { Component, OnInit, Input } from '@angular/core';
 import WebSocketAsPromised from 'websocket-as-promised';
 import { Snippet } from '../model/snippet';
 import shortid from 'shortid'
->>>>>>> bc133e20cdb2d6eb1c4857fb5e3ecb604f1e9814
 
 @Component({
   selector: 'app-channel',
   templateUrl: './channel.component.html',
-<<<<<<< HEAD
-  styleUrls: ['./channel.component.css']
+  //styleUrls: ['./channel.component.css']
 })
-export class ChannelComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-=======
-  styleUrls: ['./channel.component.css'],
-})
 export class ChannelComponent implements OnInit {
 
   snippet: Snippet = new Snippet
@@ -78,7 +66,6 @@ export class ChannelComponent implements OnInit {
       this.wsp.close()
       console.log('socket is closed')
     }
->>>>>>> bc133e20cdb2d6eb1c4857fb5e3ecb604f1e9814
   }
 
 }
