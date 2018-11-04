@@ -1,9 +1,11 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 import json
 from json.decoder import JSONDecodeError
-from .models import Channel, ChannelMessage
+from .models import Channel, ChannelMessage, UserProfile
+
 
 @csrf_exempt
 def channel(request):
@@ -23,7 +25,7 @@ def channel(request):
                 'title': channel.title,
                 'manager_id': channel.manager.id,
         }
-        return JsonResponse(response_dict)
+        return JsonResponse(data=response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -56,3 +58,50 @@ def channel_message(request, channel_id):
         return JsonResponse(messages, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
+
+@csrf_exempt
+def manager_sign_up(request):
+    if request.method == 'POST':
+        try:
+            body = request.body.decode()
+            email = json.loads(body)['email']
+            password = json.loads(body)['password']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        user = User.objects.create_user(email=email, username=email, password=password)
+        user.save()
+
+        return HttpResponse(status=201)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+@csrf_exempt
+def user_sign_up(request, channel_id):
+    if request.method == 'POST':
+        try:
+            body = request.body.decode()
+            username = json.loads(body)['username']
+            image = json.loads(body)['image']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        try:
+            channel = Channel.objects.get(id=channel_id)
+        except Channel.DoesNotExist:
+            return HttpResponseNotFound()
+
+        user = User.objects.create_user(username=username)
+        user.save()
+
+        userProfile = UserProfile.objects.create(user=user, channel=channel, image=image)
+
+        response_dict = {
+                'id': user.id,
+                'username': user.username,
+                'image': userProfile.image,
+                }
+        return JsonResponse(data=response_dict, status=201)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
