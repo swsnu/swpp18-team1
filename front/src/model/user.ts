@@ -1,7 +1,12 @@
 export class User {
-    is_manager: boolean;
-    email: string;
-    password: string;
-    nickname: string;
-    profile_image: string;
+    id?: number;
+
+    // for manager
+    email?: string;
+    password?: string;
+    key?: string;
+
+    // for user
+    username?: string;
+    image?: string;
 }
