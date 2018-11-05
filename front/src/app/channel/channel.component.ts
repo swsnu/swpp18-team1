@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import WebSocketAsPromised from 'websocket-as-promised';
-import { Snippet } from '../model/snippet';
+import { Snippet } from 'src/model/snippet';
 import shortid from 'shortid'
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';

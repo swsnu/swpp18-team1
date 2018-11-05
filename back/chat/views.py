@@ -17,7 +17,7 @@ def channel(request):
             return HttpResponseBadRequest()
 
         # FIXME manager_id is always 1
-        channel = Channel(title=title, manager_id=1)
+        channel = Channel(title=title, manager= User.objects.first())
         channel.save()
 
         response_dict = {
@@ -41,7 +41,7 @@ def channel_detail(request, channel_id):
                 'id': channel.id,
                 'title': channel.title,
                 'manager_id': channel.manager.id,
-                }
+        }
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -105,3 +105,17 @@ def user_sign_up(request, channel_id):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+def user_channel(request, user_id):
+    if request.method == 'GET':
+        try:
+            channel = list(Channel.objects.all().filter(manager = user_id))
+            if not channel: #user dont have channel
+                return JsonResponse([], safe=False)
+            response_dict = {
+                'id': channel[0].id,
+                'title': channel[0].title,
+                'manager_id': channel[0].manager.id,
+            }
+            return JsonResponse(response_dict)
+        except Channel.DoesNotExist:
+            return HttpResponseNotFound()

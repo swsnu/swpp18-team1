@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SignComponent } from './sign/sign.component';
 import { CreateComponent } from './create/create.component';
-import { SelectComponent } from './select/select.component';
+import { MainComponent } from './main/main.component';
 import { QrComponent } from './qr/qr.component';
 import { ChannelComponent } from './channel/channel.component';
 import { AccessComponent } from './access/access.component';
@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/sign', pathMatch: 'full' },
   { path: 'sign', component: SignComponent },
   { path: 'create', component: CreateComponent },
-  { path: 'select', component: SelectComponent },
+  { path: 'main', component: MainComponent },
   { path: 'qr', component: QrComponent },
   { path: 'channel/:room_name', component: ChannelComponent},
   { path: 'channel', component: ChannelComponent},
