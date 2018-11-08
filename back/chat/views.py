@@ -119,3 +119,25 @@ def user_channel(request, user_id):
             return JsonResponse(response_dict)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
+
+@csrf_exempt
+def signin(request):
+    if request.method == 'POST':
+        try:
+            body = request.body.decode()
+            username = json.loads(body)['username']
+            password = json.loads(body)['password']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            payload = {'id': user.id, 'username': user.username }
+            jwt_token = {'token': jwt.encode(payload, "SECRET_KEY").decode("utf-8")}
+
+            return JsonResponse(jwt_token, status=200)
+        else:
+            return HttpResponse(status=401)
+    else:
+        return HttpResponseNotAllowed(['POST'])
