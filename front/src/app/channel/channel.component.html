@@ -1,3 +1,18 @@
 <p>
   channel works!
 </p>
+<!-- app.component.html -->
+<div *ngIf="snippet">
+ <div>
+   <label>content:
+     <input [(ngModel)]="snippet.content"/>
+   </label>
+ </div>
+</div>
+<button (click)="sendMsg()">Send Message</button>
+
+<div *ngFor="let sp of snippets">
+    <div>{{sp.user_id}}: {{sp.content}}</div>
+</div>
+
+<!-- <button (click)="openDM()">Open DM</button> -->
