@@ -2,9 +2,11 @@ from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
+from .token_auth import TokenAuth
 
 
 @csrf_exempt
@@ -133,8 +135,7 @@ def signin(request):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            payload = {'id': user.id, 'username': user.username }
-            jwt_token = {'token': jwt.encode(payload, "SECRET_KEY").decode("utf-8")}
+            jwt_token = {'token': TokenAuth.generateToken(user)}
 
             return JsonResponse(jwt_token, status=200)
         else:
