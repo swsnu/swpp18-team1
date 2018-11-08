@@ -2,9 +2,11 @@ from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
+from .token_auth import TokenAuth
 
 
 @csrf_exempt
@@ -119,3 +121,24 @@ def user_channel(request, user_id):
             return JsonResponse(response_dict)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
+
+@csrf_exempt
+def signin(request):
+    if request.method == 'POST':
+        try:
+            body = request.body.decode()
+            username = json.loads(body)['username']
+            password = json.loads(body)['password']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            jwt_token = {'token': TokenAuth.generateToken(user)}
+
+            return JsonResponse(jwt_token, status=200)
+        else:
+            return HttpResponse(status=401)
+    else:
+        return HttpResponseNotAllowed(['POST'])
