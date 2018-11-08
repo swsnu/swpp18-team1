@@ -22,5 +22,4 @@ describe('QrComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

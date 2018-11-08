@@ -1,7 +1,0 @@
-{
-    "/api": {
-        "target": "ws://localhost:8000",
-        "secure": false,
-        "changeOrigin": true
-    }
-}
