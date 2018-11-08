@@ -14,6 +14,7 @@ class ChatTestCase(TestCase):
         self.user1 = User.objects.create_user(username="iu", password="12341234")
         self.channel1 = Channel.objects.create(title="music box", manager=self.user1)
         self.message1 = ChannelMessage.objects.create(sender=self.user1, channel=self.channel1, content="hi")
+        self.factory = RequestFactory()
 
     def test_channel_create(self):
         client = Client(enforce_csrf_checks=True)
@@ -83,6 +84,21 @@ class ChatTestCase(TestCase):
         response = client.put('/api/channel/100/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 405) # not allowed
+
+    def test_signup(self):
+        client = Client(enforce_csrf_checks=True)
+
+        response = client.post('/api/user', json.dumps({'email': 'iu@iu.com', "password": "iuiu"}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 201) # success
+
+        response = client.post('/api/user', json.dumps({'email2': 'iu@iu.com', "password2": "iuiu"}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 400) # success
+
+        response = client.put('/api/user', json.dumps({'email2': 'iu@iu.com', "password2": "iuiu"}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 405) # success
 
     def test_signin(self):
         client = Client(enforce_csrf_checks=True)
