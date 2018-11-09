@@ -1,12 +1,11 @@
 export class User {
     id?: number;
+    username?: string;
 
     // for manager
-    email?: string;
     password?: string;
     key?: string;
 
     // for user
-    username?: string;
     image?: string;
 }
