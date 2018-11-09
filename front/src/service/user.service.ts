@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 import { Channel } from '../model/channel';
 
@@ -19,12 +20,12 @@ export class UserService {
   private userUrl: string = '/api/channel/:channel_id/user';
 
   token: string;
-  user: User;
+  user: User = new User;
   users: User[] = [];
-
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     private cookieService: CookieService,
   ) { }
 
@@ -64,6 +65,7 @@ export class UserService {
         this.token = response["token"];
         this.cookieService.set("token", response["token"]);
         this.setUserFrom(this.token);
+        this.router.navigate(['/main']);
       })
       .catch(this.handleError<any>('confirmUser()'));
   }
