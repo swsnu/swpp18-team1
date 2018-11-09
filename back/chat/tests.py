@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from .models import Channel, ChannelMessage
 from django.test.client import RequestFactory
-from .token_auth import TokenAuth
+from .token_auth import TokenAuth, InvalidToken
 from dynaconf import settings
 import jwt
 
@@ -125,30 +125,25 @@ class ChatTestCase(TestCase):
 
         # case 1 No auth header
         request = self.factory.get('/api/channel/1')
-        result = TokenAuth.authenticate(request)
-        self.assertEqual(result.status_code, 403)
+        self.assertRaises(InvalidToken, lambda:TokenAuth.authenticate(request))
 
         # case 2 invalid header type
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= token)
-        result = TokenAuth.authenticate(request)
-        self.assertEqual(result.status_code, 403)
+        self.assertRaises(InvalidToken, lambda:TokenAuth.authenticate(request))
 
         # case 3 invalid token
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= "Bearer " + token + "1234")
-        result = TokenAuth.authenticate(request)
-        self.assertEqual(result.status_code, 403)
+        self.assertRaises(InvalidToken, lambda:TokenAuth.authenticate(request))
 
         # case 4 null token
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= "Bearer " + "null")
-        result = TokenAuth.authenticate(request)
-        self.assertEqual(result.status_code, 403)
+        self.assertRaises(InvalidToken, lambda:TokenAuth.authenticate(request))
 
         # case 5 user not found
         payload = {'id': 100, 'username': "swpp_user"}
         no_user_token = jwt.encode(payload, settings.get("JWT_SECRET_KEY")).decode("utf-8")
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= "Bearer " + no_user_token)
-        result = TokenAuth.authenticate(request)
-        self.assertEqual(result.status_code, 404)
+        self.assertRaises(InvalidToken, lambda:TokenAuth.authenticate(request))
 
         # case 6 valid auth
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= "Bearer " + token)

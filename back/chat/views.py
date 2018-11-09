@@ -19,7 +19,7 @@ def channel(request):
             return HttpResponseBadRequest()
 
         # FIXME manager_id is always 1
-        channel = Channel(title=title, manager= User.objects.first())
+        channel = Channel(title=title, manager=User.objects.first())
         channel.save()
 
         response_dict = {
