@@ -133,7 +133,7 @@ def user_channel(request, user_id):
             return HttpResponseNotFound()
 
 @csrf_exempt
-def signin(request):
+def manager_sign_in(request):
     if request.method == 'POST':
         try:
             body = request.body.decode()

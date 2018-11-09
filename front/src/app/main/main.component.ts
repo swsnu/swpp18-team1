@@ -21,7 +21,7 @@ export class MainComponent implements OnInit {
   channel: Channel;
 
   ngOnInit() {
-    const manager_id = 2 //TODO: remove
+    const manager_id = this.userService.user.id;
     this.userService.getChannel(manager_id)
       .then((channel) => {
         this.channel = channel

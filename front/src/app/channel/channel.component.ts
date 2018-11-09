@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import WebSocketAsPromised from 'websocket-as-promised';
 import { Snippet } from 'src/model/snippet';
-import shortid from 'shortid'
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 
@@ -28,7 +27,7 @@ export class ChannelComponent implements OnInit {
   }
 
   sendMsg(){
-    if(this.userService.user) {
+    if(this.userService.isSignIn()) {
       if(this.wsp.isOpened){
         this.wsp.send(JSON.stringify({
         content: this.snippet.content,
@@ -47,7 +46,7 @@ export class ChannelComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.userService.user) {
+    if(this.userService.isSignIn()) {
       this.wsp.open()
         .then(() => {
           this.wsp.send(JSON.stringify({
