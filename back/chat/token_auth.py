@@ -19,17 +19,17 @@ class TokenAuth:
         auth = str(request.META.get('HTTP_AUTHORIZATION'))
 
         if auth == "None":
-            return JsonResponse({'Error': "There is no auth info in header"}, status="403")
+            raise InvalidToken("Ther is no auth info in header")
 
         #example auth = "Bearer ASDFSAF.asfkasjlf.afkjasfd"
         auth = auth.split()
 
         if len(auth) == 1 or len(auth) > 2:
-            return JsonResponse({'Error': "Token is invalid"}, status="403")
+            raise InvalidToken("The header has invalid token type")
 
         token = auth[1]
         if token=="null":
-            return JsonResponse({'Error': "Null token not allowed"}, status="403")
+            raise InvalidToken("Null Token not allowed")
 
         try:
             payload = jwt.decode(token, settings.get("JWT_SECRET_KEY"), algorithms=['HS256'])
@@ -37,7 +37,7 @@ class TokenAuth:
             userid = payload['id']
 
         except jwt.DecodeError or jwt.InvalidTokenError:
-            return JsonResponse({'Error': "Token is invalid"}, status="403")
+            raise InvalidToken("Token Decode Error")
 
         try:
             user = User.objects.get(
@@ -45,6 +45,19 @@ class TokenAuth:
                     username=username
                     )
         except User.DoesNotExist:
-            return JsonResponse({'Error': "User is not found"}, status="404")
+            raise InvalidToken("User is not found")
 
         return user
+
+class Error(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+class InvalidToken(Error):
+    """
+    Raise When Token is Invalid
+    Example : No headers, Null Token, Token Decode Error, User is Not found
+
+    """
+    def __init__(self, message):
+        self.message = message
