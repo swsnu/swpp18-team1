@@ -6,12 +6,17 @@ from django.contrib.auth import authenticate
 import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
-from .token_auth import TokenAuth
+from .token_auth import TokenAuth, InvalidToken
 
 
 @csrf_exempt
 def channel(request):
     if request.method == 'POST':
+        try:
+            user = TokenAuth.authenticate(request)
+        except InvalidToken as e:
+            return JsonResponse({'message': e.message}, status=401)
+
         try:
             body = request.body.decode()
             title = json.loads(body)['title']
@@ -19,7 +24,7 @@ def channel(request):
             return HttpResponseBadRequest()
 
         # FIXME manager_id is always 1
-        channel = Channel(title=title, manager=User.objects.first())
+        channel = Channel(title=title, manager=user)
         channel.save()
 
         response_dict = {
@@ -51,6 +56,11 @@ def channel_detail(request, channel_id):
 @csrf_exempt
 def channel_message(request, channel_id):
     if request.method == 'GET':
+        try:
+            TokenAuth.authenticate(request)
+        except InvalidToken as e:
+            return JsonResponse({'message': e.message}, status=401)
+
         try:
             channel = Channel.objects.get(id=channel_id)
         except Channel.DoesNotExist:

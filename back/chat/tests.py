@@ -14,6 +14,7 @@ class ChatTestCase(TestCase):
         self.user1 = User.objects.create_user(username="iu", password="12341234")
         self.channel1 = Channel.objects.create(title="music box", manager=self.user1)
         self.message1 = ChannelMessage.objects.create(sender=self.user1, channel=self.channel1, content="hi")
+        self.auth_header = "Bearer " + TokenAuth.generateToken(self.user1)
         self.factory = RequestFactory()
 
     def test_channel_create(self):
@@ -21,6 +22,10 @@ class ChatTestCase(TestCase):
 
         response = client.post('/api/channel', json.dumps({'title': 'test1234'}),
                 content_type='application/json')
+        self.assertEqual(response.status_code, 401) # unauthorized
+
+        response = client.post('/api/channel', json.dumps({'title': 'test1234'}),
+                content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
         self.assertEqual(response.status_code, 201) # created
 
         response = client.put('/api/channel', json.dumps({'title': 'test'}),
@@ -28,7 +33,7 @@ class ChatTestCase(TestCase):
         self.assertEqual(response.status_code, 405) # not allowed
 
         response = client.post('/api/channel', json.dumps({'title1': 'test', 'content2': 'test, test'}),
-                content_type='application/json')
+                content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
         self.assertEqual(response.status_code, 400) # Bad Request
 
     def test_channel_detail(self):
@@ -51,6 +56,9 @@ class ChatTestCase(TestCase):
 
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/channel/1/message')
+        self.assertEqual(response.status_code, 401) # success
+
+        response = client.get('/api/channel/1/message', HTTP_AUTHORIZATION=self.auth_header)
         self.assertEqual(response.status_code, 200) # success
         messages = json.loads(response.content)
         self.assertEqual(1, len(messages)) # not found
@@ -58,9 +66,9 @@ class ChatTestCase(TestCase):
         self.assertEqual(self.message1.sender_id, messages[0]["sender_id"])
         self.assertEqual(self.message1.channel_id, messages[0]["channel_id"])
 
-        response = client.get('/api/channel/100/message')
+        response = client.get('/api/channel/100/message', HTTP_AUTHORIZATION=self.auth_header)
         self.assertEqual(response.status_code, 404) # not found
-        response = client.put('/api/channel/1/message')
+        response = client.put('/api/channel/1/message', HTTP_AUTHORIZATION=self.auth_header)
         self.assertEqual(response.status_code, 405) # not allowed
 
     def test_channel_user(self):
