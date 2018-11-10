@@ -19,7 +19,7 @@ class TokenAuth:
         auth = str(request.META.get('HTTP_AUTHORIZATION'))
 
         if auth == "None":
-            raise InvalidToken("Ther is no auth info in header")
+            raise InvalidToken("There is no auth info in header")
 
         #example auth = "Bearer ASDFSAF.asfkasjlf.afkjasfd"
         auth = auth.split()
