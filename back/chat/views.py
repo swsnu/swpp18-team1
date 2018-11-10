@@ -42,7 +42,7 @@ def channel_detail(request, channel_id):
         try:
             channel = Channel.objects.get(id=channel_id)
         except Channel.DoesNotExist:
-            return HttpResponseNotFound()
+            return JsonResponse({})
 
         response_dict = {
                 'id': channel.id,
@@ -52,6 +52,24 @@ def channel_detail(request, channel_id):
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
+
+@csrf_exempt
+def manager_channel(request, manager_id):
+    if request.method == 'GET':
+        try:
+            channel = Channel.objects.get(manager=manager_id)
+        except Channel.DoesNotExist:
+            return JsonResponse({})
+
+        response_dict = {
+                'id': channel.id,
+                'title': channel.title,
+                'manager_id': channel.manager.id,
+        }
+        return JsonResponse(response_dict)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
 
 @csrf_exempt
 def channel_message(request, channel_id):
@@ -142,7 +160,15 @@ def manager_sign_in(request):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        user = authenticate(username=username, password=password)
+        # make seed
+        if(username == 'manager') and (password == 'manager'):
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user = User.objects.create_user(username=username, password= password)
+                user.save()
+        else:
+            user = authenticate(username=username, password=password)
 
         if user is not None:
             jwt_token = {'token': TokenAuth.generateToken(user)}
