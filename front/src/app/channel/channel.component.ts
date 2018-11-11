@@ -57,8 +57,8 @@ export class ChannelComponent implements OnInit {
   }
 
   signOut(): void {
-    const user = this.userService.user;
-    if(user.password) {
+    const currentUser = this.userService.user;
+    if(true) {
       this.userService.managerSignOut();
     } else {
       this.userService.userSignOut(1);
