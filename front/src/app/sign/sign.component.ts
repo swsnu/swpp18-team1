@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { UserService } from 'src/service/user.service';
 
@@ -16,10 +17,14 @@ export class SignComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
     this.user = new User;
+  }
+  ngAfterContentInit() {
+      if(this.userService.isSignIn()) this.router.navigate([`main`])
   }
 
   getToken(token): void {
