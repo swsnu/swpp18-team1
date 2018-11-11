@@ -3,9 +3,10 @@ import json
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
-        ## TODO get token
+        self.channel_hash= self.scope['url_route']['kwargs']['channel_hash']
+        ## TODO check auth token
+        ## TODO set group name by channel id decoded from channel_hash
+        self.room_group_name = 'channel_' + self.channel_hash
 
         # Join room group
         await self.channel_layer.group_add(
