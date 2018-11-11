@@ -9,24 +9,34 @@ import { Channel } from 'src/model/channel';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
+
 export class MainComponent implements OnInit {
+
+  title: string;
+  room_name: number;
+  channel: Channel;
+  channel_exist: boolean = true;
 
   constructor(
     private userService: UserService,
     private channelService: ChannelService,
     private router: Router,
   ) { }
-  title: string;
-  room_name: number;
-  channel: Channel;
 
   ngOnInit() {
-    const manager_id = this.userService.user.id;
-    this.userService.getChannel(manager_id)
-      .then((channel) => {
-        this.channel = channel
+    this.channelService.getChannelByManager()
+      .then(channel => {
+        if(channel.id) {
+          this.channel = channel
+        } else {
+          this.channel_exist = false;
+        }
       })
+      .catch(() => {
+        this.channel_exist = false;
+      });
   }
+
   moveToChannel(channel_id) {
     this.router.navigate([`channel/${channel_id}`])
   }
@@ -37,8 +47,8 @@ export class MainComponent implements OnInit {
         const { id } = res //TODO: send room_name , not id
         this.room_name = id
         this.router.navigate([`channel/${this.room_name}`])
-      }).catch(err => {
-        console.log('err:', err)
+      }).catch(e => {
+        console.log('Error: ', e)
       })
   }
 

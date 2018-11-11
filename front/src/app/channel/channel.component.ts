@@ -4,6 +4,7 @@ import { Snippet } from 'src/model/snippet';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 import { ChatService } from 'src/service/chat.service';
+import { ChannelService } from 'src/service/channel.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ChannelComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private userService: UserService,
     private chatService: ChatService,
+    private channelService: ChannelService,
   ) {}
 
   sendMsg(){
@@ -57,12 +59,19 @@ export class ChannelComponent implements OnInit {
   }
 
   signOut(): void {
-    const currentUser = this.userService.user;
-    if(true) {
-      this.userService.managerSignOut();
-    } else {
-      this.userService.userSignOut(1);
-    }
-  }
+    const currentUser_id = this.userService.user.id;
+    const {room_name} = this.activeRoute.snapshot.params;
+    console.log(room_name);
+    var manager_id: number;
 
+    this.channelService.getChannel(room_name)
+      .then(channel => {
+        manager_id = channel.manager_id;
+        if(currentUser_id == manager_id) {
+          this.userService.managerSignOut();
+        } else {
+          this.userService.userSignOut(room_name);
+        }
+      });
+  }
 }

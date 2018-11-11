@@ -3,9 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 
-import { Channel } from '../model/channel';
-
 import { User } from '../model/user';
+
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -99,10 +98,6 @@ export class UserService {
     return this.http.get<User>(url)
       .toPromise()
       .catch(this.handleError<User>(`getUser()`));
-  }
-
-  getChannel(manager_id): Promise<Channel> {
-    return this.http.get<Channel>(`${this.managerUrl}/${manager_id}/channel`, httpOptions).toPromise() // turn Observable into Promise
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

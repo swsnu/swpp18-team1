@@ -30,6 +30,17 @@ export class ChannelService {
         .catch(this.handleError<Channel>(`getChannel()`));
   }
 
+  getChannelByManager(): Promise<Channel> {
+    const httpOptionsWithAuth = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
+    };
+
+    const url = `/api/manager/channel`;
+    return this.http.get<Channel>(url, httpOptionsWithAuth)
+        .toPromise()
+        .then(channel => this.channel = channel)
+  }
+
   create(title: string): Promise<Channel>{
     const httpOptionsWithAuth = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
@@ -41,7 +52,6 @@ export class ChannelService {
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Promise<T> => {
-      console.error(error);
       return Promise.resolve(result as T);
     };
   }

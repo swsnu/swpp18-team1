@@ -115,20 +115,22 @@ def user_access(request, channel_id):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def user_channel(request, user_id):
+def manager_channel(request):
     if request.method == 'GET':
         try:
-            channel = list(Channel.objects.all().filter(manager = user_id))
-            if not channel: #user dont have channel
-                return JsonResponse([], safe=False)
+            user = TokenAuth.authenticate(request)
+        except InvalidToken as e:
+            return JsonResponse({'message': e.message}, status=401)
+        try:
+            channel = Channel.objects.get(manager_id=user)
             response_dict = {
-                'id': channel[0].id,
-                'title': channel[0].title,
-                'manager_id': channel[0].manager.id,
+                'id': channel.id,
+                'title': channel.title,
+                'manager_id': channel.manager.id,
             }
             return JsonResponse(response_dict)
         except Channel.DoesNotExist:
-            return HttpResponseNotFound()
+            return JsonResponse({})
 
 @csrf_exempt
 def manager_sign_in(request):
