@@ -57,7 +57,7 @@ export class UserService {
       this.user = user
       console.log(user);
       this.token = user["token"];
-      this.cookieService.set("token", user["token"], undefined, "/");
+      this.cookieService.set("token", user["token"]);
       this.setUserFrom(this.token);
     })
     .catch(this.handleError<any>('createUser()'));
@@ -71,11 +71,21 @@ export class UserService {
       .then(response => {
         console.log(response);
         this.token = response["token"];
-        this.cookieService.set("token", response["token"], undefined, "/main");
+        this.cookieService.set("token", response["token"]);
         this.setUserFrom(this.token);
         this.router.navigate(['/main']);
       })
       .catch(this.handleError<any>('confirmUser()'));
+  }
+
+  managerSignOut(): void {
+    this.cookieService.delete("token", this.token);
+    this.router.navigate(['/signin']);
+  }
+
+  userSignOut(channel_id: number): void {
+    this.cookieService.delete("token", this.token);
+    this.router.navigate([`access/${channel_id}`]);
   }
 
   getUsers(): Promise<User[]> {

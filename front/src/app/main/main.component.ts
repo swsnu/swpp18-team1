@@ -41,4 +41,8 @@ export class MainComponent implements OnInit {
         console.log('err:', err)
       })
   }
+
+  signOut(): void {
+    this.userService.managerSignOut();
+  }
 }

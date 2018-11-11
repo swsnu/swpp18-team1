@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import WebSocketAsPromised from 'websocket-as-promised';
 import { Snippet } from 'src/model/snippet';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 
 
@@ -18,7 +18,6 @@ export class ChannelComponent implements OnInit {
 
   private wsp: WebSocketAsPromised
   constructor(
-    private router: Router,
     private activeRoute: ActivatedRoute,
     private userService: UserService
   ) {
@@ -76,6 +75,15 @@ export class ChannelComponent implements OnInit {
     if(this.wsp.isOpened){
       this.wsp.close()
       console.log('socket is closed')
+    }
+  }
+
+  signOut(): void {
+    const user = this.userService.user;
+    if(user.password) {
+      this.userService.managerSignOut();
+    } else {
+      this.userService.userSignOut(1);
     }
   }
 
