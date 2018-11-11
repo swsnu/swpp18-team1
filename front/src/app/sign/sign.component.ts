@@ -43,5 +43,10 @@ export class SignComponent implements OnInit {
     this.user.password = password;
     this.userService.managerSignIn(this.user);
   }
-}
 
+  signUp(ID: string, password: string): void {
+    this.user.username = ID;
+    this.user.password = password;
+    this.userService.managerSignUp(this.user);
+  }
+}
