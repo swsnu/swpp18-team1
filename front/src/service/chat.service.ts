@@ -8,7 +8,7 @@ import WebSocketAsPromised from 'websocket-as-promised';
   providedIn: 'root'
 })
 export class ChatService {
-  private websoketUrl = 'ws://localhost:8000/ws/chat'
+  private websoketUrl = 'ws://localhost:8000/ws/chat/'
   private wsp: WebSocketAsPromised
 
   constructor(
@@ -16,19 +16,21 @@ export class ChatService {
     private router: Router,
   ) { }
 
-  connect(room_name: string){
+  connect(room_name: string): Promise<Event>{
     this.wsp = new WebSocketAsPromised(this.websoketUrl + room_name)
-    this.wsp.open().then(() => {
-      console.log('websoket is opened')
-    })
+    return this.wsp.open()
   }
 
   addEventListner(listner: (msg: string) => void) : void{
-    if(this.wsp.isOpened && listner){
+    if(this.wsp.isOpened){
+      console.log("listner wow~")
       // @ts-ignore
       this.wsp.onMessage.addListener(msg => {
+        console.log(msg)
         listner(msg);
       })
+    } else {
+      console.log("nob")
     }
   }
 
