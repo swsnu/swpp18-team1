@@ -12,7 +12,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         try:
             self.user = TokenAuth.asyncGetUserFrom(token)
         except InvalidToken as e:
-            return self.refuse()
+            return self.close()
 
         ## TODO check channel hash
         ## TODO set group name by channel id decoded from channel_hash
