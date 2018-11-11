@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from 'src/service/chat.service';
 import { UserService } from 'src/service/user.service';
 import { Router } from '@angular/router';
 import { Channel } from 'src/model/channel';
@@ -12,7 +11,6 @@ import { Channel } from 'src/model/channel';
 export class MainComponent implements OnInit {
 
   constructor(
-    private chatService: ChatService,
     private userService: UserService,
     private router: Router,
   ) { }
