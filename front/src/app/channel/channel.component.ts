@@ -27,10 +27,13 @@ export class ChannelComponent implements OnInit {
   ) {}
 
   sendMsg(){
-    this.chatService.sendData({
-      content: this.snippet.content,
-      id: this.userService.user.username,
-    })
+    if(this.snippet.content){
+      this.chatService.sendData({
+        content: this.snippet.content,
+        id: this.userService.user.username,
+      })
+      this.snippet.content = ""
+    }
   }
 
   openDM(){
