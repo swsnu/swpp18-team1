@@ -1,10 +1,20 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
+import urllib.parse as urlparse
 import json
+from .token_auth import TokenAuth, InvalidToken
+from channels.db import database_sync_to_async
 
 class ChatConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
         self.channel_hash= self.scope['url_route']['kwargs']['channel_hash']
-        ## TODO check auth token
+        token = self.scope['url_route']['kwargs']['token']
+        try:
+            self.user = TokenAuth.asyncGetUserFrom(token)
+        except InvalidToken as e:
+            return self.refuse()
+
+        ## TODO check channel hash
         ## TODO set group name by channel id decoded from channel_hash
         self.room_group_name = 'channel_' + self.channel_hash
 
