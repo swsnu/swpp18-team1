@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from 'src/service/chat.service';
 import { UserService } from 'src/service/user.service';
+import { ChannelService } from 'src/service/channel.service';
 import { Router } from '@angular/router';
 import { Channel } from 'src/model/channel';
 
@@ -12,8 +12,8 @@ import { Channel } from 'src/model/channel';
 export class MainComponent implements OnInit {
 
   constructor(
-    private chatService: ChatService,
     private userService: UserService,
+    private channelService: ChannelService,
     private router: Router,
   ) { }
   title: string;
@@ -32,7 +32,7 @@ export class MainComponent implements OnInit {
   }
 
   handleGenerate() {
-    this.chatService.create(this.title)
+    this.channelService.create(this.title)
       .then(res => {
         const { id } = res //TODO: send room_name , not id
         this.room_name = id

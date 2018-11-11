@@ -28,6 +28,11 @@ class TokenAuth:
             raise InvalidToken("The header has invalid token type")
 
         token = auth[1]
+
+        return self.tokenToUser(token)
+
+    @classmethod
+    def tokenToUser(self, token):
         if token=="null":
             raise InvalidToken("Null Token not allowed")
 
@@ -48,6 +53,7 @@ class TokenAuth:
             raise InvalidToken("User is not found")
 
         return user
+
 
 class Error(Exception):
     """Base class for exceptions in this module."""

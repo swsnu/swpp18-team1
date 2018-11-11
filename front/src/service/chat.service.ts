@@ -2,30 +2,49 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Channel } from '../model/channel';
 import { Router } from '@angular/router';
-
-const CHAT_URL = 'ws://echo.websocket.org/';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json'})
-};
-
-type Data = { id: number };
+import WebSocketAsPromised from 'websocket-as-promised';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private channelUrl = 'http://localhost:8000/api/channel';
+  private websoketUrl = 'ws://localhost:8000/ws/chat'
+  private wsp: WebSocketAsPromised
+
   constructor(
     private http: HttpClient,
     private router: Router,
   ) { }
 
-  channel: Channel = null;
-  manager_id: number = 34 //TODO: change
-
-  create(title) {
-    const { manager_id } = this
-    return this.http.post<Data>(this.channelUrl, { title, manager_id }, httpOptions).toPromise() // turn Observable into Promise
+  connect(room_name: string){
+    this.wsp = new WebSocketAsPromised(this.websoketUrl + room_name)
+    this.wsp.open().then(() => {
+      console.log('websoket is opened')
+    })
   }
+
+  addEventListner(listner: (msg: string) => void) : void{
+    if(this.wsp.isOpened && listner){
+      // @ts-ignore
+      this.wsp.onMessage.addListener(msg => {
+        listner(msg);
+      })
+    }
+  }
+
+  sendData(data: object) : void{
+    if(this.wsp.isOpened){
+      this.wsp.send(JSON.stringify(data))
+    } else {
+      console.log('socket is not opened')
+    }
+  }
+
+  disconnect() : void{
+    if(this.wsp.isOpened){
+      this.wsp.close()
+      console.log('socket is closed')
+    }
+  }
+
 }
