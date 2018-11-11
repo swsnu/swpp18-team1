@@ -3,5 +3,5 @@ import { ChannelComponent } from '../app/channel/channel.component';
 
 export class Snippet {
     user_id: number;
-    content: Text;
+    content: string;
 }
