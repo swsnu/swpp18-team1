@@ -76,12 +76,12 @@ def manager_sign_up(request):
     if request.method == 'POST':
         try:
             body = request.body.decode()
-            email = json.loads(body)['email']
+            username = json.loads(body)['username']
             password = json.loads(body)['password']
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        user = User.objects.create_user(email=email, username=email, password=password)
+        user = User.objects.create_user(username=username, password=password)
         user.save()
 
         return HttpResponse(status=201)
@@ -89,7 +89,7 @@ def manager_sign_up(request):
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def user_sign_up(request, channel_id):
+def user_access(request, channel_id):
     if request.method == 'POST':
         try:
             body = request.body.decode()
@@ -109,28 +109,28 @@ def user_sign_up(request, channel_id):
         userProfile = UserProfile.objects.create(user=user, channel=channel, image=image)
 
         response_dict = {
-                'id': user.id,
-                'username': user.username,
-                'image': userProfile.image,
+                'token': TokenAuth.generateToken(user),
                 }
         return JsonResponse(data=response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
 
-def user_channel(request, user_id):
+def manager_channel(request):
     if request.method == 'GET':
         try:
-            channel = list(Channel.objects.all().filter(manager = user_id))
-            if not channel: #user dont have channel
-                return JsonResponse([], safe=False)
+            user = TokenAuth.authenticate(request)
+        except InvalidToken as e:
+            return JsonResponse({'message': e.message}, status=401)
+        try:
+            channel = Channel.objects.get(manager_id=user)
             response_dict = {
-                'id': channel[0].id,
-                'title': channel[0].title,
-                'manager_id': channel[0].manager.id,
+                'id': channel.id,
+                'title': channel.title,
+                'manager_id': channel.manager.id,
             }
             return JsonResponse(response_dict)
         except Channel.DoesNotExist:
-            return HttpResponseNotFound()
+            return JsonResponse({})
 
 @csrf_exempt
 def manager_sign_in(request):

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Channel } from '../model/channel';
+import { UserService } from 'src/service/user.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -17,7 +18,8 @@ export class ChannelService {
   channel: Channel;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private userService: UserService
   ) { }
 
   getChannel(id: number): Promise<Channel> {
@@ -28,10 +30,29 @@ export class ChannelService {
         .catch(this.handleError<Channel>(`getChannel()`));
   }
 
+  getChannelByManager(): Promise<Channel> {
+    const httpOptionsWithAuth = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
+    };
+
+    const url = `/api/manager/channel`;
+    return this.http.get<Channel>(url, httpOptionsWithAuth)
+        .toPromise()
+        .then(channel => this.channel = channel)
+  }
+
+  create(title: string): Promise<Channel>{
+    const httpOptionsWithAuth = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
+    };
+    return this.http.post<Channel>(this.channelUrl, { title } , httpOptionsWithAuth)
+    .toPromise()
+  }
+
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Promise<T> => {
-        console.error(error);
-        return Promise.resolve(result as T);
+      return Promise.resolve(result as T);
     };
-}
+  }
 }

@@ -3,9 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 
-import { Channel } from '../model/channel';
-
 import { User } from '../model/user';
+
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -20,6 +19,7 @@ export class UserService {
   private userUrl: string = '/api/channel/:channel_id/user';
 
   token: string;
+
   user: User = new User;
   users: User[] = [];
 
@@ -52,7 +52,14 @@ export class UserService {
   createUser(channel_id: number, user: Partial<User>): Promise<User> {
     return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
     .toPromise()
-    .then(user => this.user = user)
+    .then(user => {
+      this.user = user
+      console.log(user);
+      this.token = user["token"];
+      this.cookieService.set("token", user["token"]);
+      this.setUserFrom(this.token);
+    })
+    .catch(this.handleError<any>('createUser()'));
   }
 
   // for manager
@@ -70,6 +77,16 @@ export class UserService {
       .catch(this.handleError<any>('confirmUser()'));
   }
 
+  managerSignOut(): void {
+    this.cookieService.delete("token", this.token);
+    this.router.navigate(['/signin']);
+  }
+
+  userSignOut(channel_id: number): void {
+    this.cookieService.delete("token", this.token);
+    this.router.navigate([`access/${channel_id}`]);
+  }
+
   getUsers(): Promise<User[]> {
     return this.http.get<User[]>(this.userUrl)
       .toPromise()
@@ -81,10 +98,6 @@ export class UserService {
     return this.http.get<User>(url)
       .toPromise()
       .catch(this.handleError<User>(`getUser()`));
-  }
-
-  getChannel(manager_id): Promise<Channel> {
-    return this.http.get<Channel>(`${this.managerUrl}/${manager_id}/channel`, httpOptions).toPromise() // turn Observable into Promise
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

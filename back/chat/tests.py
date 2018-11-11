@@ -77,9 +77,9 @@ class ChatTestCase(TestCase):
         response = client.post('/api/channel/1/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
                  content_type='application/json')
         self.assertEqual(response.status_code, 201) # success
-        user = json.loads(response.content)
-        self.assertEqual("test+user", user["username"])
-        self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", user["image"])
+        data = json.loads(response.content)
+        self.assertEqual(True, data["token"] is not None)
+        self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", data["image"])
 
         response = client.post('/api/channel/100/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
                 content_type='application/json')
@@ -93,37 +93,37 @@ class ChatTestCase(TestCase):
                 content_type='application/json')
         self.assertEqual(response.status_code, 405) # not allowed
 
-    def test_signup(self):
+    def test_manager_signup(self):
         client = Client(enforce_csrf_checks=True)
 
-        response = client.post('/api/user', json.dumps({'email': 'iu@iu.com', "password": "iuiu"}),
+        response = client.post('/api/manager/signup', json.dumps({'username': 'iuiuiu', "password": "iuiu"}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 201) # success
 
-        response = client.post('/api/user', json.dumps({'email2': 'iu@iu.com', "password2": "iuiu"}),
+        response = client.post('/api/manager/signup', json.dumps({'username2': 'iu@iu.com', "password2": "iuiu"}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 400) # success
 
-        response = client.put('/api/user', json.dumps({'email2': 'iu@iu.com', "password2": "iuiu"}),
+        response = client.put('/api/manager/signup', json.dumps({'username': 'iuuuuu', "password": "iuiu"}),
                 content_type='application/json')
-        self.assertEqual(response.status_code, 405) # success
+        self.assertEqual(response.status_code, 405)
 
-    def test_signin(self):
+    def test_manager_signin(self):
         client = Client(enforce_csrf_checks=True)
 
-        response = client.post('/api/signin', json.dumps({'title1': 'test', 'content2': 'test, test'}),
+        response = client.post('/api/manager/signin', json.dumps({'title1': 'test', 'content2': 'test, test'}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 400) # Bad Request
 
-        response = client.put('/api/signin', json.dumps({'title1': 'test', 'content2': 'test, test'}),
+        response = client.put('/api/manager/signin', json.dumps({'title1': 'test', 'content2': 'test, test'}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 405) # not allowed
 
-        response = client.post('/api/signin', json.dumps({'username': 'iu', 'password': '1234'}),
+        response = client.post('/api/manager/signin', json.dumps({'username': 'iu', 'password': '1234'}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 401) # not allowed
 
-        response = client.post('/api/signin', json.dumps({'username': 'iu', 'password': '12341234'}),
+        response = client.post('/api/manager/signin', json.dumps({'username': 'iu', 'password': '12341234'}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 200) # signin
 

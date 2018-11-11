@@ -5,7 +5,7 @@
   <a href="/qr"> to qr </a>
 </div>
 <div>
-  <div *ngIf="channel; else go_to_channel" >
+  <div *ngIf="channel_exist; else go_to_channel" >
     <div>
       <button (click)="moveToChannel(channel.id)"> goto channel</button>
     </div>
@@ -17,3 +17,5 @@
     </div>
   </ng-template>
 </div>
+
+<button name="signout" id="signout-button" (click)="signOut();">Sign-out</button>

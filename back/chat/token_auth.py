@@ -3,6 +3,7 @@ from django.http import JsonResponse
 import jwt
 import datetime
 from dynaconf import settings
+from channels.db import database_sync_to_async
 
 class TokenAuth:
 
@@ -28,6 +29,34 @@ class TokenAuth:
             raise InvalidToken("The header has invalid token type")
 
         token = auth[1]
+
+        return self.getUserFrom(token)
+
+    @classmethod
+    def getUserFrom(self, token):
+        if token=="null":
+            raise InvalidToken("Null Token not allowed")
+
+        try:
+            payload = jwt.decode(token, settings.get("JWT_SECRET_KEY"), algorithms=['HS256'])
+            username = payload['username']
+            userid = payload['id']
+
+        except jwt.DecodeError or jwt.InvalidTokenError:
+            raise InvalidToken("Token Decode Error")
+
+        try:
+            user = User.objects.get(
+                    id=userid,
+                    username=username
+                    )
+        except User.DoesNotExist:
+            raise InvalidToken("User is not found")
+
+        return user
+
+    @database_sync_to_async
+    def asyncGetUserFrom(self, token):
         if token=="null":
             raise InvalidToken("Null Token not allowed")
 
