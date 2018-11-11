@@ -20,6 +20,7 @@ export class UserService {
   private userUrl: string = '/api/channel/:channel_id/user';
 
   token: string;
+
   user: User = new User;
   users: User[] = [];
 
@@ -52,7 +53,14 @@ export class UserService {
   createUser(channel_id: number, user: Partial<User>): Promise<User> {
     return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
     .toPromise()
-    .then(user => this.user = user)
+    .then(user => {
+      this.user = user
+      console.log(user);
+      this.token = user["token"];
+      this.cookieService.set("token", user["token"], undefined, "/");
+      this.setUserFrom(this.token);
+    })
+    .catch(this.handleError<any>('createUser()'));
   }
 
   // for manager
@@ -63,7 +71,7 @@ export class UserService {
       .then(response => {
         console.log(response);
         this.token = response["token"];
-        this.cookieService.set("token", response["token"]);
+        this.cookieService.set("token", response["token"], undefined, "/main");
         this.setUserFrom(this.token);
         this.router.navigate(['/main']);
       })

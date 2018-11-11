@@ -109,7 +109,6 @@ def user_access(request, channel_id):
         userProfile = UserProfile.objects.create(user=user, channel=channel, image=image)
 
         response_dict = {
-                'image': userProfile.image,
                 'token': TokenAuth.generateToken(user),
                 }
         return JsonResponse(data=response_dict, status=201)
