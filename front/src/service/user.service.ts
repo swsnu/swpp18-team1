@@ -71,7 +71,7 @@ export class UserService {
       .then(response => {
         console.log(response);
         this.token = response["token"];
-        this.cookieService.set("token", response["token"], undefined, "/main");
+        this.cookieService.set("token", response["token"], undefined, "/");
         this.setUserFrom(this.token);
         this.router.navigate(['/main']);
       })

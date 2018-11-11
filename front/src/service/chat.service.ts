@@ -2,22 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Channel } from '../model/channel';
 import { Router } from '@angular/router';
+import { UserService } from 'src/service/user.service';
 import WebSocketAsPromised from 'websocket-as-promised';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private websoketUrl = 'ws://localhost:8000/ws/chat/'
+  private websoketUrl = 'ws://localhost:8000/ws/chat/:channel_hash/token/:token'
   private wsp: WebSocketAsPromised
 
   constructor(
     private http: HttpClient,
+    private userService: UserService,
     private router: Router,
   ) { }
 
-  connect(room_name: string): Promise<Event>{
-    this.wsp = new WebSocketAsPromised(this.websoketUrl + room_name)
+  connect(channel_hash: string): Promise<Event>{
+    const wsUrlWithToken = this.websoketUrl.replace(":channel_hash", channel_hash).replace(":token", this.userService.token)
+    this.wsp = new WebSocketAsPromised(wsUrlWithToken)
     return this.wsp.open()
   }
 
