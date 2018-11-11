@@ -54,7 +54,6 @@ export class UserService {
     .toPromise()
     .then(user => {
       this.user = user
-      console.log(user);
       this.token = user["token"];
       this.cookieService.set("token", user["token"]);
       this.setUserFrom(this.token);
