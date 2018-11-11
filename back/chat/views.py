@@ -76,12 +76,12 @@ def manager_sign_up(request):
     if request.method == 'POST':
         try:
             body = request.body.decode()
-            email = json.loads(body)['email']
+            username = json.loads(body)['username']
             password = json.loads(body)['password']
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        user = User.objects.create_user(email=email, username=email, password=password)
+        user = User.objects.create_user(username=username, password=password)
         user.save()
 
         return HttpResponse(status=201)
@@ -109,9 +109,8 @@ def user_sign_up(request, channel_id):
         userProfile = UserProfile.objects.create(user=user, channel=channel, image=image)
 
         response_dict = {
-                'id': user.id,
-                'username': user.username,
                 'image': userProfile.image,
+                'token': TokenAuth.generateToken(user),
                 }
         return JsonResponse(data=response_dict, status=201)
     else:
