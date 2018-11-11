@@ -89,7 +89,7 @@ def manager_sign_up(request):
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def user_sign_up(request, channel_id):
+def user_access(request, channel_id):
     if request.method == 'POST':
         try:
             body = request.body.decode()
@@ -109,7 +109,6 @@ def user_sign_up(request, channel_id):
         userProfile = UserProfile.objects.create(user=user, channel=channel, image=image)
 
         response_dict = {
-                'image': userProfile.image,
                 'token': TokenAuth.generateToken(user),
                 }
         return JsonResponse(data=response_dict, status=201)
