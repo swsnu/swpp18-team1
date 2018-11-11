@@ -89,7 +89,7 @@ def manager_sign_up(request):
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def user_sign_up(request, channel_id):
+def user_access(request, channel_id):
     if request.method == 'POST':
         try:
             body = request.body.decode()
