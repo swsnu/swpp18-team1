@@ -38,7 +38,11 @@ export class ChannelService {
     const url = `/api/manager/channel`;
     return this.http.get<Channel>(url, httpOptionsWithAuth)
         .toPromise()
-        .then(channel => this.channel = channel)
+        .then(channel => {
+            this.channel = channel
+            return channel
+          }
+        )
   }
 
   create(title: string): Promise<Channel>{
