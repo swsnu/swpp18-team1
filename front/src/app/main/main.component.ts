@@ -55,4 +55,8 @@ export class MainComponent implements OnInit {
   signOut(): void {
     this.userService.managerSignOut();
   }
+
+  moveToQR(): void {
+    this.router.navigate([`qr`])
+  }
 }

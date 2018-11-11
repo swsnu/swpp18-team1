@@ -1,9 +1,9 @@
 <p>
   main works!
 </p>
-<div>
-  <a href="/qr"> to qr </a>
-</div>
+<button (click)="moveToQR()">
+  move to qr
+</button>
 <div>
   <div *ngIf="channel_exist; else go_to_channel" >
     <div>

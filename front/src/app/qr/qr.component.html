@@ -1,1 +1,4 @@
-<qrcode [qrdata]="'http://psychometer.io'" [size]="256" [level]="'M'"></qrcode>
+<qrcode *ngIf="channelUrl; else empty" [qrdata]="channelUrl" [size]="256" [level]="'M'"></qrcode>
+<ng-template #empty>
+  no accessable channel
+</ng-template>

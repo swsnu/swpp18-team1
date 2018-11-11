@@ -49,8 +49,11 @@ export class ChannelService {
     const httpOptionsWithAuth = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
     };
-    return this.http.post<Channel>(this.channelUrl, { title } , httpOptionsWithAuth)
-    .toPromise()
+    return this.http.post<Channel>(this.channelUrl, { title } , httpOptionsWithAuth).toPromise()
+    .then(channel =>{
+        this.channel = channel
+        return channel
+    })
   }
 
 
