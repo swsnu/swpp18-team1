@@ -11,10 +11,10 @@ export class QrComponent implements OnInit {
 
   constructor(
     private channelService: ChannelService,
-    private router: Router,
+    router: Router,
   ) { }
 
-  private channelUrl=''
+  channelUrl=''
 
   ngOnInit() {
     const id = this.channelService.channel && this.channelService.channel.id
