@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "ws://localhost:8000",
+        "target": "http://13.125.153.189:8080",
         "secure": false,
         "changeOrigin": true
     }
