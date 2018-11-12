@@ -81,7 +81,7 @@ def manager_sign_up(request):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        user = User.objects.create_user(username=username)
+        user = User.objects.create_user(username=username, password=password)
         user.save()
 
         jwt_token = {'token': TokenAuth.generateToken(user)}
