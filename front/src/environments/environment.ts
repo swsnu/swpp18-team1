@@ -5,9 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8000',
-  awsEndpoint: '13.125.153.189:8080',
 };
-
 
 /*
  * In development mode, for easier debugging, you can ignore zone related error
