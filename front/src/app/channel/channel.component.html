@@ -5,7 +5,7 @@
 <div *ngIf="snippet">
   <div>
     <label>content:
-      <input [(ngModel)]="snippet.content"/>
+      <input [(ngModel)]="snippet.content"  (keyup.enter)="sendMsg()"/>
     </label>
   </div>
 </div>

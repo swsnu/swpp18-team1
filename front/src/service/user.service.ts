@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { environment } from '../environments/environment';
 
 import { User } from '../model/user';
 
 
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json'})
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+  })
 };
 
 @Injectable({
@@ -15,8 +18,8 @@ const httpOptions = {
 })
 export class UserService {
 
-  private managerUrl: string = '/api/manager';
-  private userUrl: string = '/api/channel/:channel_id/user';
+  private managerUrl: string = environment.apiUrl + '/api/manager';
+  private userUrl: string = environment.apiUrl + '/api/channel/:channel_id/user';
 
   token: string;
 

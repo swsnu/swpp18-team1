@@ -3,8 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Channel } from '../model/channel';
 import { Router } from '@angular/router';
 import { UserService } from 'src/service/user.service';
-import WebSocketAsPromised from 'websocket-as-promised';
 import { environment } from 'src/environments/environment'
+
+import WebSocketAsPromised from 'websocket-as-promised';
 
 @Injectable({
   providedIn: 'root'
