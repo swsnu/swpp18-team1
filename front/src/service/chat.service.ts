@@ -3,13 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Channel } from '../model/channel';
 import { Router } from '@angular/router';
 import { UserService } from 'src/service/user.service';
+import { environment } from '../environments/environment';
+
 import WebSocketAsPromised from 'websocket-as-promised';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private websoketUrl = 'ws://localhost:8000/ws/chat/:channel_hash/token/:token'
+  private websoketUrl = `ws://${environment.apiUrl.replace("http://", "")}/ws/chat/:channel_hash/token/:token`
   private wsp: WebSocketAsPromised
 
   constructor(

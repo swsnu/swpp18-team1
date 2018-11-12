@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 import { Channel } from '../model/channel';
 import { UserService } from 'src/service/user.service';
@@ -13,7 +14,7 @@ const httpOptions = {
 })
 export class ChannelService {
 
-  private channelUrl: string = '/api/channel';
+  private channelUrl: string = environment.apiUrl + '/api/channel';
 
   channel: Channel;
 
