@@ -15,7 +15,7 @@ export class QrComponent implements OnInit {
   private channelUrl=''
 
   ngOnInit() {
-    const id = this.channelService.channel && channelService.channel.id
+    const id = this.channelService.channel && this.channelService.channel.id
     this.channelUrl = `localhost:4200/access/${id}`
   }
 }
