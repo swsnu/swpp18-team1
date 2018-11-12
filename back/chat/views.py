@@ -81,10 +81,12 @@ def manager_sign_up(request):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        user = User.objects.create_user(username=username, password=password)
+        user = User.objects.create_user(username=username)
         user.save()
 
-        return HttpResponse(status=201)
+        jwt_token = {'token': TokenAuth.generateToken(user)}
+
+        return JsonResponse(jwt_token, status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
 

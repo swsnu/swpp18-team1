@@ -54,7 +54,6 @@ export class UserService {
     .toPromise()
     .then(user => {
       this.user = user
-      console.log(user);
       this.token = user["token"];
       this.cookieService.set("token", user["token"]);
       this.setUserFrom(this.token);
@@ -68,7 +67,19 @@ export class UserService {
     this.http.post(url, user, httpOptions)
       .toPromise()
       .then(response => {
-        console.log(response);
+        this.token = response["token"];
+        this.cookieService.set("token", response["token"]);
+        this.setUserFrom(this.token);
+        this.router.navigate(['/main']);
+      })
+      .catch(this.handleError<any>('confirmUser()'));
+  }
+
+  managerSignUp(user: Partial<User>): void {
+    const url = `${this.managerUrl}/signup`;
+    this.http.post(url, user, httpOptions)
+      .toPromise()
+      .then(response => {
         this.token = response["token"];
         this.cookieService.set("token", response["token"]);
         this.setUserFrom(this.token);

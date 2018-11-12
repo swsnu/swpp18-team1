@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChannelService } from 'src/service/channel.service';
 
 @Component({
   selector: 'app-qr',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QrComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private channelService: ChannelService,
+  ) { }
+
+  private channelUrl=''
 
   ngOnInit() {
+    const id = this.channelService.channel && channelService.channel.id
+    this.channelUrl = `localhost:4200/access/${id}`
   }
-
 }
