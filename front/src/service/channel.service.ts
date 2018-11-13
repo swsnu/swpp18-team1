@@ -15,6 +15,7 @@ const httpOptions = {
 export class ChannelService {
 
   private channelUrl: string = environment.apiUrl + '/api/channel';
+  private managerChannelUrl: string = environment.apiUrl + '/api/manager/channel';
 
   channel: Channel;
 
@@ -36,8 +37,7 @@ export class ChannelService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
     };
 
-    const url = `/api/manager/channel`;
-    return this.http.get<Channel>(url, httpOptionsWithAuth)
+    return this.http.get<Channel>(this.managerChannelUrl, httpOptionsWithAuth)
         .toPromise()
         .then(channel => {
             this.channel = channel
