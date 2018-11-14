@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import WebSocketAsPromised from 'websocket-as-promised';
 import { Snippet } from 'src/model/snippet';
 import { ActivatedRoute } from '@angular/router';
@@ -24,6 +26,8 @@ export class ChannelComponent implements OnInit {
     private userService: UserService,
     private chatService: ChatService,
     private channelService: ChannelService,
+    private router: Router,
+    private location: Location,
   ) {}
 
   sendMsg(){
@@ -76,5 +80,13 @@ export class ChannelComponent implements OnInit {
           this.userService.userSignOut(room_name);
         }
       });
+  }
+
+  moveToQR(): void {
+    this.router.navigate([`qr`])
+  }
+
+  goBack(): void {
+    this.location.back()
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChannelService } from 'src/service/channel.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-qr',
@@ -11,7 +12,8 @@ export class QrComponent implements OnInit {
 
   constructor(
     private channelService: ChannelService,
-    router: Router,
+    private router: Router,
+    private location: Location,
   ) { }
 
   channelUrl=''
@@ -20,5 +22,9 @@ export class QrComponent implements OnInit {
     const id = this.channelService.channel && this.channelService.channel.id
     const url = window.location.href.replace('/qr', `/access/${id}`)
     this.channelUrl = url
+  }
+
+  goBack(): void {
+    this.location.back()
   }
 }
