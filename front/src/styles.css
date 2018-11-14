@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+h1 {
+    background: rgb(29, 62, 170);
+    padding: 10px;
+    color: #fff;
+}
+
+button {
+    width: max-content;
+    background-color: #8fa6f1;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+input {
+    width: max-content;
+    background-color: #ffffff;
+    border: 1px solid #bcbcbc;
+    color:#000;
+    padding: 10px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 5px;
+    cursor: pointer;
+}

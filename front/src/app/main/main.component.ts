@@ -27,7 +27,7 @@ export class MainComponent implements OnInit {
     this.channelService.getChannelByManager()
       .then(channel => {
         if(channel.id) {
-          this.channel = channel
+          this.channel = channel;
         } else {
           this.channel_exist = false;
         }
