@@ -23,6 +23,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print(self.user)
         self.room_group_name = 'channel_' + self.channel_hash
 
+
         # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -53,7 +54,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         content = text_data_json['content']
         id = text_data_json['id']
-
 
         # Send message to room group
         await self.channel_layer.group_send(

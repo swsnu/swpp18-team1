@@ -9,6 +9,7 @@ from .models import Channel, ChannelMessage, UserProfile
 from .token_auth import TokenAuth, InvalidToken
 
 
+
 @csrf_exempt
 def channel(request):
     if request.method == 'POST':
@@ -18,6 +19,7 @@ def channel(request):
             return JsonResponse({'message': e.message}, status=401)
 
         try:
+
             body = request.body.decode()
             title = json.loads(body)['title']
         except (KeyError, JSONDecodeError) as e:
@@ -25,6 +27,7 @@ def channel(request):
 
         # FIXME manager_id is always 1
         channel = Channel(title=title, manager=user)
+
         channel.save()
 
         response_dict = {
@@ -87,6 +90,7 @@ def manager_sign_up(request):
         jwt_token = {'token': TokenAuth.generateToken(user)}
 
         return JsonResponse(jwt_token, status=200)
+
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -154,3 +158,4 @@ def manager_sign_in(request):
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
+

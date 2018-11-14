@@ -5,6 +5,7 @@ import { environment } from '../environments/environment';
 import { Channel } from '../model/channel';
 import { UserService } from 'src/service/user.service';
 
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
 };
@@ -64,4 +65,5 @@ export class ChannelService {
       return Promise.resolve(result as T);
     };
   }
+
 }

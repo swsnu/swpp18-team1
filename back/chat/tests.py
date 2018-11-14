@@ -17,6 +17,7 @@ class ChatTestCase(TestCase):
         self.auth_header = "Bearer " + TokenAuth.generateToken(self.user1)
         self.factory = RequestFactory()
 
+
     def test_channel_create(self):
         client = Client(enforce_csrf_checks=True)
 
@@ -26,6 +27,7 @@ class ChatTestCase(TestCase):
 
         response = client.post('/api/channel', json.dumps({'title': 'test1234'}),
                 content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 201) # created
 
         response = client.put('/api/channel', json.dumps({'title': 'test'}),
@@ -34,6 +36,7 @@ class ChatTestCase(TestCase):
 
         response = client.post('/api/channel', json.dumps({'title1': 'test', 'content2': 'test, test'}),
                 content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 400) # Bad Request
 
     def test_channel_detail(self):
@@ -59,6 +62,7 @@ class ChatTestCase(TestCase):
         self.assertEqual(response.status_code, 401) # success
 
         response = client.get('/api/channel/1/message', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 200) # success
         messages = json.loads(response.content)
         self.assertEqual(1, len(messages)) # not found
@@ -69,6 +73,7 @@ class ChatTestCase(TestCase):
         response = client.get('/api/channel/100/message', HTTP_AUTHORIZATION=self.auth_header)
         self.assertEqual(response.status_code, 404) # not found
         response = client.put('/api/channel/1/message', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 405) # not allowed
 
     def test_channel_user(self):
@@ -80,6 +85,7 @@ class ChatTestCase(TestCase):
         data = json.loads(response.content)
         self.assertEqual(True, data["token"] is not None)
         self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", data["image"])
+
 
         response = client.post('/api/channel/100/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
                 content_type='application/json')
@@ -157,4 +163,5 @@ class ChatTestCase(TestCase):
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= "Bearer " + token)
         result = TokenAuth.authenticate(request)
         self.assertEqual(result, self.user1) # Get User!!
+
 
