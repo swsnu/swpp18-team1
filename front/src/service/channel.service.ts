@@ -37,10 +37,11 @@ export class ChannelService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
     };
 
-    return this.http.get<Channel>(this.managerChannelUrl, httpOptionsWithAuth)
+    const url = environment.apiUrl + `/api/manager/channel`;
+    return this.http.get<Channel>(url, httpOptionsWithAuth)
         .toPromise()
         .then(channel => {
-            this.channel = channel
+            this.channel = channel;
             return channel
           }
         )

@@ -35,8 +35,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'content': self.user.username + "님이 입장했습니다.",
-                'id': "notification",
+                'content': self.user.username + "님이 입장하셨습니다.",
+                'id': "Notification",
             }
         )
 

@@ -1,16 +1,17 @@
-<p>
-  channel works!
-</p>
+<h1>Channel</h1>
+
+<button (click)="signOut()">Sign-out</button>
+
+<hr>
 
 <div *ngIf="snippet">
-  <div>
-    <label>content:
-      <input [(ngModel)]="snippet.content"  (keyup.enter)="sendMsg()"/>
-    </label>
-  </div>
+  <label>Content:
+    <input [(ngModel)]="snippet.content" (keyup.enter)="sendMsg()"/>
+  </label>
+  <button (click)="sendMsg()">Send a Message</button>
 </div>
 
-<button (click)="sendMsg()">Send Message</button>
+<hr>
 
 <div *ngFor="let sp of snippets">
   <div>{{sp.user_id}}: {{sp.content}}</div>
