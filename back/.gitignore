@@ -90,3 +90,5 @@ db.sqlite3
 
 # redis logs
 *.rdb
+settings.toml
+

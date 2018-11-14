@@ -1,9 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import WebSocketAsPromised from 'websocket-as-promised';
 import { Snippet } from 'src/model/snippet';
-import shortid from 'shortid'
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
+import { ChatService } from 'src/service/chat.service';
+import { ChannelService } from 'src/service/channel.service';
 
 
 @Component({
@@ -19,26 +22,21 @@ export class ChannelComponent implements OnInit {
 
   private wsp: WebSocketAsPromised
   constructor(
-    private router: Router,
     private activeRoute: ActivatedRoute,
-    private userService: UserService
-  ) {
-    const {room_name} = this.activeRoute.snapshot.params
-    this.wsp = new WebSocketAsPromised(`ws://localhost:8000/ws/chat/${room_name}`);
-  }
+    private userService: UserService,
+    private chatService: ChatService,
+    private channelService: ChannelService,
+    private router: Router,
+    private location: Location,
+  ) {}
 
   sendMsg(){
-    if(this.userService.user) {
-      if(this.wsp.isOpened){
-        this.wsp.send(JSON.stringify({
+    if(this.snippet.content){
+      this.chatService.sendData({
         content: this.snippet.content,
         id: this.userService.user.username,
-        }))
-      } else {
-      console.log('socket is not opened')
-      }
-    } else {
-      console.log('user is empty')
+      })
+      this.snippet.content = ""
     }
   }
 
@@ -47,37 +45,48 @@ export class ChannelComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.userService.user) {
-      this.wsp.open()
-        .then(() => {
-          this.wsp.send(JSON.stringify({
-            content: `${this.userService.user.username} 님이 입장하셨습니다.`,
-            id: 'notification',
-          }))
-          // @ts-ignore
-          this.wsp.onMessage.addListener(msg => {
-            if(msg){
-              const json_msg = JSON.parse(msg)
-              const { id, content } = json_msg
-              // TODO: add snippetable_id & type
-              const delived_snippet = { user_id: id, content }
-              // @ts-ignore
-              this.snippets.push(delived_snippet)
-            }
-            console.log("get Message from back : " +  msg)
-          });
-        })
-        .catch(e => console.error(e))
-      } else {
-        console.log("User login is essential.")
-      }
+    const {room_name} = this.activeRoute.snapshot.params
+    // TODO with token
+    this.chatService.connect(room_name).then(() => {
+      this.chatService.addEventListner((msg: string) => {
+        if(msg){
+          const json_msg = JSON.parse(msg)
+          const { id, content } = json_msg
+          // TODO: add snippetable_id & type
+          const delived_snippet = {user_id: id, content}
+          this.snippets.push(delived_snippet)
+        }
+        console.log("get Message from back : " +  msg)
+      })
+    })
   }
 
   ngOnDestroy(){
-    if(this.wsp.isOpened){
-      this.wsp.close()
-      console.log('socket is closed')
-    }
+    this.chatService.disconnect()
   }
 
+  signOut(): void {
+    const currentUser_id = this.userService.user.id;
+    const {room_name} = this.activeRoute.snapshot.params;
+    console.log(room_name);
+    var manager_id: number;
+
+    this.channelService.getChannel(room_name)
+      .then(channel => {
+        manager_id = channel.manager_id;
+        if(currentUser_id == manager_id) {
+          this.userService.managerSignOut();
+        } else {
+          this.userService.userSignOut(room_name);
+        }
+      });
+  }
+
+  moveToQR(): void {
+    this.router.navigate([`qr`])
+  }
+
+  goBack(): void {
+    this.location.back()
+  }
 }

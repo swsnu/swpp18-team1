@@ -1,4 +1,4 @@
-<h1 *ngIf="channelService.channel">{{ channelService.channel.title }}</h1>
+<h1 *ngIf="channelTitle">{{ channelTitle }}</h1>
 
 <hr>
 
@@ -10,4 +10,3 @@
   <input #nickname type="text" name="nickname" id="nickname-input" placeholder="Nickname here">
 </div>
 <button name="access" id="access-button" (click)="access(profile_picture.value, nickname.value);">Access</button>
-

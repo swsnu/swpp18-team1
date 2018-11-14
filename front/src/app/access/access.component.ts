@@ -14,6 +14,7 @@ import { User } from '../../model/user';
 export class AccessComponent implements OnInit {
 
   channelHash: number;
+  channelTitle: string = "";
 
   constructor(
     private userService: UserService,
@@ -24,7 +25,9 @@ export class AccessComponent implements OnInit {
 
   ngOnInit() {
     this.channelHash = this.route.snapshot.params['hash'];
-    this.channelService.getChannel(this.channelHash);
+    this.channelService.getChannel(this.channelHash).then((channel) => {
+      this.channelTitle = channel.title
+    })
   }
 
   access(image: string, username: string): boolean {

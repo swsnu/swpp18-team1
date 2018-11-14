@@ -1,19 +1,24 @@
-<p>
-  main works!
-</p>
+<h1>Main</h1>
+
+<button name="signout" id="signout-button" (click)="signOut();">Sign-out</button>
+
+<hr>
+
 <div>
-  <a href="/qr"> to qr </a>
-</div>
-<div>
-  <div *ngIf="channel; else go_to_channel" >
+  <div *ngIf="channel_exist; else create_channel" >
     <div>
-      <button (click)="moveToChannel(channel.id)"> goto channel</button>
+      <button (click)="moveToQR()">To QR Code</button>
+      <br>
+      <strong>There is a Channel!</strong>
+      <button (click)="moveToChannel(channel.id)">Go to Channel</button>
     </div>
   </div>
-  <ng-template #go_to_channel>
+  <ng-template #create_channel>
     <div class="article--create">
-      title <input type='text' [(ngModel)]="title" />
-      <button (click)="handleGenerate()"> generate</button>
+      <strong>There is no Channel!</strong>
+      <br>
+      Title:<input type='text' [(ngModel)]="title" />
+      <button (click)="handleGenerate()">Create a Channel</button>
     </div>
   </ng-template>
 </div>

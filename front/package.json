@@ -22,6 +22,7 @@
     "@angular/router": "^6.1.0",
     "angularx-qrcode": "^1.2.4",
     "core-js": "^2.5.4",
+    "ngx-cookie-service": "^2.0.0",
     "rxjs": "^6.0.0",
     "shortid": "^2.2.13",
     "websocket-as-promised": "^0.9.0",

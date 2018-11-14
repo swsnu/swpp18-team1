@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -36,6 +37,9 @@ import { QrComponent } from './qr/qr.component';
     FormsModule,
     HttpClientModule,
     // HttpModule,
+  ],
+  providers: [
+    CookieService,
   ],
   bootstrap: [AppComponent]
 })

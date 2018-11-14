@@ -25,7 +25,11 @@ SECRET_KEY = '623qj3thpsdxo$a*92q(%_4vx+@iau36qll2)b*im1)&v!3l%-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '13.125.153.189',
+    'localhost',
+    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
+]
 
 
 # Application definition
@@ -44,6 +48,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,7 +61,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:4200',
+     'localhost:4200',
+     'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
 )
 
 # Channels

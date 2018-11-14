@@ -1,7 +1,7 @@
 {
-    "/api": {
-        "target": "ws://localhost:8000",
-        "secure": false,
-        "changeOrigin": true
-    }
+  "/api": {
+      "target": "http://localhost:8000",
+      "secure": false,
+      "changeOrigin": true
+  }
 }

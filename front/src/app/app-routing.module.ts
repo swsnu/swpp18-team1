@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from 'src/service/auth-guard.service';
 
 import { SignComponent } from './sign/sign.component';
 import { CreateComponent } from './create/create.component';
@@ -11,15 +12,15 @@ import { AccessComponent } from './access/access.component';
 
 const routes: Routes = [
   // TODO: 제거
-  { path: '', redirectTo: '/sign', pathMatch: 'full' },
-  { path: 'sign', component: SignComponent },
-  { path: 'create', component: CreateComponent },
-  { path: 'main', component: MainComponent },
-  { path: 'qr', component: QrComponent },
-  { path: 'channel/:room_name', component: ChannelComponent},
-  { path: 'channel', component: ChannelComponent},
+  { path: '', redirectTo: '/signin', pathMatch: 'full'},
+  { path: 'signin', component: SignComponent },
+  { path: 'create', component: CreateComponent, canActivate: [AuthGuardService]},
+  { path: 'main', component: MainComponent, canActivate: [AuthGuardService] },
+  { path: 'qr', component: QrComponent, canActivate: [AuthGuardService] },
+  { path: 'channel/:room_name', component: ChannelComponent, canActivate: [AuthGuardService]},
+  { path: 'channel', component: ChannelComponent, canActivate: [AuthGuardService]},
   { path: 'access/:hash', component: AccessComponent},
-  { path: '**', redirectTo: '/sign' }
+  { path: '**', redirectTo: '/signin' }
 ];
 
 @NgModule({
