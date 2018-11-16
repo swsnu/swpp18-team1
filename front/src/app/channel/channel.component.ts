@@ -45,9 +45,11 @@ export class ChannelComponent implements OnInit {
   }
 
   ngOnInit() {
-    const {room_name} = this.activeRoute.snapshot.params
+    const {channel_hash} = this.activeRoute.snapshot.params
+
+    this.channelService.getChannel(channel_hash)
     // TODO with token
-    this.chatService.connect(room_name).then(() => {
+    this.chatService.connect(channel_hash).then(() => {
       this.chatService.addEventListner((msg: string) => {
         if(msg){
           const json_msg = JSON.parse(msg)
@@ -66,24 +68,15 @@ export class ChannelComponent implements OnInit {
   }
 
   signOut(): void {
-    const currentUser_id = this.userService.user.id;
-    const {room_name} = this.activeRoute.snapshot.params;
-    console.log(room_name);
-    var manager_id: number;
+    const currentUser_id = this.userService.user.id
+    const manager_id = this.channelService.manager_id
+    const { channel_hash } = this.activeRoute.snapshot.params
 
-    this.channelService.getChannel(room_name)
-      .then(channel => {
-        manager_id = channel.manager_id;
-        if(currentUser_id == manager_id) {
-          this.userService.managerSignOut();
-        } else {
-          this.userService.userSignOut(room_name);
-        }
-      });
-  }
-
-  moveToQR(): void {
-    this.router.navigate([`qr`])
+    if(currentUser_id == manager_id) {
+      this.userService.managerSignOut();
+    } else {
+      this.userService.userSignOut(channel_hash);
+    }
   }
 
   goBack(): void {
