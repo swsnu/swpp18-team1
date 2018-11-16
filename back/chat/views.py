@@ -7,7 +7,7 @@ import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
 from .token_auth import TokenAuth, InvalidToken
-
+import random
 
 
 @csrf_exempt
@@ -109,15 +109,16 @@ def user_access(request, channel_id):
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        user = User.objects.create_user(username=username)
-        user.save()
+        ## find uniq username
+        uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
+        while User.objects.filter(username=username + "#" + uniq_key).exists():
+            uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
+
+        user = User.objects.create_user(username=username + "#" + uniq_key)
 
         userProfile = UserProfile.objects.create(user=user, channel=channel, image=image)
 
-        response_dict = {
-                'token': TokenAuth.generateToken(user),
-                }
-        return JsonResponse(data=response_dict, status=201)
+        return JsonResponse({'token': TokenAuth.generateToken(user)}, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
 
