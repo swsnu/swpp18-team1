@@ -7,7 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 import { ChatService } from 'src/service/chat.service';
 import { ChannelService } from 'src/service/channel.service';
-
+import { WebsocketPacket } from 'src/model/websocket-packet';
+import { EventType } from 'src/enums';
 
 @Component({
   selector: 'app-channel',
@@ -32,10 +33,8 @@ export class ChannelComponent implements OnInit {
 
   sendMsg(){
     if(this.snippet.content){
-      this.chatService.sendData({
-        content: this.snippet.content,
-        id: this.userService.user.username,
-      })
+      let packet = new WebsocketPacket({event_type: EventType.SendChannelMessage, data: {content: this.snippet.content}})
+      this.chatService.sendData(packet)
       this.snippet.content = ""
     }
   }
@@ -48,17 +47,20 @@ export class ChannelComponent implements OnInit {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash)
-    // TODO with token
     this.chatService.connect(channel_hash).then(() => {
-      this.chatService.addEventListner((msg: string) => {
-        if(msg){
-          const json_msg = JSON.parse(msg)
-          const { id, content } = json_msg
-          // TODO: add snippetable_id & type
-          const delived_snippet = {user_id: id, content}
-          this.snippets.push(delived_snippet)
+      this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
+        console.log(websocketPacket)
+        switch(websocketPacket.event_type) {
+          case EventType.ReceiveChannelMessage: {
+            const data = websocketPacket.data
+            const delived_snippet = {user_id: data["user_id"], content: data["content"], username: data["username"]}
+            this.snippets.push(delived_snippet)
+          }
+          case EventType.NewUserConnect: {
+            console.log("new user")
+          }
         }
-        console.log("get Message from back : " +  msg)
+
       })
     })
   }

@@ -4,6 +4,7 @@ import { Channel } from '../model/channel';
 import { Router } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 import { environment } from 'src/environments/environment'
+import { WebsocketPacket } from 'src/model/websocket-packet';
 
 import WebSocketAsPromised from 'websocket-as-promised';
 
@@ -27,22 +28,22 @@ export class ChatService {
     return this.wsp.open()
   }
 
-  addEventListner(listner: (msg: string) => void) : void{
+  addEventListner(listner: (websocketPacket: WebsocketPacket) => void) : void{
     if(this.wsp.isOpened){
-      console.log("listner wow~")
       // @ts-ignore
-      this.wsp.onMessage.addListener(msg => {
-        console.log(msg)
-        listner(msg);
+      this.wsp.onMessage.addListener(rowPacket => {
+        const jsonPacket = JSON.parse(rowPacket)
+        const packet = new WebsocketPacket({event_type: jsonPacket["event_type"], data: jsonPacket["data"], status_code: jsonPacket["status_code"]})
+        listner(packet);
       })
     } else {
-      console.log("nob")
+      console.log("socket is not opened")
     }
   }
 
-  sendData(data: object) : void{
+  sendData(packet: WebsocketPacket) : void{
     if(this.wsp.isOpened){
-      this.wsp.send(JSON.stringify(data))
+      this.wsp.send(packet.toJson())
     } else {
       console.log('socket is not opened')
     }
