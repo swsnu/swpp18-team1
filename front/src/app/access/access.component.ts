@@ -24,7 +24,7 @@ export class AccessComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.channelHash = this.route.snapshot.params['hash'];
+    this.channelHash = this.route.snapshot.params['channel_hash'];
     this.channelService.getChannel(this.channelHash).then((channel) => {
       this.channelTitle = channel.title
     })

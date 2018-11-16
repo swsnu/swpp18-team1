@@ -17,9 +17,8 @@ const routes: Routes = [
   { path: 'create', component: CreateComponent, canActivate: [AuthGuardService]},
   { path: 'main', component: MainComponent, canActivate: [AuthGuardService] },
   { path: 'qr', component: QrComponent, canActivate: [AuthGuardService] },
-  { path: 'channel/:room_name', component: ChannelComponent, canActivate: [AuthGuardService]},
-  { path: 'channel', component: ChannelComponent, canActivate: [AuthGuardService]},
-  { path: 'access/:hash', component: AccessComponent},
+  { path: 'channel/:channel_hash', component: ChannelComponent, canActivate: [AuthGuardService]},
+  { path: 'access/:channel_hash', component: AccessComponent},
   { path: '**', redirectTo: '/signin' }
 ];
 
