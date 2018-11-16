@@ -49,17 +49,17 @@ export class ChannelComponent implements OnInit {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash)
+
     this.chatService.connect(channel_hash).then(() => {
       this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
-        console.log(websocketPacket)
+
         switch(websocketPacket.event_type) {
           case EventType.ReceiveChannelMessage: {
             const data = websocketPacket.data
-            const delived_snippet = {user_id: data["user_id"], content: data["content"], username: data["username"]}
+            const delived_snippet = {sender_id: data["sender_id"], content: data["content"], username: data["username"]}
             this.snippets.push(delived_snippet)
           }
           case EventType.NewUserConnect: {
-            console.log("new user")
           }
         }
 
