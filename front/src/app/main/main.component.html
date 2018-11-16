@@ -1,24 +1,41 @@
-<h1>Main</h1>
-
-<button name="signout" id="signout-button" (click)="signOut();">Sign-out</button>
-
-<hr>
-
-<div>
-  <div *ngIf="channel_exist; else create_channel" >
-    <div>
-      <button (click)="moveToQR()">To QR Code</button>
-      <br>
-      <strong>There is a Channel!</strong>
-      <button (click)="moveToChannel(channel.id)">Go to Channel</button>
+<div>   
+  <div *ngIf="channel_exist; else channel_create" >
+    <div class="header">
+      <h1>선택하기</h1>
+      <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
+    </div>
+    <div class="mat-app-background">
+      <strong>님의 QR Code를 얻습니다.</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button (click)="moveToQR()">QR Code 얻기</button>
+    </div>
+    <br>
+    <div class="mat-app-background">
+      <strong>님의 방이 있습니다.</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button (click)="moveToChannel(channel.id)">방으로 가기</button>
     </div>
   </div>
-  <ng-template #create_channel>
-    <div class="article--create">
-      <strong>There is no Channel!</strong>
+  <ng-template #channel_create>
+    <div class="header">
+      <h1>생성하기</h1>
+      <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
+    </div>
+    <div class="mat-app-background">
+      <strong>작품에 대한 설명이 없습니다.</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button (click)="createPost(post.value)">생성하기</button>
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <br>
-      Title:<input type='text' [(ngModel)]="title" />
-      <button (click)="handleGenerate()">Create a Channel</button>
+      <mat-form-field class="input"><input matInput #post (click)="createPost();" placeholder="설명"/></mat-form-field>
+    </div>
+    <br>
+    <div class="mat-app-background">
+      <strong>님의 방이 없습니다.</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-form-field class="input"><input matInput type='text' [(ngModel)]="title" placeholder="방 제목 정하기"></mat-form-field>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button (click)="createChannel()">생성하기</button>
     </div>
   </ng-template>
 </div>

@@ -5,7 +5,6 @@ import { environment } from '../environments/environment';
 import { Channel } from '../model/channel';
 import { UserService } from 'src/service/user.service';
 
-
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
 };
@@ -19,6 +18,7 @@ export class ChannelService {
   private managerChannelUrl: string = environment.apiUrl + '/api/manager/channel';
 
   channel: Channel;
+  post: Text;
 
   constructor(
     private http: HttpClient,
@@ -59,6 +59,16 @@ export class ChannelService {
     })
   }
 
+  createChannelWithPost(title: string, post: Text): Promise<Channel>{
+    const httpOptionsWithAuth = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
+    };
+    return this.http.post<Channel>(this.channelUrl, { title, post } , httpOptionsWithAuth).toPromise()
+    .then(channel =>{
+        this.channel = channel
+        return channel
+    })
+  }
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Promise<T> => {

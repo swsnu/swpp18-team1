@@ -19,6 +19,8 @@ export class ChannelComponent implements OnInit {
 
   snippet: Snippet = new Snippet
   snippets: Snippet[] = []
+  
+  channelTitle: string = "";
 
   private wsp: WebSocketAsPromised
   constructor(
@@ -46,6 +48,11 @@ export class ChannelComponent implements OnInit {
 
   ngOnInit() {
     const {room_name} = this.activeRoute.snapshot.params
+
+    this.channelService.getChannel(room_name)
+      .then(channel => {
+        this.channelTitle = channel.title
+    })
     // TODO with token
     this.chatService.connect(room_name).then(() => {
       this.chatService.addEventListner((msg: string) => {
@@ -80,10 +87,6 @@ export class ChannelComponent implements OnInit {
           this.userService.userSignOut(room_name);
         }
       });
-  }
-
-  moveToQR(): void {
-    this.router.navigate([`qr`])
   }
 
   goBack(): void {
