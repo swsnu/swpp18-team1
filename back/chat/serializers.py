@@ -12,4 +12,4 @@ class ChannelMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChannelMessage
-        fields = ('content', 'sender')
+        fields = ('content', 'sender', 'created_at')
