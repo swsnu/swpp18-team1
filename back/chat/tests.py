@@ -4,6 +4,7 @@ from .models import Channel, ChannelMessage
 from django.test.client import RequestFactory
 from .token_auth import TokenAuth, InvalidToken
 from dynaconf import settings
+from .serializers import UserSerializer, ChannelMessageSerializer
 import jwt
 
 import json
@@ -163,5 +164,17 @@ class ChatTestCase(TestCase):
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= "Bearer " + token)
         result = TokenAuth.authenticate(request)
         self.assertEqual(result, self.user1) # Get User!!
+
+    def test_serializer(self):
+        user_result = UserSerializer(instance=self.user1)
+        self.assertEqual(self.user1.id, user_result.data["id"])
+        self.assertEqual(self.user1.username, user_result.data["username"])
+
+        channel_message_result = ChannelMessageSerializer(instance=self.message1)
+        self.assertEqual(self.message1.content, channel_message_result.data["content"])
+        self.assertEqual(self.message1.sender.id, channel_message_result.data["sender"]["id"])
+        self.assertEqual(self.message1.sender.username, channel_message_result.data["sender"]["username"])
+
+
 
 

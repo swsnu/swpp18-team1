@@ -39,3 +39,4 @@ Twisted==18.9.0
 txaio==18.8.1
 wheel==0.32.2
 zope.interface==4.6.0
+djangorestframework=3.9.0
