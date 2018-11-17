@@ -60,9 +60,9 @@ export class ChannelService {
     })
   }
 
-  getChannelMessage(channel_hash: string): Promise<ChannelMessage>{
+  getChannelMessage(channel_hash: string): Promise<[ChannelMessage]>{
     const url = this.channelUrl + `/${channel_hash}/message`
-    return this.http.get<ChannelMessage>(url, this.userService.getAuthHeader()).toPromise()
+    return this.http.get<[ChannelMessage]>(url, this.userService.getAuthHeader()).toPromise()
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

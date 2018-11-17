@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import WebSocketAsPromised from 'websocket-as-promised';
-import { Snippet } from 'src/model/snippet';
 import { ChannelMessage } from 'src/model/channel-message';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
@@ -19,9 +18,8 @@ import { EventType } from 'src/enums';
 
 export class ChannelComponent implements OnInit {
 
-  snippet: Snippet = new Snippet
-  snippets: Snippet[] = []
-  channelMessages: channelMessage[] = []
+  channelMessage: ChannelMessage = new ChannelMessage()
+  channelMessages: ChannelMessage[] = []
 
   private wsp: WebSocketAsPromised
   constructor(
@@ -34,10 +32,10 @@ export class ChannelComponent implements OnInit {
   ) {}
 
   sendMsg(){
-    if(this.snippet.content){
-      let packet = new WebsocketPacket({event_type: EventType.SendChannelMessage, data: {content: this.snippet.content}})
+    if(this.channelMessage.content){
+      let packet = new WebsocketPacket({event_type: EventType.SendChannelMessage, data: {content: this.channelMessage.content}})
       this.chatService.sendData(packet)
-      this.snippet.content = ""
+      this.channelMessage.content = ""
     }
   }
 
@@ -54,12 +52,10 @@ export class ChannelComponent implements OnInit {
     })
     this.chatService.connect(channel_hash).then(() => {
       this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
-        console.log(websocketPacket)
         switch(websocketPacket.event_type) {
           case EventType.ReceiveChannelMessage: {
-            const data = websocketPacket.data
-            const delived_snippet = {user_id: data["user_id"], content: data["content"], username: data["username"]}
-            this.snippets.push(delived_snippet)
+            const newMessage = new ChannelMessage(websocketPacket.data)
+            this.channelMessages.push(newMessage)
           }
           case EventType.NewUserConnect: {
             console.log("new user")
