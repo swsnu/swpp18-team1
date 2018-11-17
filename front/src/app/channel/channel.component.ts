@@ -49,14 +49,14 @@ export class ChannelComponent implements OnInit {
     this.channelService.getChannel(channel_hash)
     this.channelService.getChannelMessage(channel_hash).then((messages) => {
       this.channelMessages = messages.map((message) => new ChannelMessage(message))
-      console.log(this.channelMessages)
     })
     this.chatService.connect(channel_hash).then(() => {
       this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
-        switch(websocketPacket.event_type) {
+        switch(+websocketPacket.event_type) {
           case EventType.ReceiveChannelMessage: {
             const newMessage = new ChannelMessage(websocketPacket.data)
             this.channelMessages.push(newMessage)
+            break;
           }
           case EventType.NewUserConnect: {
             console.log("new user")

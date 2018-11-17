@@ -11,7 +11,7 @@ export class ChannelMessage {
   }
 
   public getCreatedAt(): string {
-    return moment(this.created_at).fromNow()
+    return moment(this.created_at).locale("ko").fromNow()
   }
 
 }
