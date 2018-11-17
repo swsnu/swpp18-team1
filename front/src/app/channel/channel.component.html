@@ -13,6 +13,7 @@
 
 <div *ngFor="let message of channelMessages ">
   <div>{{message.sender.username}}: {{message.content}}</div>
+  <div>{{message.getCreatedAt()}}</div>
 </div>
 
 <button (click)="signOut()">Sign-out</button>
