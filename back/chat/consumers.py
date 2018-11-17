@@ -5,6 +5,7 @@ from .token_auth import TokenAuth, InvalidToken
 from channels.db import database_sync_to_async
 from .models import Channel, ChannelMessage
 from .enums import EventType
+from .serializers import ChannelMessageSerializer
 
 ## TODO soket protocol class
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -59,18 +60,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = text_data_json['data']
 
         if event_type == EventType.SendChannelMessage:
-            ChannelMessage.objects.create(sender= self.user, content=data['content'], channel_id=self.channel_id)
+            message = ChannelMessage.objects.create(sender= self.user, content=data['content'], channel_id=self.channel_id)
 
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     "type": "chat.message",
                     'event_type': EventType.ReceiveChannelMessage,
-                    'data': {
-                        'content': data['content'],
-                        'username': self.user.username,
-                        'user_id': self.user.id
-                        }
+                    'data': ChannelMessageSerializer(instance=message).data
                 }
             )
 
