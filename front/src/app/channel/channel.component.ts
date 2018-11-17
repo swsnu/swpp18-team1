@@ -56,13 +56,10 @@ export class ChannelComponent implements OnInit {
           case EventType.ReceiveChannelMessage: {
             const newMessage = new ChannelMessage(websocketPacket.data)
             this.channelMessages.push(newMessage)
-            break;
           }
           case EventType.NewUserConnect: {
-            console.log("new user")
           }
         }
-
       })
     })
   }

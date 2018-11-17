@@ -1,5 +1,5 @@
 export class Snippet {
-  user_id: number;
+  sender_id: number;
   username: string;
   content: string;
 
