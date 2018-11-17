@@ -7,6 +7,7 @@ import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
 from .token_auth import TokenAuth, InvalidToken
+from .serializers import ChannelMessageSerializer
 import random
 
 
@@ -39,10 +40,10 @@ def channel(request):
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def channel_detail(request, channel_id):
+def channel_detail(request, channel_hash):
     if request.method == 'GET':
         try:
-            channel = Channel.objects.get(id=channel_id)
+            channel = Channel.objects.get(id=channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -56,7 +57,7 @@ def channel_detail(request, channel_id):
         return HttpResponseNotAllowed(['GET'])
 
 @csrf_exempt
-def channel_message(request, channel_id):
+def channel_message(request, channel_hash):
     if request.method == 'GET':
         try:
             TokenAuth.authenticate(request)
@@ -64,12 +65,14 @@ def channel_message(request, channel_id):
             return JsonResponse({'message': e.message}, status=401)
 
         try:
-            channel = Channel.objects.get(id=channel_id)
+            channel = Channel.objects.get(id=channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        messages = [message for message in ChannelMessage.objects.all().values()]
-        return JsonResponse(messages, safe=False)
+        messages = ChannelMessage.objects.filter(channel=channel)
+        serializer = ChannelMessageSerializer(messages, many=True)
+
+        return JsonResponse(serializer.data, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -94,7 +97,7 @@ def manager_sign_up(request):
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def user_access(request, channel_id):
+def user_access(request, channel_hash):
     if request.method == 'POST':
         try:
             body = request.body.decode()
@@ -104,7 +107,7 @@ def user_access(request, channel_id):
             return HttpResponseBadRequest()
 
         try:
-            channel = Channel.objects.get(id=channel_id)
+            channel = Channel.objects.get(id=channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 

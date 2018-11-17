@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
 import { Channel } from '../model/channel';
+import { ChannelMessage } from '../model/channel-message';
 import { UserService } from 'src/service/user.service';
 
 const httpOptions = {
@@ -18,7 +19,7 @@ export class ChannelService {
   private managerChannelUrl: string = environment.apiUrl + '/api/manager/channel';
 
   channel: Channel;
-  post: Text;
+  channelMessages: [ChannelService];
 
   constructor(
     private http: HttpClient,
@@ -59,6 +60,7 @@ export class ChannelService {
     })
   }
 
+<<<<<<< HEAD
   createChannelWithPost(title: string, post: Text): Promise<Channel>{
     const httpOptionsWithAuth = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
@@ -68,6 +70,11 @@ export class ChannelService {
         this.channel = channel
         return channel
     })
+=======
+  getChannelMessage(channel_hash: string): Promise<[ChannelMessage]>{
+    const url = this.channelUrl + `/${channel_hash}/message`
+    return this.http.get<[ChannelMessage]>(url, this.userService.getAuthHeader()).toPromise()
+>>>>>>> 3dbb215edfbe32a0115a70ea02d09d0770c5dcdf
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
