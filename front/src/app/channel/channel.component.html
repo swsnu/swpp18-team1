@@ -2,17 +2,18 @@
 
 <hr>
 
-<div *ngIf="snippet">
+<div *ngIf="channelMessage">
   <label>Content:
-    <input [(ngModel)]="snippet.content" (keyup.enter)="sendMsg()"/>
+    <input [(ngModel)]="channelMessage.content" (keyup.enter)="sendMsg()"/>
   </label>
   <button (click)="sendMsg()">Send a Message</button>
 </div>
 
 <hr>
 
-<div *ngFor="let sp of snippets">
-  <div>{{sp.username}}: {{sp.content}}</div>
+<div *ngFor="let message of channelMessages ">
+  <div>{{message.sender.username}}: {{message.content}}</div>
+  <div>{{message.getCreatedAt()}}</div>
 </div>
 
 <button (click)="signOut()">Sign-out</button>
