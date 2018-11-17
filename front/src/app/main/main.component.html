@@ -4,16 +4,17 @@
       <h1>선택하기</h1>
       <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
     </div>
+    <br>
     <div class="mat-app-background">
-      <strong>님의 QR Code를 얻습니다.</strong>
+      <strong *ngIf="manager">{{ manager }}님의 방이 있습니다.</strong>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <button mat-raised-button (click)="moveToQR()">QR Code 얻기</button>
+      <button mat-raised-button (click)="moveToChannel(channel.id)">방으로 가기</button>
     </div>
     <br>
     <div class="mat-app-background">
-      <strong>님의 방이 있습니다.</strong>
+      <strong>방의 QR Code를 얻습니다.</strong>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <button mat-raised-button (click)="moveToChannel(channel.id)">방으로 가기</button>
+      <button mat-raised-button (click)="moveToQR()">QR Code 얻기</button>
     </div>
   </div>
   <ng-template #channel_create>
@@ -31,11 +32,11 @@
     </div>
     <br>
     <div class="mat-app-background">
-      <strong>님의 방이 없습니다.</strong>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <mat-form-field class="input"><input matInput type='text' [(ngModel)]="title" placeholder="방 제목 정하기"></mat-form-field>
+      <strong *ngIf="manager">{{ manager }}님의 방이 없습니다.</strong>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <button mat-raised-button (click)="createChannel()">생성하기</button>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-form-field class="input"><input matInput type='text' [(ngModel)]="title" placeholder="방 제목 정하기"></mat-form-field>
     </div>
   </ng-template>
 </div>

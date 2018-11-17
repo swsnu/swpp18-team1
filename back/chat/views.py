@@ -25,7 +25,6 @@ def channel(request):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        # FIXME manager_id is always 1
         channel = Channel(title=title, manager=user)
 
         channel.save()
@@ -48,9 +47,9 @@ def channel_detail(request, channel_id):
             return HttpResponseNotFound()
 
         response_dict = {
-                'id': channel.id,
-                'title': channel.title,
-                'manager_id': channel.manager.id,
+            'id': channel.id,
+            'title': channel.title,
+            'manager_id': channel.manager.id,
         }
         return JsonResponse(response_dict)
     else:
@@ -109,7 +108,7 @@ def user_access(request, channel_id):
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        ## find uniq username
+        # find uniq username
         uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
         while User.objects.filter(username=username + "#" + uniq_key).exists():
             uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
@@ -159,4 +158,3 @@ def manager_sign_in(request):
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
-

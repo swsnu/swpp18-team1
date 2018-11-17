@@ -14,8 +14,9 @@ export class MainComponent implements OnInit {
 
   title: string;
   post: Text;
-  room_name: number;
+  manager: string = "";
   channel: Channel;
+  channel_hash: number;
   channel_exist: boolean = true;
   post_exist: boolean = false;
 
@@ -37,6 +38,8 @@ export class MainComponent implements OnInit {
       .catch(() => {
         this.channel_exist = false;
       });
+
+    this.getManager()
   }
 
   moveToChannel(channel_id) {
@@ -46,12 +49,15 @@ export class MainComponent implements OnInit {
   createChannel(): void {
     this.channelService.create(this.title)
       .then(response => {
-        const { id } = response.id //TODO: send room_name , not id
-        this.room_name = id
-        this.router.navigate([`channel/${this.room_name}`])
+        this.channel_hash = response.id
+        this.router.navigate([`channel/${this.channel_hash}`])
       }).catch(e => {
         console.log('Error: ', e)
       })
+  }
+
+  getManager(): void {
+    this.manager = this.userService.user.username
   }
 
   createPost(post: Text): void {

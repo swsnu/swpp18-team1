@@ -10,4 +10,5 @@ urlpatterns = [
     path('channel/<int:channel_id>', views.channel_detail, name="channel_detail"),
     path('channel/<int:channel_id>/user', views.user_access, name="user_access"),
     path('channel/<int:channel_id>/message', views.channel_message, name="channel_message"),
+
 ]
