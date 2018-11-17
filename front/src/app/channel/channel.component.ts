@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import WebSocketAsPromised from 'websocket-as-promised';
 import { Snippet } from 'src/model/snippet';
+import { ChannelMessage } from 'src/model/channel-message';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 import { ChatService } from 'src/service/chat.service';
@@ -20,6 +21,7 @@ export class ChannelComponent implements OnInit {
 
   snippet: Snippet = new Snippet
   snippets: Snippet[] = []
+  channelMessages: channelMessage[] = []
 
   private wsp: WebSocketAsPromised
   constructor(
@@ -47,7 +49,9 @@ export class ChannelComponent implements OnInit {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash)
-    this.channelService.getChannelMessage(channel_hash).then((data) => console.log(data))
+    this.channelService.getChannelMessage(channel_hash).then((messages) => {
+      this.channelMessages = messages.map((message) => new ChannelMessage(message))
+    })
     this.chatService.connect(channel_hash).then(() => {
       this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
         console.log(websocketPacket)
