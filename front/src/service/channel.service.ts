@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
 import { Channel } from '../model/channel';
+import { ChannelMessage } from '../model/channel-message';
 import { UserService } from 'src/service/user.service';
-
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -19,6 +19,7 @@ export class ChannelService {
   private managerChannelUrl: string = environment.apiUrl + '/api/manager/channel';
 
   channel: Channel;
+  channelMessages: [ChannelService];
 
   constructor(
     private http: HttpClient,
@@ -59,6 +60,10 @@ export class ChannelService {
     })
   }
 
+  getChannelMessage(channel_hash: string): Promise<ChannelMessage>{
+    const url = this.channelUrl + `/${channel_hash}/message`
+    return this.http.get<ChannelMessage>(url, this.userService.getAuthHeader()).toPromise()
+  }
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Promise<T> => {

@@ -47,6 +47,7 @@ export class ChannelComponent implements OnInit {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash)
+    this.channelService.getChannelMessage(channel_hash).then((data) => console.log(data))
     this.chatService.connect(channel_hash).then(() => {
       this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
         console.log(websocketPacket)
