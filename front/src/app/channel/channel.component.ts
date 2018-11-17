@@ -47,28 +47,15 @@ export class ChannelComponent implements OnInit {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash)
-<<<<<<< HEAD
-      .then((channel) => {
-        this.channelTitle = channel.title
-    })
-
-=======
     this.channelService.getChannelMessage(channel_hash).then((messages) => {
       this.channelMessages = messages.map((message) => new ChannelMessage(message))
     })
->>>>>>> 3dbb215edfbe32a0115a70ea02d09d0770c5dcdf
     this.chatService.connect(channel_hash).then(() => {
       this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
         switch(+websocketPacket.event_type) {
           case EventType.ReceiveChannelMessage: {
-<<<<<<< HEAD
-            const data = websocketPacket.data
-            const delived_snippet = {sender_id: data["sender_id"], content: data["content"], username: data["username"]}
-            this.snippets.unshift(delived_snippet)
-=======
             const newMessage = new ChannelMessage(websocketPacket.data)
             this.channelMessages.push(newMessage)
->>>>>>> 3dbb215edfbe32a0115a70ea02d09d0770c5dcdf
           }
           case EventType.NewUserConnect: {
           }

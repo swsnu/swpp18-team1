@@ -60,21 +60,9 @@ export class ChannelService {
     })
   }
 
-<<<<<<< HEAD
-  createChannelWithPost(title: string, post: Text): Promise<Channel>{
-    const httpOptionsWithAuth = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
-    };
-    return this.http.post<Channel>(this.channelUrl, { title, post } , httpOptionsWithAuth).toPromise()
-    .then(channel =>{
-        this.channel = channel
-        return channel
-    })
-=======
   getChannelMessage(channel_hash: string): Promise<[ChannelMessage]>{
     const url = this.channelUrl + `/${channel_hash}/message`
     return this.http.get<[ChannelMessage]>(url, this.userService.getAuthHeader()).toPromise()
->>>>>>> 3dbb215edfbe32a0115a70ea02d09d0770c5dcdf
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
