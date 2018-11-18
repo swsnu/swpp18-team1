@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import WebSocketAsPromised from 'websocket-as-promised';
 import { ChannelMessage } from 'src/model/channel-message';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
@@ -18,16 +16,16 @@ import { EventType } from 'src/enums';
 
 export class ChannelComponent implements OnInit {
 
+  channelTitle: string = ""
   channelMessage: ChannelMessage = new ChannelMessage()
   channelMessages: ChannelMessage[] = []
+  managerOrNot: boolean = false;
 
-  private wsp: WebSocketAsPromised
   constructor(
     private activeRoute: ActivatedRoute,
     private userService: UserService,
     private chatService: ChatService,
     private channelService: ChannelService,
-    private router: Router,
     private location: Location,
   ) {}
 
@@ -46,7 +44,12 @@ export class ChannelComponent implements OnInit {
   ngOnInit() {
     const {channel_hash} = this.activeRoute.snapshot.params
 
-    this.channelService.getChannel(channel_hash)
+    this.channelService.getChannel(channel_hash).then((channel) => {
+      this.channelTitle = channel.title
+      if(channel.manager_id == this.userService.user.id) {
+        this.managerOrNot = true;
+      }
+    })
     this.channelService.getChannelMessage(channel_hash).then((messages) => {
       this.channelMessages = messages.map((message) => new ChannelMessage(message))
     })
