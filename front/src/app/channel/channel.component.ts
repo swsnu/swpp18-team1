@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component, OnInit } from '@angular/core';
+=======
+import { Component, OnInit, Input } from '@angular/core';
+>>>>>>> a856710f89849e36b86c3858ea4d0a320dbc5c1e
 import { Location } from '@angular/common';
 import { ChannelMessage } from 'src/model/channel-message';
 import { ActivatedRoute } from '@angular/router';
@@ -17,9 +21,13 @@ import { EventType } from 'src/enums';
 export class ChannelComponent implements OnInit {
 
   channelTitle: string = ""
+<<<<<<< HEAD
   channelPost: Text
+=======
+>>>>>>> a856710f89849e36b86c3858ea4d0a320dbc5c1e
   channelMessage: ChannelMessage = new ChannelMessage()
   channelMessages: ChannelMessage[] = []
+  managerOrNot: boolean = false;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -46,7 +54,13 @@ export class ChannelComponent implements OnInit {
 
     this.channelService.getChannel(channel_hash).then((channel) => {
       this.channelTitle = channel.title
+<<<<<<< HEAD
       this.channelPost = channel.post
+=======
+      if(channel.manager_id == this.userService.user.id) {
+        this.managerOrNot = true;
+      }
+>>>>>>> a856710f89849e36b86c3858ea4d0a320dbc5c1e
     })
     this.channelService.getChannelMessage(channel_hash).then((messages) => {
       this.channelMessages = messages.map((message) => new ChannelMessage(message))

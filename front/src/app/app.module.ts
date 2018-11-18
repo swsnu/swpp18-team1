@@ -7,7 +7,10 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+<<<<<<< HEAD
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+=======
+>>>>>>> a856710f89849e36b86c3858ea4d0a320dbc5c1e
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -19,7 +22,6 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { AccessComponent } from './access/access.component';
 import { QrComponent } from './qr/qr.component';
 
-// import { ApiInterceptor } from './HttpInterceptor';
 
 @NgModule({
   declarations: [

@@ -1,11 +1,11 @@
 <div class="header">
-    <h1 *ngIf="channelTitle">{{ channelTitle }}</h1>
-    <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
-    <button style="float: right;" mat-raised-button (click)="goBack()">돌아가기</button>
+  <h1 *ngIf="channelTitle">{{ channelTitle }}</h1>
+  <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
+  <button *ngIf="managerOrNot" style="float: right;" mat-raised-button (click)="goBack()">돌아가기</button>
 </div>
 
 <div class="mat-app-background">
-  작품 내용: {{ channelPost }}
+  포스트
 </div>
 
 <br>
