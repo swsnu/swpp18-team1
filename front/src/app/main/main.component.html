@@ -23,19 +23,52 @@
       <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
     </div>
     <div class="mat-app-background">
-      <strong>작품에 대한 설명이 없습니다.</strong>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <button mat-raised-button (click)="createPost(post.value)">생성하기</button>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <br>
-      <mat-form-field class="input"><input matInput #post (click)="createPost();" placeholder="설명"/></mat-form-field>
+      <strong>작품에 대한 내용이 없습니다.</strong>
     </div>
+
     <br>
+
+<div [froalaEditor] [(froalaModel)]="description">작품과 관련된 내용을 적으면 됩니다.</div>
+
+<script>
+  $(function() {
+    $('#description')
+      .froalaEditor({
+        // Set the save param.
+        saveParam: 'content',
+
+        // Set the save URL.
+        saveURL: 'http://example.com/save',
+
+        // HTTP request type.
+        saveMethod: 'POST',
+
+        // Additional save params.
+        saveParams: {id: 'my_editor'}
+      })
+      .on('froalaEditor.save.before', function (e, editor) {
+        // Before save request is made.
+      })
+      .on('froalaEditor.save.after', function (e, editor, response) {
+        // After successfully save request.
+      })
+      .on('froalaEditor.save.error', function (e, editor, error) {
+        // Do something here.
+      })
+  });
+
+  $('#saveButton').click (function () {
+    $('#description').froalaEditor('save.save')
+  })
+</script>
+
+    <br>
+    
     <div class="mat-app-background">
       <strong *ngIf="manager">{{ manager }}님의 방이 없습니다.</strong>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <button mat-raised-button (click)="createChannel()">생성하기</button>
-      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button id="saveButton" (click)="createChannel()">생성하기</button>
+      <br>
       <mat-form-field class="input"><input matInput type='text' [(ngModel)]="title" placeholder="방 제목 정하기"></mat-form-field>
     </div>
   </ng-template>

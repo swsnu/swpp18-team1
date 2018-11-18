@@ -99,7 +99,7 @@ export class UserService {
     this.router.navigate(['/signin']);
   }
 
-  userSignOut(channel_hash: string): void {
+  userSignOut(channel_hash: number): void {
     this.cookieService.deleteAll("/");
     this.router.navigate([`access/${channel_hash}`]);
   }

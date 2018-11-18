@@ -47,7 +47,7 @@ export class MainComponent implements OnInit {
   }
 
   createChannel(): void {
-    this.channelService.create(this.title)
+    this.channelService.create(this.title, this.post)
       .then(response => {
         this.channel_hash = response.id
         this.router.navigate([`channel/${this.channel_hash}`])
@@ -60,7 +60,7 @@ export class MainComponent implements OnInit {
     this.manager = this.userService.user.username
   }
 
-  createPost(post: Text): void {
+  savePost(post: Text): void {
     this.post = post;
   }
 

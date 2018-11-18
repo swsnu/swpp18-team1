@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "angular-froala-wysiwyg": "^2.9.1",
     "angularx-qrcode": "^1.2.4",
     "core-js": "^2.5.4",
     "moment": "^2.22.2",
