@@ -1,12 +1,11 @@
-<h1 *ngIf="channelTitle">{{ channelTitle }}</h1>
-
-<hr>
-
-<div>
-  <!-- <input #profile_picture type="image" name="profile_picture" id="profile-input" placeholder="Profile here"> -->
-  <input #profile_picture type="text" name="profile_picture" id="profile-input" placeholder="Profile here">
+<div class="header">
+    <h1 *ngIf="channelTitle">{{ channelTitle }}</h1>
 </div>
-<div>
-  <input #nickname type="text" name="nickname" id="nickname-input" placeholder="Nickname here">
+
+<div class="mat-app-background">
+    <mat-form-field class="input"><input matInput #image type="text" name="image" id="image-input" placeholder="사진"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <mat-form-field class="input"><input matInput #nickname type="text" name="nickname" id="nickname-input" placeholder="별명"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button name="access" id="access-button" (click)="access(image.value, nickname.value);">들어가기</button>
 </div>
-<button name="access" id="access-button" (click)="access(profile_picture.value, nickname.value);">Access</button>
