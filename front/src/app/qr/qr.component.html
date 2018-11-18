@@ -1,8 +1,9 @@
+<div class="header">
+  <button mat-raised-button (click)="goBack()">돌아가기</button>
+</div>
+
 <qrcode *ngIf="channelUrl; else empty" [qrdata]="channelUrl" [size]="256" [level]="'M'"></qrcode>
 <ng-template #empty>
-  no accessable channel
+방이 없습니다.
 </ng-template>
 
-<button (click)="goBack()">
-  Back
-</button>
