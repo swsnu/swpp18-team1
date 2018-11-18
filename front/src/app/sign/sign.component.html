@@ -1,11 +1,21 @@
-<h1>Sign</h1>
+<div class="header">
+    <h1>접속하기</h1>
+</div>
 
-<div>ID: <input #ID type="text" placeholder="ID"></div>
-<div>Password: <input #password type="text" placeholder="Password"></div>
-<button name="signin" id="signin-button" (click)="signIn(ID.value, password.value);">Sign-in</button>
+<div class="mat-app-background">
+    <mat-form-field class="input"><input matInput #signin_ID type="text" placeholder="ID"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <mat-form-field class="input"><input matInput #signin_PW type="text" placeholder="PW"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button name="signin" id="signin-button" (click)="signIn(signin_ID.value, signin_PW.value);">들어가기</button>
+</div>
 
-<hr>
+<br>
 
-<div>ID: <input #signup_ID type="text" placeholder="ID"></div>
-<div>Password: <input #signup_password type="text" placeholder="Password"></div>
-<button name="signup" id="signup-button" (click)="signUp(signup_ID.value, signup_password.value);">Sign-up</button>
+<div class="mat-app-background">    
+    <mat-form-field class="input"><input matInput #signup_ID type="text" placeholder="ID"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <mat-form-field class="input"><input matInput #signup_PW type="text" placeholder="PW"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button name="signup" id="signup-button" (click)="signUp(signup_ID.value, signup_PW.value);">등록하기</button>
+</div>
