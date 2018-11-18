@@ -5,18 +5,27 @@
 </div>
 
 <div class="mat-app-background">
-  포스트
+  작품 내용: {{ channelPost }}
 </div>
+
 <br>
 
-<div *ngIf="snippet" class="mat-app-background">
-  <mat-form-field class="input"><input matInput [(ngModel)]="snippet.content" (keyup.enter)="sendMsg()" placeholder="글"/></mat-form-field>
+<div *ngIf="channelMessage" class="mat-app-background">
+  <mat-form-field class="input"><input matInput [(ngModel)]="channelMessage.content" (keyup.enter)="sendMsg()" placeholder="글"/></mat-form-field>
   &nbsp;&nbsp;&nbsp;&nbsp;
   <button mat-raised-button (click)="sendMsg()">남기기</button>
-  <br>
-  <div *ngFor="let sp of snippets">
-      <div>{{sp.username}}: {{sp.content}}</div>
-  </div>
 </div>
 
-<!-- <button (click)="openDM()">Open DM</button> -->
+<br>
+
+<div *ngFor="let channelMessage of channelMessages">
+    <div class="mat-app-background">
+      <div class="channelMessage_username">
+        {{channelMessage.sender.username}}
+        <span class="channelMessage_time">{{channelMessage.created_at}}</span>
+      </div>
+      <div class="channelMessage_content">{{channelMessage.content}}</div>
+    </div>
+
+    <br>
+</div>

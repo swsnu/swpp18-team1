@@ -1,0 +1,14 @@
+.channelMessage_username {
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.channelMessage_content {
+
+}
+
+.channelMessage_time {
+    font-size: 5px;
+    color: gray;
+}
