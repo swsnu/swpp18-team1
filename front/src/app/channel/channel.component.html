@@ -5,7 +5,7 @@
 </div>
 
 <div class="mat-app-background">
-  포스트
+    포스트<div [froalaView]="description"></div>
 </div>
 
 <br>
@@ -22,7 +22,7 @@
     <div class="mat-app-background">
       <div class="channelMessage_username">
         {{channelMessage.sender.username}}
-        <span class="channelMessage_time">{{channelMessage.created_at}}</span>
+        <span class="channelMessage_time">{{channelMessage.getCreatedAt()}}</span>
       </div>
       <div class="channelMessage_content">{{channelMessage.content}}</div>
     </div>
