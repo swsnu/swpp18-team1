@@ -4,6 +4,7 @@ from .models import Channel, ChannelMessage
 from django.test.client import RequestFactory
 from .token_auth import TokenAuth, InvalidToken
 from dynaconf import settings
+from .serializers import UserSerializer, ChannelMessageSerializer
 import jwt
 
 import json
@@ -17,6 +18,7 @@ class ChatTestCase(TestCase):
         self.auth_header = "Bearer " + TokenAuth.generateToken(self.user1)
         self.factory = RequestFactory()
 
+
     def test_channel_create(self):
         client = Client(enforce_csrf_checks=True)
 
@@ -26,6 +28,7 @@ class ChatTestCase(TestCase):
 
         response = client.post('/api/channel', json.dumps({'title': 'test1234'}),
                 content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 201) # created
 
         response = client.put('/api/channel', json.dumps({'title': 'test'}),
@@ -34,6 +37,7 @@ class ChatTestCase(TestCase):
 
         response = client.post('/api/channel', json.dumps({'title1': 'test', 'content2': 'test, test'}),
                 content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 400) # Bad Request
 
     def test_channel_detail(self):
@@ -59,16 +63,18 @@ class ChatTestCase(TestCase):
         self.assertEqual(response.status_code, 401) # success
 
         response = client.get('/api/channel/1/message', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 200) # success
         messages = json.loads(response.content)
         self.assertEqual(1, len(messages)) # not found
         self.assertEqual(self.message1.content, messages[0]["content"])
-        self.assertEqual(self.message1.sender_id, messages[0]["sender_id"])
-        self.assertEqual(self.message1.channel_id, messages[0]["channel_id"])
+        self.assertEqual(self.message1.sender_id, messages[0]["sender"]["id"])
+        self.assertEqual(self.message1.sender.username, messages[0]["sender"]["username"])
 
         response = client.get('/api/channel/100/message', HTTP_AUTHORIZATION=self.auth_header)
         self.assertEqual(response.status_code, 404) # not found
         response = client.put('/api/channel/1/message', HTTP_AUTHORIZATION=self.auth_header)
+
         self.assertEqual(response.status_code, 405) # not allowed
 
     def test_channel_user(self):
@@ -79,7 +85,8 @@ class ChatTestCase(TestCase):
         self.assertEqual(response.status_code, 201) # success
         data = json.loads(response.content)
         self.assertEqual(True, data["token"] is not None)
-        self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", data["image"])
+        #self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", data["image"])
+
 
         response = client.post('/api/channel/100/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
                 content_type='application/json')
@@ -157,4 +164,17 @@ class ChatTestCase(TestCase):
         request = self.factory.get('/api/channel/1', HTTP_AUTHORIZATION= "Bearer " + token)
         result = TokenAuth.authenticate(request)
         self.assertEqual(result, self.user1) # Get User!!
+
+    def test_serializer(self):
+        user_result = UserSerializer(instance=self.user1)
+        self.assertEqual(self.user1.id, user_result.data["id"])
+        self.assertEqual(self.user1.username, user_result.data["username"])
+
+        channel_message_result = ChannelMessageSerializer(instance=self.message1)
+        self.assertEqual(self.message1.content, channel_message_result.data["content"])
+        self.assertEqual(self.message1.sender.id, channel_message_result.data["sender"]["id"])
+        self.assertEqual(self.message1.sender.username, channel_message_result.data["sender"]["username"])
+
+
+
 

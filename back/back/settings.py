@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '13.125.153.189',
     'localhost',
-    '.ap-northeast-2.compute.amazonaws.com',
+    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
 ]
 
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'channels',
     'chat',
     'corsheaders',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,7 +62,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:4200',
+     'localhost:4200',
+     'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
 )
 
 # Channels
