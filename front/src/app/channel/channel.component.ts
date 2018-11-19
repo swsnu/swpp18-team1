@@ -17,7 +17,7 @@ import { EventType } from 'src/enums';
 export class ChannelComponent implements OnInit {
 
   channelTitle: string = ""
-  channelPost: Text
+  channelPost: string = ""
   channelMessage: ChannelMessage = new ChannelMessage()
   channelMessages: ChannelMessage[] = []
   managerOrNot: boolean = false;

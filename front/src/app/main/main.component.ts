@@ -12,8 +12,6 @@ import { Channel } from 'src/model/channel';
 
 export class MainComponent implements OnInit {
 
-  title: string;
-  post: Text;
   manager: string = "";
   channel: Channel = new Channel;
   channel_hash: number;
@@ -47,6 +45,9 @@ export class MainComponent implements OnInit {
   }
 
   createChannel(): void {
+    console.log(this.channel.title)
+    console.log(this.channel.post)
+    /*
     this.channelService.create(this.title, this.post)
       .then(response => {
         this.channel_hash = response.id
@@ -54,14 +55,11 @@ export class MainComponent implements OnInit {
       }).catch(e => {
         console.log('Error: ', e)
       })
+     */
   }
 
   getManager(): void {
     this.manager = this.userService.user.username
-  }
-
-  savePost(post: Text): void {
-    this.post = post;
   }
 
   signOut(): void {
