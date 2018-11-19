@@ -48,6 +48,9 @@ export class ChannelComponent implements OnInit {
     this.channelService.getChannel(channel_hash).then((channel) => {
       this.channelTitle = channel.title
       this.channelPost = channel.post
+      if(channel.manager_id == this.userService.user.id) {
+        this.managerOrNot = true;
+      }
     })
     this.channelService.getChannelMessage(channel_hash).then((messages) => {
       this.channelMessages = messages.map((message) => new ChannelMessage(message))

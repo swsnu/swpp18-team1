@@ -30,6 +30,7 @@ ALLOWED_HOSTS = [
     '52.78.215.236', # Kyunghwan
     'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
     'ec2-52-78-215-236.ap-northeast-2.compute.amazonaws.com',
+    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
     'localhost',
 ]
 
@@ -67,6 +68,7 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
     'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
     'ec2-52-78-215-236.ap-northeast-2.compute.amazonaws.com',
+    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
 )
 
 # Channels
