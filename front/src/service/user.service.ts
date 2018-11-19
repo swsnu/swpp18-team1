@@ -55,10 +55,10 @@ export class UserService {
   createUser(channel_id: number, user: Partial<User>): Promise<User> {
     return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
     .toPromise()
-    .then(user => {
-      this.user = user
-      this.token = user["token"];
-      this.cookieService.set("token", user["token"]);
+    .then(response => {
+      console.log(response)
+      this.token = response["token"];
+      this.cookieService.set("token", response["token"], undefined, "/");
       this.setUserFrom(this.token);
     })
     .catch(this.handleError<any>('createUser()'));
@@ -71,7 +71,7 @@ export class UserService {
       .toPromise()
       .then(response => {
         this.token = response["token"];
-        this.cookieService.set("token", response["token"]);
+        this.cookieService.set("token", response["token"], undefined, "/");
         this.setUserFrom(this.token);
         this.router.navigate(['/main']);
       })
@@ -84,7 +84,7 @@ export class UserService {
       .toPromise()
       .then(response => {
         this.token = response["token"];
-        this.cookieService.set("token", response["token"]);
+        this.cookieService.set("token", response["token"], undefined, "/");
         this.setUserFrom(this.token);
         this.router.navigate(['/main']);
       })
@@ -92,13 +92,13 @@ export class UserService {
   }
 
   managerSignOut(): void {
-    this.cookieService.delete("token", this.token);
+    this.cookieService.deleteAll("/");
     this.router.navigate(['/signin']);
   }
 
-  userSignOut(channel_id: number): void {
-    this.cookieService.delete("token", this.token);
-    this.router.navigate([`access/${channel_id}`]);
+  userSignOut(channel_hash: string): void {
+    this.cookieService.deleteAll("/");
+    this.router.navigate([`access/${channel_hash}`]);
   }
 
   getUsers(): Promise<User[]> {
@@ -112,6 +112,12 @@ export class UserService {
     return this.http.get<User>(url)
       .toPromise()
       .catch(this.handleError<User>(`getUser()`));
+  }
+
+  getAuthHeader(): object {
+    return {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token})
+    }
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

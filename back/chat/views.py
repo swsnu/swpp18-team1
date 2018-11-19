@@ -7,7 +7,8 @@ import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
 from .token_auth import TokenAuth, InvalidToken
-
+from .serializers import ChannelMessageSerializer
+import random
 
 
 @csrf_exempt
@@ -40,10 +41,10 @@ def channel(request):
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def channel_detail(request, channel_id):
+def channel_detail(request, channel_hash):
     if request.method == 'GET':
         try:
-            channel = Channel.objects.get(id=channel_id)
+            channel = Channel.objects.get(id=channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -57,7 +58,7 @@ def channel_detail(request, channel_id):
         return HttpResponseNotAllowed(['GET'])
 
 @csrf_exempt
-def channel_message(request, channel_id):
+def channel_message(request, channel_hash):
     if request.method == 'GET':
         try:
             TokenAuth.authenticate(request)
@@ -65,12 +66,14 @@ def channel_message(request, channel_id):
             return JsonResponse({'message': e.message}, status=401)
 
         try:
-            channel = Channel.objects.get(id=channel_id)
+            channel = Channel.objects.get(id=channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        messages = [message for message in ChannelMessage.objects.all().values()]
-        return JsonResponse(messages, safe=False)
+        messages = ChannelMessage.objects.filter(channel=channel)
+        serializer = ChannelMessageSerializer(messages, many=True)
+
+        return JsonResponse(serializer.data, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -89,13 +92,13 @@ def manager_sign_up(request):
 
         jwt_token = {'token': TokenAuth.generateToken(user)}
 
-        return JsonResponse(jwt_token, status=200)
+        return JsonResponse(jwt_token, status=201)
 
     else:
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def user_access(request, channel_id):
+def user_access(request, channel_hash):
     if request.method == 'POST':
         try:
             body = request.body.decode()
@@ -105,19 +108,20 @@ def user_access(request, channel_id):
             return HttpResponseBadRequest()
 
         try:
-            channel = Channel.objects.get(id=channel_id)
+            channel = Channel.objects.get(id=channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        user = User.objects.create_user(username=username)
-        user.save()
+        ## find uniq username
+        uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
+        while User.objects.filter(username=username + "#" + uniq_key).exists():
+            uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
+
+        user = User.objects.create_user(username=username + "#" + uniq_key)
 
         userProfile = UserProfile.objects.create(user=user, channel=channel, image=image)
 
-        response_dict = {
-                'token': TokenAuth.generateToken(user),
-                }
-        return JsonResponse(data=response_dict, status=201)
+        return JsonResponse({'token': TokenAuth.generateToken(user)}, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
 

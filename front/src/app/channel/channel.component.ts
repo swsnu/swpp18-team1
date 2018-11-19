@@ -2,12 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import WebSocketAsPromised from 'websocket-as-promised';
-import { Snippet } from 'src/model/snippet';
+import { ChannelMessage } from 'src/model/channel-message';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 import { ChatService } from 'src/service/chat.service';
 import { ChannelService } from 'src/service/channel.service';
-
+import { WebsocketPacket } from 'src/model/websocket-packet';
+import { EventType } from 'src/enums';
 
 @Component({
   selector: 'app-channel',
@@ -17,8 +18,8 @@ import { ChannelService } from 'src/service/channel.service';
 
 export class ChannelComponent implements OnInit {
 
-  snippet: Snippet = new Snippet
-  snippets: Snippet[] = []
+  channelMessage: ChannelMessage = new ChannelMessage()
+  channelMessages: ChannelMessage[] = []
 
   private wsp: WebSocketAsPromised
   constructor(
@@ -31,12 +32,10 @@ export class ChannelComponent implements OnInit {
   ) {}
 
   sendMsg(){
-    if(this.snippet.content){
-      this.chatService.sendData({
-        content: this.snippet.content,
-        id: this.userService.user.username,
-      })
-      this.snippet.content = ""
+    if(this.channelMessage.content){
+      let packet = new WebsocketPacket({event_type: EventType.SendChannelMessage, data: {content: this.channelMessage.content}})
+      this.chatService.sendData(packet)
+      this.channelMessage.content = ""
     }
   }
 
@@ -45,18 +44,22 @@ export class ChannelComponent implements OnInit {
   }
 
   ngOnInit() {
-    const {room_name} = this.activeRoute.snapshot.params
-    // TODO with token
-    this.chatService.connect(room_name).then(() => {
-      this.chatService.addEventListner((msg: string) => {
-        if(msg){
-          const json_msg = JSON.parse(msg)
-          const { id, content } = json_msg
-          // TODO: add snippetable_id & type
-          const delived_snippet = {user_id: id, content}
-          this.snippets.push(delived_snippet)
+    const {channel_hash} = this.activeRoute.snapshot.params
+
+    this.channelService.getChannel(channel_hash)
+    this.channelService.getChannelMessage(channel_hash).then((messages) => {
+      this.channelMessages = messages.map((message) => new ChannelMessage(message))
+    })
+    this.chatService.connect(channel_hash).then(() => {
+      this.chatService.addEventListner((websocketPacket: WebsocketPacket) => {
+        switch(+websocketPacket.event_type) {
+          case EventType.ReceiveChannelMessage: {
+            const newMessage = new ChannelMessage(websocketPacket.data)
+            this.channelMessages.push(newMessage)
+          }
+          case EventType.NewUserConnect: {
+          }
         }
-        console.log("get Message from back : " +  msg)
       })
     })
   }
@@ -66,24 +69,15 @@ export class ChannelComponent implements OnInit {
   }
 
   signOut(): void {
-    const currentUser_id = this.userService.user.id;
-    const {room_name} = this.activeRoute.snapshot.params;
-    console.log(room_name);
-    var manager_id: number;
+    const currentUser_id = this.userService.user.id
+    const manager_id = this.channelService.channel.manager_id
+    const { channel_hash } = this.activeRoute.snapshot.params
 
-    this.channelService.getChannel(room_name)
-      .then(channel => {
-        manager_id = channel.manager_id;
-        if(currentUser_id == manager_id) {
-          this.userService.managerSignOut();
-        } else {
-          this.userService.userSignOut(room_name);
-        }
-      });
-  }
-
-  moveToQR(): void {
-    this.router.navigate([`qr`])
+    if(currentUser_id == manager_id) {
+      this.userService.managerSignOut();
+    } else {
+      this.userService.userSignOut(channel_hash);
+    }
   }
 
   goBack(): void {
