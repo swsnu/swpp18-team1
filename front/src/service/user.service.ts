@@ -114,6 +114,12 @@ export class UserService {
       .catch(this.handleError<User>(`getUser()`));
   }
 
+  getAuthHeader(): object {
+    return {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token})
+    }
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Promise<T> => {
       console.error(error);
