@@ -89,7 +89,7 @@ def manager_sign_up(request):
 
         jwt_token = {'token': TokenAuth.generateToken(user)}
 
-        return JsonResponse(jwt_token, status=200)
+        return JsonResponse(jwt_token, status=201)
 
     else:
         return HttpResponseNotAllowed(['POST'])
