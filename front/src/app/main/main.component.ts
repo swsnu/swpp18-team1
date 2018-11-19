@@ -15,7 +15,7 @@ export class MainComponent implements OnInit {
   title: string;
   post: Text;
   manager: string = "";
-  channel: Channel;
+  channel: Channel = new Channel;
   channel_hash: number;
   channel_exist: boolean = true;
   post_exist: boolean = false;
