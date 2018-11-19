@@ -3,6 +3,7 @@ import { UserService } from 'src/service/user.service';
 import { ChannelService } from 'src/service/channel.service';
 import { Router } from '@angular/router';
 import { Channel } from 'src/model/channel';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-main',
@@ -12,8 +13,9 @@ import { Channel } from 'src/model/channel';
 
 export class MainComponent implements OnInit {
 
+  public Editor = ClassicEditor;
   manager: string = "";
-  channel: Channel = new Channel;
+  channel: Channel = new Channel({title: "", post: ""});
   channel_hash: number;
   channel_exist: boolean = true;
   post_exist: boolean = false;

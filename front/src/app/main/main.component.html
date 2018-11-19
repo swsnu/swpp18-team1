@@ -1,4 +1,4 @@
-<div>   
+<div>
   <div *ngIf="channel_exist; else channel_create" >
     <div class="header">
       <h1>선택하기</h1>
@@ -22,10 +22,6 @@
       <h1>생성하기</h1>
       <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
     </div>
-    <div class="mat-app-background">
-      <strong>작품에 대한 내용이 없습니다.</strong>
-    </div>
-
     <br>
     <div class="mat-app-background">
       <strong *ngIf="manager">{{ manager }}님의 방이 없습니다.</strong>
@@ -33,6 +29,7 @@
       <button mat-raised-button id="saveButton" (click)="createChannel()">생성하기</button>
       <br>
       <mat-form-field class="input"><input matInput type='text' [(ngModel)]="channel.title" placeholder="방 제목 정하기"></mat-form-field>
+      <ckeditor [(ngModel)]="channel.post" [editor]="Editor"></ckeditor>
     </div>
   </ng-template>
 </div>

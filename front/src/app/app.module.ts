@@ -18,7 +18,7 @@ import { ChannelComponent } from './channel/channel.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { AccessComponent } from './access/access.component';
 import { QrComponent } from './qr/qr.component';
-import { CKEditorModule } from 'ngx-ckeditor';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
