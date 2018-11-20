@@ -14,6 +14,14 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export class MainComponent implements OnInit {
 
   public Editor = ClassicEditor;
+  public editorConfig = {
+    language: 'ko',
+    cloudServices: {
+      tokenUrl: '',
+      uploadUrl: ''
+    }
+  }
+
   manager: string = "";
   channel: Channel = new Channel({title: "", post: ""});
   channel_hash: number;

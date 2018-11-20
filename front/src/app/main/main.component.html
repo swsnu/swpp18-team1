@@ -29,7 +29,7 @@
       <button mat-raised-button id="saveButton" (click)="createChannel()">생성하기</button>
       <br>
       <mat-form-field class="input"><input matInput type='text' [(ngModel)]="channel.title" placeholder="방 제목 정하기"></mat-form-field>
-      <ckeditor [(ngModel)]="channel.post" [editor]="Editor"></ckeditor>
+      <ckeditor [(ngModel)]="channel.post" [editor]="Editor" [config]="editorConfig"></ckeditor>
     </div>
   </ng-template>
 </div>
