@@ -6,7 +6,7 @@
 
 <h2> 포스트 </h2>
 <div *ngIf="channel && channel.post" class="mat-app-background">
-  <div [innerHTML]="channel.post"></div>
+  <div [innerHTML]="channel.post | safe: 'html'"></div>
 </div>
 
 <br>

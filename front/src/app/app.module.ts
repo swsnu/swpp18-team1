@@ -19,6 +19,7 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { AccessComponent } from './access/access.component';
 import { QrComponent } from './qr/qr.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { SafePipe } from './safe.pipe';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     DirectMessageComponent,
     AccessComponent,
     MainComponent,
+    SafePipe,
   ],
   imports: [
     BrowserModule,

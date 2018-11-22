@@ -19,7 +19,7 @@ export class MainComponent implements OnInit {
     cloudServices: {
       tokenUrl: '',
       uploadUrl: ''
-    }
+    },
   }
 
   manager: string = "";
