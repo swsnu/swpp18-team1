@@ -6,6 +6,7 @@ import { UserService } from 'src/service/user.service';
 import { ChatService } from 'src/service/chat.service';
 import { ChannelService } from 'src/service/channel.service';
 import { WebsocketPacket } from 'src/model/websocket-packet';
+import { Channel } from 'src/model/channel';
 import { EventType } from 'src/enums';
 
 @Component({
@@ -16,8 +17,7 @@ import { EventType } from 'src/enums';
 
 export class ChannelComponent implements OnInit {
 
-  channelTitle: string = ""
-  channelPost: string = ""
+  channel: Channel
   channelMessage: ChannelMessage = new ChannelMessage()
   channelMessages: ChannelMessage[] = []
   managerOrNot: boolean = false;
@@ -46,8 +46,7 @@ export class ChannelComponent implements OnInit {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash).then((channel) => {
-      this.channelTitle = channel.title
-      this.channelPost = channel.post
+      this.channel = channel
       if(channel.manager.id  == this.userService.user.id) {
         this.managerOrNot = true;
       }

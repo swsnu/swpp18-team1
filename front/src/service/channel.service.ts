@@ -43,7 +43,6 @@ export class ChannelService {
     return this.http.get<Channel>(url, httpOptionsWithAuth)
         .toPromise()
         .then(channel => {
-          console.log(channel)
           this.channel = channel;
           return channel
           }
@@ -60,7 +59,6 @@ export class ChannelService {
     }
     return this.http.post<Channel>(this.channelUrl, data , httpOptionsWithAuth).toPromise()
     .then(channel =>{
-        console.log(channel)
         this.channel = channel
         return channel
     })
