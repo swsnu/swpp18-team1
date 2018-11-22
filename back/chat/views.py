@@ -7,7 +7,7 @@ import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
 from .token_auth import TokenAuth, InvalidToken
-from .serializers import ChannelMessageSerializer
+from .serializers import ChannelMessageSerializer, ChannelSerializer
 import random
 
 
@@ -20,22 +20,19 @@ def channel(request):
             return JsonResponse({'message': e.message}, status=401)
 
         try:
-
             body = request.body.decode()
-            title = json.loads(body)['title']
+            data = json.loads(body)
+            title = data['title']
+            post = data['post'] ## TODO Need Sanitizer because post is html text
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        channel = Channel(title=title, manager=user)
-
+        channel = Channel(title=title, post=post, manager=user)
         channel.save()
 
-        response_dict = {
-                'id': channel.id,
-                'title': channel.title,
-                'manager_id': channel.manager.id,
-        }
-        return JsonResponse(data=response_dict, status=201)
+        serializer = ChannelSerializer(channel)
+
+        return JsonResponse(data=serializer.data, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
 

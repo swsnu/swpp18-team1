@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ChannelMessage
+from .models import ChannelMessage, Channel
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,3 +13,10 @@ class ChannelMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChannelMessage
         fields = ('content', 'sender', 'created_at')
+
+class ChannelSerializer(serializers.ModelSerializer):
+    manager = UserSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Channel
+        fields = ('title', 'post', 'manager')
