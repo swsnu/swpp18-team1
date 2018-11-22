@@ -43,18 +43,24 @@ export class ChannelService {
     return this.http.get<Channel>(url, httpOptionsWithAuth)
         .toPromise()
         .then(channel => {
-            this.channel = channel;
-            return channel
+          console.log(channel)
+          this.channel = channel;
+          return channel
           }
         )
   }
 
-  create(title: string, post?: Text): Promise<Channel>{
+  create(channel: Channel): Promise<Channel>{
     const httpOptionsWithAuth = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
     };
-    return this.http.post<Channel>(this.channelUrl, { title, post } , httpOptionsWithAuth).toPromise()
+    const data = {
+      title: channel.title,
+      post: channel.post,
+    }
+    return this.http.post<Channel>(this.channelUrl, data , httpOptionsWithAuth).toPromise()
     .then(channel =>{
+        console.log(channel)
         this.channel = channel
         return channel
     })

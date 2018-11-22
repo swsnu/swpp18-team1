@@ -1,5 +1,7 @@
+import { User } from "./user"
+
 export class Channel {
-  manager_id: number;
+  manager: User;
   id: number;
   title: string;
   post?: string;
@@ -7,4 +9,5 @@ export class Channel {
   public constructor(obj: Partial<Channel> = {}) {
     Object.assign(this, obj);
   }
+
 }

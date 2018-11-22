@@ -55,17 +55,13 @@ export class MainComponent implements OnInit {
   }
 
   createChannel(): void {
-    console.log(this.channel.title)
-    console.log(this.channel.post)
-    /*
-    this.channelService.create(this.title, this.post)
-      .then(response => {
-        this.channel_hash = response.id
-        this.router.navigate([`channel/${this.channel_hash}`])
+    this.channelService.create(this.channel)
+    .then(response => {
+      this.channel_hash = response.id
+      this.router.navigate([`channel/${this.channel_hash}`])
       }).catch(e => {
         console.log('Error: ', e)
       })
-     */
   }
 
   getManager(): void {

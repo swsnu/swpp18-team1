@@ -48,7 +48,7 @@ export class ChannelComponent implements OnInit {
     this.channelService.getChannel(channel_hash).then((channel) => {
       this.channelTitle = channel.title
       this.channelPost = channel.post
-      if(channel.manager_id == this.userService.user.id) {
+      if(channel.manager.id  == this.userService.user.id) {
         this.managerOrNot = true;
       }
     })
@@ -75,7 +75,7 @@ export class ChannelComponent implements OnInit {
 
   signOut(): void {
     const currentUser_id = this.userService.user.id
-    const manager_id = this.channelService.channel.manager_id
+    const manager_id = this.channelService.channel.manager.id
     const { channel_hash } = this.activeRoute.snapshot.params
 
     if(currentUser_id == manager_id) {
