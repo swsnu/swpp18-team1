@@ -44,12 +44,9 @@ def channel_detail(request, channel_hash):
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        response_dict = {
-            'id': channel.id,
-            'title': channel.title,
-            'manager_id': channel.manager.id,
-        }
-        return JsonResponse(response_dict)
+        serializer = ChannelSerializer(channel)
+
+        return JsonResponse(serializer.data)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -129,12 +126,8 @@ def manager_channel(request):
             return JsonResponse({'message': e.message}, status=401)
         try:
             channel = Channel.objects.get(manager_id=user)
-            response_dict = {
-                'id': channel.id,
-                'title': channel.title,
-                'manager_id': channel.manager.id,
-            }
-            return JsonResponse(response_dict)
+            serializer = ChannelSerializer(channel)
+            return JsonResponse(serializer.data)
         except Channel.DoesNotExist:
             return JsonResponse({})
 
