@@ -13,29 +13,31 @@ class ChatTestCase(TestCase):
 
     def setUp(self):
         self.user1 = User.objects.create_user(username="iu", password="12341234")
+        self.user2 = User.objects.create_user(username="testtest", password="12341234")
         self.channel1 = Channel.objects.create(title="music box", manager=self.user1)
         self.message1 = ChannelMessage.objects.create(sender=self.user1, channel=self.channel1, content="hi")
         self.auth_header = "Bearer " + TokenAuth.generateToken(self.user1)
+        self.auth_header2 = "Bearer " + TokenAuth.generateToken(self.user2)
         self.factory = RequestFactory()
 
 
     def test_channel_create(self):
         client = Client(enforce_csrf_checks=True)
 
-        response = client.post('/api/channel', json.dumps({'title': 'test1234'}),
+        response = client.post('/api/channel', json.dumps({'title': 'test1234', 'post': '12312312'}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 401) # unauthorized
 
-        response = client.post('/api/channel', json.dumps({'title': 'test1234'}),
+        response = client.post('/api/channel', json.dumps({'title': 'test1234', 'post': '1234'}),
                 content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
 
         self.assertEqual(response.status_code, 201) # created
 
-        response = client.put('/api/channel', json.dumps({'title': 'test'}),
+        response = client.put('/api/channel', json.dumps({'title': 'test', 'post': '123'}),
                 content_type='application/json')
         self.assertEqual(response.status_code, 405) # not allowed
 
-        response = client.post('/api/channel', json.dumps({'title1': 'test', 'content2': 'test, test'}),
+        response = client.post('/api/channel', json.dumps({'title1': 'test', 'post': 'test, test'}),
                 content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
 
         self.assertEqual(response.status_code, 400) # Bad Request
@@ -47,14 +49,35 @@ class ChatTestCase(TestCase):
         self.assertEqual(response.status_code, 200) # success
         channel = json.loads(response.content)
         self.assertEqual(self.channel1.id, channel["id"])
-        self.assertEqual(self.channel1.manager_id, channel["manager_id"])
+        self.assertEqual(self.channel1.manager_id, channel["manager"]["id"])
         self.assertEqual(self.channel1.title, channel["title"])
 
         response = client.get('/api/channel/100')
         self.assertEqual(response.status_code, 404) # not found
 
-        response = client.put('/api/channel/1')
+        response = client.post('/api/channel/1')
         self.assertEqual(response.status_code, 405) # not allowed
+
+        response = client.put('/api/channel/1', json.dumps({'title': 'test', 'post': 'test, test edited'}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 401) ## not allowed
+
+        response = client.put('/api/channel/1', json.dumps({'title': 'test', 'post': 'test, test edited'}),
+                content_type='application/json', HTTP_AUTHORIZATION=self.auth_header2)
+        self.assertEqual(response.status_code, 401) ## not allowed
+
+        response = client.put('/api/channel/1', json.dumps({'title': 'test', 'post': 'test, test edited'}),
+                content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
+        self.assertEqual(response.status_code, 200) ## update
+
+        response = client.put('/api/channel/1', json.dumps({'title123': 'test', 'post12': 'test, test edited'}),
+                content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
+        self.assertEqual(response.status_code, 400) ## bad request
+
+        response = client.put('/api/channel/100', json.dumps({'title123': 'test', 'post123': 'test, test edited'}),
+                content_type='application/json', HTTP_AUTHORIZATION=self.auth_header)
+        self.assertEqual(response.status_code, 404) ## not found
+
 
     def test_channel_message(self):
 
@@ -85,8 +108,7 @@ class ChatTestCase(TestCase):
         self.assertEqual(response.status_code, 201) # success
         data = json.loads(response.content)
         self.assertEqual(True, data["token"] is not None)
-        self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", data["image"])
-
+        #self.assertEqual("https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90", data["image"])
 
         response = client.post('/api/channel/100/user', json.dumps({'username': 'test+user', 'image': 'https://akns-images.eonline.com/eol_images/Entire_Site/20121016/634.mm.cm.111612_copy.jpg?fit=inside|900:auto&output-quality=90'}),
                 content_type='application/json')
