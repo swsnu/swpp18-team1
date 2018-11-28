@@ -29,20 +29,23 @@ export class ChannelService {
   getChannel(id: number): Promise<Channel> {
     const url = `${this.channelUrl}/${id}`;
     return this.http.get<Channel>(url)
-        .toPromise()
-        .then(channel => this.channel = channel)
-        .catch(this.handleError<Channel>(`getChannel()`));
+    .toPromise()
+    .then(channel => {
+      this.channel = channel
+      return channel
+    })
+    .catch(this.handleError<Channel>(`getChannel()`));
   }
 
   getChannelByManager(): Promise<Channel> {
     const url = environment.apiUrl + `/api/manager/channel`;
     return this.http.get<Channel>(url, this.userService.getAuthHeader())
-        .toPromise()
-        .then(channel => {
-          this.channel = channel;
-          return channel
-          }
-        )
+    .toPromise()
+    .then(channel => {
+      this.channel = channel;
+      return channel
+    }
+    )
   }
 
   create(channel: Channel): Promise<Channel>{

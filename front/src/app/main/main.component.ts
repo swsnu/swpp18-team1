@@ -16,6 +16,9 @@ export class MainComponent implements OnInit {
   public Editor = ClassicEditor;
   public editorConfig = {
     language: 'ko',
+    mediaEmbed: {
+      previewsInData: true
+    }
     cloudServices: {
       tokenUrl: '',
       uploadUrl: ''
