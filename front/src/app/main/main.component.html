@@ -1,4 +1,5 @@
 <div>
+
   <div *ngIf="channel_exist; else channel_create" >
     <div class="header">
       <h1>선택하기</h1>
@@ -16,7 +17,15 @@
       &nbsp;&nbsp;&nbsp;&nbsp;
       <button mat-raised-button (click)="moveToQR()">QR Code 얻기</button>
     </div>
+    <br>
+    <div class="mat-app-background">
+      <mat-form-field class="input"><input matInput type='text' [(ngModel)]="channel.title" placeholder="방 제목"></mat-form-field>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button id="saveButton" (click)="updateChannel()">수정하기</button>
+    </div>
+    <ckeditor [(ngModel)]="channel.post" [editor]="Editor" [config]="editorConfig"></ckeditor>
   </div>
+
   <ng-template #channel_create>
     <div class="header">
       <h1>생성하기</h1>
@@ -35,9 +44,9 @@
 </div>
 
 <!-- <div [froalaEditor] [(froalaModel)]="description">작품과 관련된 내용을 적으면 됩니다.</div> -->
-      <!-- <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <textarea [froalaEditor] formControlName="formModel" [(froalaModel)]="form.formModel"></textarea>
-        <div [froalaView]="form.formModel"></div>
-        <button type="submit">Submit</button>
-        </form> -->
+<!-- <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <textarea [froalaEditor] formControlName="formModel" [(froalaModel)]="form.formModel"></textarea>
+  <div [froalaView]="form.formModel"></div>
+  <button type="submit">Submit</button>
+  </form> -->
 

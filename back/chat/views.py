@@ -47,8 +47,37 @@ def channel_detail(request, channel_hash):
         serializer = ChannelSerializer(channel)
 
         return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        try:
+            user = TokenAuth.authenticate(request)
+        except InvalidToken as e:
+            return JsonResponse({'message': e.message}, status=401)
+
+        try:
+            channel = Channel.objects.get(id=channel_hash)
+        except Channel.DoesNotExist:
+            return HttpResponseNotFound()
+
+        if user.id is not channel.manager.id:
+            return JsonResponse({'message': "해당 채널의 관리자가 아닙니다."}, status=401)
+
+        try:
+            body = request.body.decode()
+            data = json.loads(body)
+            title = data['title']
+            post = data['post']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        channel.title = title
+        channel.post = post
+        channel.save()
+
+        return HttpResponse(status=200)
+
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['GET', 'PUT'])
 
 @csrf_exempt
 def channel_message(request, channel_hash):
@@ -85,7 +114,7 @@ def manager_sign_up(request):
 
         jwt_token = {'token': TokenAuth.generateToken(user)}
 
-        return JsonResponse(jwt_token, status=200)
+        return JsonResponse(jwt_token, status=201)
 
     else:
         return HttpResponseNotAllowed(['POST'])

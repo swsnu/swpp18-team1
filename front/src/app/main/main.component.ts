@@ -16,6 +16,9 @@ export class MainComponent implements OnInit {
   public Editor = ClassicEditor;
   public editorConfig = {
     language: 'ko',
+    mediaEmbed: {
+      previewsInData: true
+    }
     cloudServices: {
       tokenUrl: '',
       uploadUrl: ''
@@ -62,6 +65,14 @@ export class MainComponent implements OnInit {
       }).catch(e => {
         console.log('Error: ', e)
       })
+  }
+
+  updateChannel(): void {
+    this.channelService.update(this.channel).then(() => {
+      window.alert("성공적으로 업데이트 했습니다.")
+    }).catch((e) => {
+      console.log("에러 : ", e.message)
+    })
   }
 
   getManager(): void {
