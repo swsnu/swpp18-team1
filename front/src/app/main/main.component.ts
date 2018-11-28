@@ -64,6 +64,14 @@ export class MainComponent implements OnInit {
       })
   }
 
+  updateChannel(): void {
+    this.channelService.update(this.channel).then(() => {
+      window.alert("성공적으로 업데이트 했습니다.")
+    }).catch((e) => {
+      console.log("에러 : ", e.message)
+    })
+  }
+
   getManager(): void {
     this.manager = this.userService.user.username
   }

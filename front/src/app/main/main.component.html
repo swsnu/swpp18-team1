@@ -1,4 +1,5 @@
 <div>
+
   <div *ngIf="channel_exist; else channel_create" >
     <div class="header">
       <h1>선택하기</h1>
@@ -16,7 +17,13 @@
       &nbsp;&nbsp;&nbsp;&nbsp;
       <button mat-raised-button (click)="moveToQR()">QR Code 얻기</button>
     </div>
+    <br>
+
+    <mat-form-field class="input"><input matInput type='text' [(ngModel)]="channel.title" placeholder="방 제목"></mat-form-field>
+    <ckeditor [(ngModel)]="channel.post" [editor]="Editor" [config]="editorConfig"></ckeditor>
+    <button mat-raised-button id="saveButton" (click)="updateChannel()">수정하기</button>
   </div>
+
   <ng-template #channel_create>
     <div class="header">
       <h1>생성하기</h1>
