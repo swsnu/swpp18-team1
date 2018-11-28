@@ -59,7 +59,6 @@ export class UserService {
     return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
     .toPromise()
     .then(response => {
-      console.log(response)
       this.token = response["token"];
       this.cookieService.set("token", response["token"], undefined, "/");
       this.setUserFrom(this.token);
