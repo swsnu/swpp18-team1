@@ -3,6 +3,7 @@ import { UserService } from 'src/service/user.service';
 import { ChannelService } from 'src/service/channel.service';
 import { Router } from '@angular/router';
 import { Channel } from 'src/model/channel';
+import { environment } from 'src/environments/environment';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
@@ -18,10 +19,10 @@ export class MainComponent implements OnInit {
     language: 'ko',
     mediaEmbed: {
       previewsInData: true
-    }
+    },
     cloudServices: {
-      tokenUrl: '',
-      uploadUrl: ''
+      tokenUrl: environment.tokenUrl,
+      uploadUrl: environment.uploadUrl
     },
   }
 
