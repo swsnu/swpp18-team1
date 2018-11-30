@@ -24,7 +24,6 @@
     "@angular/router": "^6.1.0",
     "@ckeditor/ckeditor5-angular": "^1.0.1",
     "@ckeditor/ckeditor5-build-classic": "^11.1.1",
-    "angular-froala-wysiwyg": "^2.9.1",
     "angularx-qrcode": "^1.2.4",
     "core-js": "^2.5.4",
     "moment": "^2.22.2",

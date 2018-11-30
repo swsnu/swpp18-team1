@@ -26,12 +26,12 @@ SECRET_KEY = '623qj3thpsdxo$a*92q(%_4vx+@iau36qll2)b*im1)&v!3l%-'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '13.125.153.189', # Kyungwan
-    '52.78.215.236', # Kyunghwan
-    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
-    'ec2-52-78-215-236.ap-northeast-2.compute.amazonaws.com',
-    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
     'localhost',
+    '52.79.237.239', # Kyunghwan
+    '13.125.153.189', # Kyungwan
+    'ec2-52-79-237-239.ap-northeast-2.compute.amazonaws.com',
+    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
+    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
 ]
 
 
@@ -67,7 +67,6 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
     'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
-    'ec2-52-78-215-236.ap-northeast-2.compute.amazonaws.com',
     'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
 )
 
