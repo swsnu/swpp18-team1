@@ -16,6 +16,33 @@ h1 {
     margin-block-end: 0;
 }
 
+.tagToButton {
+    background-color: lightgray;
+    color: black;
+    box-sizing: border-box;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: 0;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: baseline;
+    text-align: center;
+    margin: 0;
+    min-width: 88px;
+    line-height: 36px;
+    padding: 0 16px;
+    border-radius: 2px;
+    overflow: visible;
+    transform: translate3d(0,0,0);
+}
+
 /* h1 {
     background: rgb(29, 62, 170);
     padding: 10px;

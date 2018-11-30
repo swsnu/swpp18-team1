@@ -12,3 +12,17 @@
     font-size: 5px;
     color: gray;
 }
+
+.tagToButton {
+    width: max-content;
+    background-color: #8fa6f1;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 5px;
+    cursor: pointer;
+}

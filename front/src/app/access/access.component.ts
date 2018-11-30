@@ -61,7 +61,7 @@ export class AccessComponent implements OnInit {
       "추운 이구아나",
       "부리가 무거운 펠리컨",
       "놀고 있는 개미",
-      "일하는 배짱이",
+      "일하는 베짱이",
       "늦잠 잔 닭",
       "넘어진 병아리",
       "자빠진 오리",

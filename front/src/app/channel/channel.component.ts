@@ -39,17 +39,23 @@ export class ChannelComponent implements OnInit {
   }
 
   openDM(){
-    console.log('======openDM=====')
+    console.log('openDM')
   }
 
   ngOnInit() {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash).then((channel) => {
+      
+      // a tag to button
+      var post = channel.post.replace(/<a/gi, '<a class="tagToButton"')
+      channel.post = post
       this.channel = channel
+
       if(channel.manager.id  == this.userService.user.id) {
         this.managerOrNot = true;
       }
+      console.log(this.channel.post);
     })
     this.channelService.getChannelMessage(channel_hash).then((messages) => {
       this.channelMessages = messages.map((message) => new ChannelMessage(message))
