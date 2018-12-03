@@ -6,7 +6,6 @@ import { environment } from '../environments/environment';
 
 import { User } from '../model/user';
 
-
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -20,19 +19,14 @@ export class UserService {
 
   private managerUrl: string = environment.apiUrl + '/api/manager';
   private userUrl: string = environment.apiUrl + '/api/channel/:channel_id/user';
-  private personUrl: string = environment.apiUrl + '/api/person';
-  private peopleUrl: string = environment.apiUrl + '/api/people';
-
 
   token: string;
-
   user: User = new User;
-  users: User[] = [];
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cookieService: CookieService,
+    public cookieService: CookieService,
   ) { }
 
   isSignIn(): boolean {
@@ -54,6 +48,12 @@ export class UserService {
     this.user.username = decodedToken["username"];
   }
 
+  getAuthHeader(): object {
+    return {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token})
+    }
+  }
+
   // for user
   createUser(channel_id: number, user: Partial<User>): Promise<User> {
     return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
@@ -64,6 +64,11 @@ export class UserService {
       this.setUserFrom(this.token);
     })
     .catch(this.handleError<any>('createUser()'));
+  }
+
+  userSignOut(channel_hash: number): void {
+    this.cookieService.deleteAll("/");
+    this.router.navigate([`access/${channel_hash}`]);
   }
 
   // for manager
@@ -77,7 +82,7 @@ export class UserService {
         this.setUserFrom(this.token);
         this.router.navigate(['/main']);
       })
-      .catch(this.handleError<any>('confirmUser()'));
+      .catch(this.handleError<any>('managerSignIn()'));
   }
 
   managerSignUp(user: Partial<User>): void {
@@ -90,30 +95,12 @@ export class UserService {
         this.setUserFrom(this.token);
         this.router.navigate(['/main']);
       })
-      .catch(this.handleError<any>('confirmUser()'));
+      .catch(this.handleError<any>('managerSignUp()'));
   }
 
   managerSignOut(): void {
     this.cookieService.deleteAll("/");
     this.router.navigate(['/signin']);
-  }
-
-  userSignOut(channel_hash: number): void {
-    this.cookieService.deleteAll("/");
-    this.router.navigate([`access/${channel_hash}`]);
-  }
-
-  getUsers(): Promise<User[]> {
-    const url = `${this.peopleUrl}`;
-    return this.http.get<User[]>(url)
-      .toPromise()
-      .catch(this.handleError('getUsers()'));
-  }
-
-  getAuthHeader(): object {
-    return {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token})
-    }
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
