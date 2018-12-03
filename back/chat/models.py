@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 class Channel(models.Model):
     title = models.TextField()
+    post = models.TextField()
     manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name="channel")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -29,3 +30,6 @@ class UserProfile(models.Model):
     channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
     image = models.TextField()
 
+class Image(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    url = models.TextField()

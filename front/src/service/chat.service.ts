@@ -31,13 +31,13 @@ export class ChatService {
   addEventListner(listner: (websocketPacket: WebsocketPacket) => void) : void{
     if(this.wsp.isOpened){
       // @ts-ignore
-      this.wsp.onMessage.addListener(rowPacket => {
-        const jsonPacket = JSON.parse(rowPacket)
+      this.wsp.onMessage.addListener(rawPacket => {
+        const jsonPacket = JSON.parse(rawPacket)
         const packet = new WebsocketPacket({event_type: jsonPacket["event_type"], data: jsonPacket["data"], status_code: jsonPacket["status_code"]})
         listner(packet);
       })
     } else {
-      console.log("socket is not opened")
+      //console.log("socket is not opened")
     }
   }
 
@@ -45,14 +45,14 @@ export class ChatService {
     if(this.wsp.isOpened){
       this.wsp.send(packet.toJson())
     } else {
-      console.log('socket is not opened')
+      //console.log('socket is not opened')
     }
   }
 
   disconnect() : void{
     if(this.wsp.isOpened){
       this.wsp.close()
-      console.log('socket is closed')
+      //console.log('socket is closed')
     }
   }
 
