@@ -20,6 +20,9 @@ export class UserService {
 
   private managerUrl: string = environment.apiUrl + '/api/manager';
   private userUrl: string = environment.apiUrl + '/api/channel/:channel_id/user';
+  private personUrl: string = environment.apiUrl + '/api/person';
+  private peopleUrl: string = environment.apiUrl + '/api/people';
+
 
   token: string;
 
@@ -56,7 +59,6 @@ export class UserService {
     return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
     .toPromise()
     .then(response => {
-      console.log(response)
       this.token = response["token"];
       this.cookieService.set("token", response["token"], undefined, "/");
       this.setUserFrom(this.token);
@@ -96,22 +98,16 @@ export class UserService {
     this.router.navigate(['/signin']);
   }
 
-  userSignOut(channel_hash: string): void {
+  userSignOut(channel_hash: number): void {
     this.cookieService.deleteAll("/");
     this.router.navigate([`access/${channel_hash}`]);
   }
 
   getUsers(): Promise<User[]> {
-    return this.http.get<User[]>(this.userUrl)
+    const url = `${this.peopleUrl}`;
+    return this.http.get<User[]>(url)
       .toPromise()
       .catch(this.handleError('getUsers()'));
-  }
-
-  getUser(id: number): Promise<User> {
-    const url = `${this.userUrl}/${id}`;
-    return this.http.get<User>(url)
-      .toPromise()
-      .catch(this.handleError<User>(`getUser()`));
   }
 
   getAuthHeader(): object {

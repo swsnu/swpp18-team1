@@ -31,8 +31,8 @@ export class ChatService {
   addEventListner(listner: (websocketPacket: WebsocketPacket) => void) : void{
     if(this.wsp.isOpened){
       // @ts-ignore
-      this.wsp.onMessage.addListener(rowPacket => {
-        const jsonPacket = JSON.parse(rowPacket)
+      this.wsp.onMessage.addListener(rawPacket => {
+        const jsonPacket = JSON.parse(rawPacket)
         const packet = new WebsocketPacket({event_type: jsonPacket["event_type"], data: jsonPacket["data"], status_code: jsonPacket["status_code"]})
         listner(packet);
       })

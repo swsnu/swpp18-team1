@@ -1,24 +1,31 @@
-<h1>Channel</h1>
-
-<hr>
-
-<div *ngIf="channelMessage">
-  <label>Content:
-    <input [(ngModel)]="channelMessage.content" (keyup.enter)="sendMsg()"/>
-  </label>
-  <button (click)="sendMsg()">Send a Message</button>
+<div class="header">
+  <h1 *ngIf="channel && channel.title">{{ channel.title}}</h1>
+  <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
+  <button *ngIf="managerOrNot" style="float: right;" mat-raised-button (click)="goBack()">돌아가기</button>
 </div>
 
-<hr>
-
-<div *ngFor="let message of channelMessages ">
-  <div>{{message.sender.username}}: {{message.content}}</div>
-  <div>{{message.getCreatedAt()}}</div>
+<div *ngIf="channel && channel.post" class="mat-app-background">
+  <div [innerHTML]="channel.post | safe: 'html'" class="ck ck-content ck-editor__editable ck-rounded-corners ck-blurred ck-editor__editable_inline"></div>
 </div>
 
-<button (click)="signOut()">Sign-out</button>
+<br>
 
-<button (click)="goBack()">
-  Back
-</button>
-<!-- <button (click)="openDM()">Open DM</button> -->
+<div *ngIf="channelMessage" class="mat-app-background">
+  <mat-form-field class="input"><input matInput [(ngModel)]="channelMessage.content" (keyup.enter)="sendMsg()" placeholder="글"/></mat-form-field>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <button mat-raised-button (click)="sendMsg()">남기기</button>
+</div>
+
+<br>
+
+<div *ngFor="let channelMessage of channelMessages">
+    <div class="mat-app-background">
+      <div class="channelMessage_username">
+        {{channelMessage.sender.username}}
+        <span class="channelMessage_time">{{channelMessage.getCreatedAt()}}</span>
+      </div>
+      <div class="channelMessage_content">{{channelMessage.content}}</div>
+    </div>
+    
+    <br>
+</div>

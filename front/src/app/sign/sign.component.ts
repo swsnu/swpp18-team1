@@ -38,11 +38,6 @@ export class SignComponent implements OnInit {
       .then(users => this.users = users);
   }
 
-  getUser(id: number): void {
-    this.userService.getUser(id)
-      .then(user => this.user = user);
-  }
-
   signIn(ID: string, password: string): void {
     this.user.username = ID;
     this.user.password = password;
