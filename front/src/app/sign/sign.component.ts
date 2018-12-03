@@ -13,7 +13,6 @@ import { User } from 'src/model/user';
 export class SignComponent implements OnInit {
 
   user: User;
-  users: User[] = [];
 
   constructor(
     private userService: UserService,
@@ -23,6 +22,7 @@ export class SignComponent implements OnInit {
   ngOnInit() {
     this.user = new User;
   }
+
   ngAfterContentInit() {
       if(this.userService.isSignIn()) this.router.navigate([`main`])
   }
@@ -33,20 +33,16 @@ export class SignComponent implements OnInit {
     console.log(JSON.parse(window.atob(base64)));
   }
 
-  getUsers(): void {
-    this.userService.getUsers()
-      .then(users => this.users = users);
+  signUp(ID: string, PW: string): void {
+    this.user.username = ID;
+    this.user.password = PW;
+    this.userService.managerSignUp(this.user);
   }
 
-  signIn(ID: string, password: string): void {
+  signIn(ID: string, PW: string): void {
     this.user.username = ID;
-    this.user.password = password;
+    this.user.password = PW;
     this.userService.managerSignIn(this.user);
   }
 
-  signUp(ID: string, password: string): void {
-    this.user.username = ID;
-    this.user.password = password;
-    this.userService.managerSignUp(this.user);
-  }
 }
