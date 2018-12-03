@@ -46,7 +46,6 @@ export class ChannelComponent implements OnInit {
     const {channel_hash} = this.activeRoute.snapshot.params
 
     this.channelService.getChannel(channel_hash).then((channel) => {
-      
       // a tag to button
       var post = channel.post.replace(/<a/gi, '<a class="tagToButton"')
       channel.post = post

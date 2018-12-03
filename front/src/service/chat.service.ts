@@ -37,7 +37,7 @@ export class ChatService {
         listner(packet);
       })
     } else {
-      console.log("socket is not opened")
+      //console.log("socket is not opened")
     }
   }
 
@@ -45,14 +45,14 @@ export class ChatService {
     if(this.wsp.isOpened){
       this.wsp.send(packet.toJson())
     } else {
-      console.log('socket is not opened')
+      //console.log('socket is not opened')
     }
   }
 
   disconnect() : void{
     if(this.wsp.isOpened){
       this.wsp.close()
-      console.log('socket is closed')
+      //console.log('socket is closed')
     }
   }
 

@@ -98,7 +98,7 @@ export class UserService {
     this.router.navigate(['/signin']);
   }
 
-  userSignOut(channel_hash: number): void {
+  userSignOut(channel_hash: string): void {
     this.cookieService.deleteAll("/");
     this.router.navigate([`access/${channel_hash}`]);
   }
@@ -108,6 +108,12 @@ export class UserService {
     return this.http.get<User[]>(url)
       .toPromise()
       .catch(this.handleError('getUsers()'));
+  }
+
+  getAuthHeader(): object {
+    return {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token})
+    }
   }
 
   getAuthHeader(): object {

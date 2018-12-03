@@ -60,6 +60,7 @@ export class ChannelService {
     })
   }
 
+<<<<<<< HEAD
   update(channel: Channel): Promise<Channel>{
     const url = this.channelUrl + `/${channel.id}`
     return this.http.put<Channel>(url, { title: channel.title, post: channel.post }, this.userService.getAuthHeader()).toPromise()
@@ -69,6 +70,8 @@ export class ChannelService {
     })
   }
 
+=======
+>>>>>>> origin
   getChannelMessage(channel_hash: string): Promise<[ChannelMessage]>{
     const url = this.channelUrl + `/${channel_hash}/message`
     return this.http.get<[ChannelMessage]>(url, this.userService.getAuthHeader()).toPromise()
