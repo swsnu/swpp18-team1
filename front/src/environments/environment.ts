@@ -7,7 +7,6 @@ export const environment = {
   apiUrl: 'http://localhost:8080',
   tokenUrl: "",
   uploadUrl: "",
-  socketEndpoint: 'localhost:8080',
 };
 
 /*
