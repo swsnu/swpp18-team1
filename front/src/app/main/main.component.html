@@ -1,24 +1,46 @@
-<h1>Main</h1>
-
-<button name="signout" id="signout-button" (click)="signOut();">Sign-out</button>
-
-<hr>
-
 <div>
-  <div *ngIf="channel_exist; else create_channel" >
-    <div>
-      <button (click)="moveToQR()">To QR Code</button>
-      <br>
-      <strong>There is a Channel!</strong>
-      <button (click)="moveToChannel(channel.id)">Go to Channel</button>
+
+  <div *ngIf="channel_exist; else channel_create" >
+    <div class="header">
+      <h1>선택하기</h1>
+      <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
     </div>
+    <br>
+    <div class="mat-app-background">
+      <strong *ngIf="manager">{{ manager }}님의 방이 있습니다.</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button (click)="moveToChannel(channel.id)">방으로 가기</button>
+    </div>
+    <br>
+    <div class="mat-app-background">
+      <strong>방의 QR Code를 얻습니다.</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button (click)="moveToQR()">QR Code 얻기</button>
+    </div>
+    <br>
+    <div class="mat-app-background">
+      <mat-form-field class="input"><input matInput type='text' [(ngModel)]="channel.title" placeholder="방 제목"></mat-form-field>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button id="saveButton" (click)="updateChannel()">수정하기</button>
+    </div>
+    <ckeditor [(ngModel)]="channel.post" [editor]="Editor" [config]="editorConfig"></ckeditor>
   </div>
-  <ng-template #create_channel>
-    <div class="article--create">
-      <strong>There is no Channel!</strong>
+
+  <ng-template #channel_create>
+    <div class="header">
+      <h1>생성하기</h1>
+      <button style="float: right;" mat-raised-button name="signout" id="signout-button" (click)="signOut();">나가기</button>
+    </div>
+    <br>
+    <div class="mat-app-background">
+      <strong *ngIf="manager">{{ manager }}님의 방이 없습니다.</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button id="saveButton" (click)="createChannel()">생성하기</button>
       <br>
-      Title:<input type='text' [(ngModel)]="title" />
-      <button (click)="handleGenerate()">Create a Channel</button>
+      <mat-form-field class="input"><input matInput type='text' [(ngModel)]="channel.title" placeholder="방 제목 정하기"></mat-form-field>
+      <ckeditor [(ngModel)]="channel.post" [editor]="Editor" [config]="editorConfig"></ckeditor>
     </div>
   </ng-template>
 </div>
+
+

@@ -1,33 +1,32 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import WebSocketAsPromised from 'websocket-as-promised';
 import { ChannelMessage } from 'src/model/channel-message';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/service/user.service';
 import { ChatService } from 'src/service/chat.service';
 import { ChannelService } from 'src/service/channel.service';
 import { WebsocketPacket } from 'src/model/websocket-packet';
+import { Channel } from 'src/model/channel';
 import { EventType } from 'src/enums';
 
 @Component({
   selector: 'app-channel',
   templateUrl: './channel.component.html',
-  //styleUrls: ['./channel.component.css']
+  styleUrls: ['./channel.component.css']
 })
 
 export class ChannelComponent implements OnInit {
 
+  channel: Channel
   channelMessage: ChannelMessage = new ChannelMessage()
   channelMessages: ChannelMessage[] = []
+  managerOrNot: boolean = false;
 
-  private wsp: WebSocketAsPromised
   constructor(
     private activeRoute: ActivatedRoute,
     private userService: UserService,
     private chatService: ChatService,
     private channelService: ChannelService,
-    private router: Router,
     private location: Location,
   ) {}
 
@@ -40,13 +39,22 @@ export class ChannelComponent implements OnInit {
   }
 
   openDM(){
-    console.log('======openDM=====')
+    console.log('openDM')
   }
 
   ngOnInit() {
     const {channel_hash} = this.activeRoute.snapshot.params
 
-    this.channelService.getChannel(channel_hash)
+    this.channelService.getChannel(channel_hash).then((channel) => {
+      // a tag to button
+      var post = channel.post.replace(/<a/gi, '<a class="tagToButton"')
+      channel.post = post
+      this.channel = channel
+
+      if(channel.manager.id  == this.userService.user.id) {
+        this.managerOrNot = true;
+      }
+    })
     this.channelService.getChannelMessage(channel_hash).then((messages) => {
       this.channelMessages = messages.map((message) => new ChannelMessage(message))
     })
@@ -70,7 +78,7 @@ export class ChannelComponent implements OnInit {
 
   signOut(): void {
     const currentUser_id = this.userService.user.id
-    const manager_id = this.channelService.channel.manager_id
+    const manager_id = this.channelService.channel.manager.id
     const { channel_hash } = this.activeRoute.snapshot.params
 
     if(currentUser_id == manager_id) {

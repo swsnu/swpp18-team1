@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.config.json",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^6.1.0",
+    "@angular/animations": "^6.1.10",
     "@angular/cdk": "^6.1.0",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
@@ -22,12 +22,12 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@ckeditor/ckeditor5-angular": "^1.0.1",
+    "@ckeditor/ckeditor5-build-classic": "^11.1.1",
     "angularx-qrcode": "^1.2.4",
     "core-js": "^2.5.4",
     "moment": "^2.22.2",
     "ngx-cookie-service": "^2.0.0",
-    "rxjs": "^6.0.0",
-    "shortid": "^2.2.13",
     "websocket-as-promised": "^0.9.0",
     "zone.js": "~0.8.26"
   },

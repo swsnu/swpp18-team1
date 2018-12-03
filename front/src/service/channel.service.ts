@@ -29,34 +29,43 @@ export class ChannelService {
   getChannel(id: number): Promise<Channel> {
     const url = `${this.channelUrl}/${id}`;
     return this.http.get<Channel>(url)
-        .toPromise()
-        .then(channel => this.channel = channel)
-        .catch(this.handleError<Channel>(`getChannel()`));
+    .toPromise()
+    .then(channel => {
+      this.channel = channel
+      return channel
+    })
+    .catch(this.handleError<Channel>(`getChannel()`));
   }
 
   getChannelByManager(): Promise<Channel> {
-    const httpOptionsWithAuth = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
-    };
-
     const url = environment.apiUrl + `/api/manager/channel`;
-    return this.http.get<Channel>(url, httpOptionsWithAuth)
-        .toPromise()
-        .then(channel => {
-            this.channel = channel;
-            return channel
-          }
-        )
+    return this.http.get<Channel>(url, this.userService.getAuthHeader())
+    .toPromise()
+    .then(channel => {
+      this.channel = channel;
+      return channel
+    }
+    )
   }
 
-  create(title: string): Promise<Channel>{
-    const httpOptionsWithAuth = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.userService.token})
-    };
-    return this.http.post<Channel>(this.channelUrl, { title } , httpOptionsWithAuth).toPromise()
+  create(channel: Channel): Promise<Channel>{
+    const data = {
+      title: channel.title,
+      post: channel.post,
+    }
+    return this.http.post<Channel>(this.channelUrl, data , this.userService.getAuthHeader()).toPromise()
     .then(channel =>{
-        this.channel = channel
-        return channel
+      this.channel = channel // get id
+      return channel
+    })
+  }
+
+  update(channel: Channel): Promise<Channel>{
+    const url = this.channelUrl + `/${channel.id}`
+    return this.http.put<Channel>(url, { title: channel.title, post: channel.post }, this.userService.getAuthHeader()).toPromise()
+    .then(() => {
+      this.channel = channel
+      return channel
     })
   }
 

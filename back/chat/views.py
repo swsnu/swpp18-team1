@@ -7,7 +7,7 @@ import json
 from json.decoder import JSONDecodeError
 from .models import Channel, ChannelMessage, UserProfile
 from .token_auth import TokenAuth, InvalidToken
-from .serializers import ChannelMessageSerializer
+from .serializers import ChannelMessageSerializer, ChannelSerializer
 import random
 
 
@@ -20,23 +20,19 @@ def channel(request):
             return JsonResponse({'message': e.message}, status=401)
 
         try:
-
             body = request.body.decode()
-            title = json.loads(body)['title']
+            data = json.loads(body)
+            title = data['title']
+            post = data['post'] ## TODO Need Sanitizer because post is html text
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
-        # FIXME manager_id is always 1
-        channel = Channel(title=title, manager=user)
-
+        channel = Channel(title=title, post=post, manager=user)
         channel.save()
 
-        response_dict = {
-                'id': channel.id,
-                'title': channel.title,
-                'manager_id': channel.manager.id,
-        }
-        return JsonResponse(data=response_dict, status=201)
+        serializer = ChannelSerializer(channel)
+
+        return JsonResponse(data=serializer.data, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -48,14 +44,40 @@ def channel_detail(request, channel_hash):
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        response_dict = {
-                'id': channel.id,
-                'title': channel.title,
-                'manager_id': channel.manager.id,
-        }
-        return JsonResponse(response_dict)
+        serializer = ChannelSerializer(channel)
+
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        try:
+            user = TokenAuth.authenticate(request)
+        except InvalidToken as e:
+            return JsonResponse({'message': e.message}, status=401)
+
+        try:
+            channel = Channel.objects.get(id=channel_hash)
+        except Channel.DoesNotExist:
+            return HttpResponseNotFound()
+
+        if user.id is not channel.manager.id:
+            return JsonResponse({'message': "해당 채널의 관리자가 아닙니다."}, status=401)
+
+        try:
+            body = request.body.decode()
+            data = json.loads(body)
+            title = data['title']
+            post = data['post']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        channel.title = title
+        channel.post = post
+        channel.save()
+
+        return HttpResponse(status=200)
+
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['GET', 'PUT'])
 
 @csrf_exempt
 def channel_message(request, channel_hash):
@@ -112,7 +134,7 @@ def user_access(request, channel_hash):
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
-        ## find uniq username
+        # find uniq username
         uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
         while User.objects.filter(username=username + "#" + uniq_key).exists():
             uniq_key = ''.join(random.choice('0123456789ABCDEF') for i in range(4))
@@ -133,12 +155,8 @@ def manager_channel(request):
             return JsonResponse({'message': e.message}, status=401)
         try:
             channel = Channel.objects.get(manager_id=user)
-            response_dict = {
-                'id': channel.id,
-                'title': channel.title,
-                'manager_id': channel.manager.id,
-            }
-            return JsonResponse(response_dict)
+            serializer = ChannelSerializer(channel)
+            return JsonResponse(serializer.data)
         except Channel.DoesNotExist:
             return JsonResponse({})
 
@@ -162,4 +180,3 @@ def manager_sign_in(request):
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
-
