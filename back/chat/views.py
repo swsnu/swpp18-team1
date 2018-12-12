@@ -9,8 +9,8 @@ from .models import Channel, ChannelMessage, UserProfile
 from .token_auth import TokenAuth, InvalidToken
 from .serializers import ChannelMessageSerializer, ChannelSerializer
 from django.utils.crypto import get_random_string
+from django.core.cache import cache
 import random
-
 
 @csrf_exempt
 def channel(request):
@@ -30,6 +30,7 @@ def channel(request):
 
         channel_hash = get_random_string(length=5)
         channel = Channel(title=title, post=post, manager=user, channel_hash=channel_hash)
+
         channel.save()
 
         serializer = ChannelSerializer(channel)
@@ -42,7 +43,8 @@ def channel(request):
 def channel_detail(request, channel_hash):
     if request.method == 'GET':
         try:
-            channel = Channel.objects.get(channel_hash=channel_hash)
+            # channel = Channel.objects.get(channel_hash=channel_hash)
+            channel = get_channel_with_cache(channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -57,7 +59,8 @@ def channel_detail(request, channel_hash):
             return JsonResponse({'message': e.message}, status=401)
 
         try:
-            channel = Channel.objects.get(channel_hash=channel_hash)
+            # channel = Channel.objects.get(channel_hash=channel_hash)
+            channel = elf.get_channel_with_cache(channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -90,7 +93,8 @@ def channel_message(request, channel_hash):
             return JsonResponse({'message': e.message}, status=401)
 
         try:
-            channel = Channel.objects.get(channel_hash=channel_hash)
+            # channel = Channel.objects.get(channel_hash=channel_hash)
+            channel = get_channel_with_cache(channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -132,7 +136,8 @@ def user_access(request, channel_hash):
             return HttpResponseBadRequest()
 
         try:
-            channel = Channel.objects.get(channel_hash=channel_hash)
+            # channel = Channel.objects.get(channel_hash=channel_hash)
+            channel = get_channel_with_cache(channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -182,3 +187,11 @@ def manager_sign_in(request):
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
+
+def get_channel_with_cache(channel_hash):
+    channel_id = cache.get(channel_hash)
+    if not channel_id:
+        channel = Channel.objects.get(channel_hash = channel_hash)
+        cache.set(channel_hash, channel.id)
+        return channel
+    return Channel.objects.get(id=channel_id)
