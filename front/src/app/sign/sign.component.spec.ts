@@ -60,7 +60,7 @@ describe('SignComponent', () => {
     component.user.username = "username";
     component.user.password = "password";
     component.signUp(component.user.username, component.user.password);
-    
+
     fixture.whenStable().then(() => {
       expect(component.signUp).toHaveBeenCalledWith('username', 'password');
       expect(userService.isSignIn).toBeTruthy();
