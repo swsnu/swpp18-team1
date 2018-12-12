@@ -13,7 +13,7 @@ import { User } from '../../model/user';
 })
 export class AccessComponent implements OnInit {
 
-  channelHash: number;
+  channelHash: string;
   channelTitle: string = "";
   user: User = new User({image: "defaultImage"})
 

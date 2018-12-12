@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Channel(models.Model):
     title = models.TextField()
     post = models.TextField()
+    channel_hash = models.TextField()
     manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name="channel")
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 

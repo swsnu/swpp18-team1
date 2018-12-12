@@ -19,4 +19,4 @@ class ChannelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Channel
-        fields = ('id', 'title', 'post', 'manager')
+        fields = ('id', 'title', 'post', 'channel_hash', 'manager')

@@ -26,8 +26,8 @@ export class ChannelService {
     private userService: UserService
   ) { }
 
-  getChannel(id: number): Promise<Channel> {
-    const url = `${this.channelUrl}/${id}`;
+  getChannel(channel_hash: string): Promise<Channel> {
+    const url = `${this.channelUrl}/${channel_hash}`;
     return this.http.get<Channel>(url)
     .toPromise()
     .then(channel => {
@@ -61,7 +61,7 @@ export class ChannelService {
   }
 
   update(channel: Channel): Promise<Channel>{
-    const url = this.channelUrl + `/${channel.id}`
+    const url = this.channelUrl + `/${channel.channel_hash}`
     return this.http.put<Channel>(url, { title: channel.title, post: channel.post }, this.userService.getAuthHeader()).toPromise()
     .then(() => {
       this.channel = channel

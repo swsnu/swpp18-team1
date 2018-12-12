@@ -3,6 +3,7 @@ import { User } from "./user"
 export class Channel {
   manager: User;
   id: number;
+  channel_hash: string;
   title: string;
   post?: string;
 
