@@ -12,7 +12,8 @@
 
 <br>
 
-<div class="mat-app-background">    
+<div class="mat-app-background">
+    <span *ngIf="error"> 같은 아이디로 회원가입이 되어있습니다. </span>
     <mat-form-field class="input"><input matInput #signup_ID type="text" placeholder="ID"></mat-form-field>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <mat-form-field class="input"><input matInput #signup_PW type="text" placeholder="PW"></mat-form-field>

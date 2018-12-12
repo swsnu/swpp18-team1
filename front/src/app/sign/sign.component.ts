@@ -13,6 +13,7 @@ import { User } from 'src/model/user';
 export class SignComponent implements OnInit {
 
   user: User;
+  error: string;
 
   constructor(
     private userService: UserService,
@@ -21,6 +22,7 @@ export class SignComponent implements OnInit {
 
   ngOnInit() {
     this.user = new User;
+    this.error = this.userService.error;
   }
 
   ngAfterContentInit() {
