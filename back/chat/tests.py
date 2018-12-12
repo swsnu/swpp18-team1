@@ -137,6 +137,11 @@ class ChatTestCase(TestCase):
                 content_type='application/json')
         self.assertEqual(response.status_code, 405)
 
+        ## break username unique constarint
+        response = client.post('/api/manager/signup', json.dumps({'username': 'iuiuiu', "password": "iuiu"}),
+                content_type='application/json')
+        self.assertEqual(response.status_code, 409)
+
     def test_manager_signin(self):
         client = Client(enforce_csrf_checks=True)
 
