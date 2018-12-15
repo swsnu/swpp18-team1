@@ -28,11 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    '52.79.237.239', # Kyunghwan
-    '13.125.153.189', # Kyungwan
-    'ec2-52-79-237-239.ap-northeast-2.compute.amazonaws.com',
-    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
-    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
+    'back.beforesunrise.me'
+    'beforesunrise.me'
+    'www.beforesunrise.me'
 ]
 
 
@@ -67,8 +65,8 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
-    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
-    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
+    'beforesunrise.me'
+    'www.beforesunrise.me'
 )
 
 # Channels
