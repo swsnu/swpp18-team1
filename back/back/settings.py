@@ -28,9 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    'back.beforesunrise.me'
-    'beforesunrise.me'
-    'www.beforesunrise.me'
+    'back.beforesunrise.me',
+    'beforesunrise.me',
+    'www.beforesunrise.me',
 ]
 
 
@@ -65,7 +65,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
-    'beforesunrise.me'
+    'beforesunrise.me',
     'www.beforesunrise.me'
 )
 
