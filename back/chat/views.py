@@ -11,6 +11,7 @@ from .serializers import ChannelMessageSerializer, ChannelSerializer
 from django.utils.crypto import get_random_string
 from django.core.cache import cache
 import random
+import pickle
 
 @csrf_exempt
 def channel(request):
@@ -43,8 +44,8 @@ def channel(request):
 def channel_detail(request, channel_hash):
     if request.method == 'GET':
         try:
-            # channel = Channel.objects.get(channel_hash=channel_hash)
-            channel = get_channel_with_cache(channel_hash)
+            channel = Channel.objects.get(channel_hash=channel_hash)
+            # channel = get_channel_with_cache(channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -60,7 +61,7 @@ def channel_detail(request, channel_hash):
 
         try:
             # channel = Channel.objects.get(channel_hash=channel_hash)
-            channel = elf.get_channel_with_cache(channel_hash)
+            channel = get_channel_with_cache(channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
@@ -188,10 +189,30 @@ def manager_sign_in(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+# def get_channel_with_cache(channel_hash):
+#     channel = cache.get(channel_hash)
+#     if not channel:
+#         print("not in cache")
+#         channel = Channel.objects.get(channel_hash = channel_hash)
+#         cache.set(channel_hash, channel)
+#         return channel
+#     else:
+#         return channel
+
+# r = redis.StrictRedis(host='localhost', port=6379, db=0)
+# obj = ExampleObject()
+# pickled_object = pickle.dumps(obj)
+# r.set('some_key', pickled_object)
+# unpacked_object = pickle.loads(r.get('some_key'))
+# obj == unpacked_object
+
 def get_channel_with_cache(channel_hash):
-    channel_id = cache.get(channel_hash)
-    if not channel_id:
-        channel = Channel.objects.get(channel_hash = channel_hash)
-        cache.set(channel_hash, channel.id)
+    cached_pickle_channel = cache.get(channel_hash)
+    if cached_pickle_channel:
+        channel = pickle.loads(cached_pickle_channel)
         return channel
-    return Channel.objects.get(id=channel_id)
+    else:
+        channel = Channel.objects.get(channel_hash = channel_hash)
+        pickled_channel = pickle.dumps(channel)
+        cache.set(channel_hash, pickled_channel)
+        return channel
