@@ -120,9 +120,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # RDS의 mysql 내의 database name
-        'NAME': 'beforesunrise_mysql',
+        'NAME': 'beforesunrise',
         # AWS RDS Endpoint
-        'HOST': 'beforesunrise-db.c5lkdkwxxvhe.ap-northeast-2.rds.amazonaws.com',
+        'HOST': 'beforesunrise-mysql.c5lkdkwxxvhe.ap-northeast-2.rds.amazonaws.com',
         'PORT': '3306',
         # RDS의 mysql 의 password
         "PASSWORD": settings.get('AWS_PASSWORD'),
