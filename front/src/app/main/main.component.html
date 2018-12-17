@@ -9,7 +9,7 @@
     <div class="mat-app-background">
       <strong *ngIf="manager">{{ manager }}님의 방이 있습니다.</strong>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <button mat-raised-button (click)="moveToChannel(channel.id)">방으로 가기</button>
+      <button mat-raised-button (click)="moveToChannel(channel.channel_hash)">방으로 가기</button>
     </div>
     <br>
     <div class="mat-app-background">
@@ -42,5 +42,3 @@
     </div>
   </ng-template>
 </div>
-
-
