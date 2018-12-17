@@ -111,6 +111,9 @@ def manager_sign_up(request):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
+        if User.objects.filter(username=username).exists():
+            return HttpResponse(status=409)
+
         user = User.objects.create_user(username=username, password=password)
         user.save()
 

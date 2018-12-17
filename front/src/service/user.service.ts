@@ -25,6 +25,7 @@ export class UserService {
 
   token: string;
   user: User = new User;
+  error = "";
 
   constructor(
     private http: HttpClient,
@@ -78,14 +79,19 @@ export class UserService {
   managerSignIn(user: Partial<User>): void {
     const url = `${this.managerUrl}/signin`;
     this.http.post(url, user, httpOptions)
-      .toPromise()
-      .then(response => {
-        this.token = response["token"];
-        this.cookieService.set("token", response["token"], undefined, "/");
-        this.setUserFrom(this.token);
-        this.router.navigate(['/main']);
-      })
-      .catch(this.handleError<any>('managerSignIn()'));
+    .toPromise()
+    .then(response => {
+      this.token = response["token"];
+      this.cookieService.set("token", response["token"], undefined, "/");
+      this.setUserFrom(this.token);
+      this.router.navigate(['/main']);
+      this.error = "";
+    })
+    .catch((e) => {
+      if(e && e.status === 401){
+        this.error = "FAIL_SIGNIN";
+      }
+    });
   }
 
   managerSignUp(user: Partial<User>): void {
@@ -96,9 +102,15 @@ export class UserService {
         this.token = response["token"];
         this.cookieService.set("token", response["token"], undefined, "/");
         this.setUserFrom(this.token);
+        this.error = "";
         this.router.navigate(['/main']);
       })
-      .catch(this.handleError<any>('managerSignUp()'));
+    .catch((e) => {
+      if(e && e.status === 409){
+        this.error = "USERNAME_UNIQUE";
+      }
+      //this.handleError<any>('managerSignUp()')
+    });
   }
 
   managerSignOut(): void {

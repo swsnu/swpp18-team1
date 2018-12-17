@@ -3,19 +3,16 @@
 </div>
 
 <div class="mat-app-background">
+    <div *ngIf="userService.error == 'FAIL_SIGNIN'"> 아이디 혹은 비밀번호가 맞지 않습니다. </div>
     <mat-form-field class="input"><input matInput #signin_ID type="text" placeholder="ID"></mat-form-field>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <mat-form-field class="input"><input matInput #signin_PW type="text" placeholder="PW"></mat-form-field>
+    <mat-form-field class="input"><input matInput #signin_PW type="text" placeholder="PW" type="password"></mat-form-field>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <button mat-raised-button name="signin" id="signin-button" (click)="signIn(signin_ID.value, signin_PW.value);">들어가기</button>
 </div>
 
+<div (click)="router.navigate(['signup'])" style="cursor:pointer">아직 계정이 없나요?</div>
+
 <br>
 
-<div class="mat-app-background">    
-    <mat-form-field class="input"><input matInput #signup_ID type="text" placeholder="ID"></mat-form-field>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <mat-form-field class="input"><input matInput #signup_PW type="text" placeholder="PW"></mat-form-field>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <button mat-raised-button name="signup" id="signup-button" (click)="signUp(signup_ID.value, signup_PW.value);">등록하기</button>
-</div>
+
