@@ -13,16 +13,14 @@ import { User } from 'src/model/user';
 export class SignComponent implements OnInit {
 
   user: User;
-  error: string;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private router: Router,
   ) { }
 
   ngOnInit() {
     this.user = new User;
-    this.error = this.userService.error;
   }
 
   ngAfterContentInit() {
@@ -32,7 +30,6 @@ export class SignComponent implements OnInit {
   getToken(token): void {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace('-', '+').replace('_', '/');
-    console.log(JSON.parse(window.atob(base64)));
   }
 
   signUp(ID: string, PW: string): void {
