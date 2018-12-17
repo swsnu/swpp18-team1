@@ -1,0 +1,14 @@
+<div class="header">
+    <h1>회원 가입</h1>
+</div>
+
+<div class="mat-app-background">
+    <div *ngIf="userService.error == 'USERNAME_UNIQUE'"> 같은 아이디로 회원가입이 되어있습니다. </div>
+    <mat-form-field class="input"><input matInput #signup_ID type="text" placeholder="ID"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <mat-form-field class="input"><input matInput #signup_PW type="text" placeholder="PW" type="password"></mat-form-field>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button name="signup" id="signup-button" (click)="signUp(signup_ID.value, signup_PW.value);">등록하기</button>
+</div>
+
+<div (click)="router.navigate(['sign'])" style="cursor:pointer">뒤로 가기</div>

@@ -11,28 +11,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { SignComponent } from './sign/sign.component';
-import { CreateComponent } from './create/create.component';
 import { MainComponent } from './main/main.component';
 import { ChannelComponent } from './channel/channel.component';
-import { DirectMessageComponent } from './direct-message/direct-message.component';
 import { AccessComponent } from './access/access.component';
 import { QrComponent } from './qr/qr.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SafePipe } from './safe.pipe';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SignComponent,
-    CreateComponent,
     MainComponent,
     QrComponent,
     ChannelComponent,
-    DirectMessageComponent,
     AccessComponent,
     MainComponent,
     SafePipe,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,

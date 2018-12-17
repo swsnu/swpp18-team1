@@ -116,6 +116,9 @@ def manager_sign_up(request):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
 
+        if User.objects.filter(username=username).exists():
+            return HttpResponse(status=409)
+
         user = User.objects.create_user(username=username, password=password)
         user.save()
 
@@ -188,23 +191,6 @@ def manager_sign_in(request):
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
-
-# def get_channel_with_cache(channel_hash):
-#     channel = cache.get(channel_hash)
-#     if not channel:
-#         print("not in cache")
-#         channel = Channel.objects.get(channel_hash = channel_hash)
-#         cache.set(channel_hash, channel)
-#         return channel
-#     else:
-#         return channel
-
-# r = redis.StrictRedis(host='localhost', port=6379, db=0)
-# obj = ExampleObject()
-# pickled_object = pickle.dumps(obj)
-# r.set('some_key', pickled_object)
-# unpacked_object = pickle.loads(r.get('some_key'))
-# obj == unpacked_object
 
 def get_channel_with_cache(channel_hash):
     cached_pickle_channel = cache.get(channel_hash)
