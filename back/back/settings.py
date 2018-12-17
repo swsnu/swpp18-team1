@@ -122,10 +122,10 @@ DATABASES = {
         # RDS의 mysql 내의 database name
         'NAME': 'beforesunrise',
         # AWS RDS Endpoint
-        'HOST': 'beforesunrise-mysql.c5lkdkwxxvhe.ap-northeast-2.rds.amazonaws.com',
+        "HOST": settings.get('RDS_ENDPOINT'),
         'PORT': '3306',
         # RDS의 mysql 의 password
-        "PASSWORD": settings.get('AWS_PASSWORD'),
+        "PASSWORD": settings.get('RDS_PASSWORD'),
         # RDS의 mysql 의 user_name
         'USER': 'master',
     }
