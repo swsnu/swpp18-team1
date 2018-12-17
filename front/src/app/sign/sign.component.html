@@ -1,5 +1,6 @@
-<div class="header">
+<!-- <div class="header">
     <h1>접속하기</h1>
+    <button style="float: right;" mat-raised-button (click)="router.navigate(['signup'])">회원가입</button>
 </div>
 
 <div class="mat-app-background">
@@ -9,10 +10,39 @@
     <mat-form-field class="input"><input matInput #signin_PW type="text" placeholder="PW" type="password"></mat-form-field>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <button mat-raised-button name="signin" id="signin-button" (click)="signIn(signin_ID.value, signin_PW.value);">들어가기</button>
+</div> -->
+
+<!-- <br>
+
+<div class="mat-app-background">    
+    처음으로 방문한 경우
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button (click)="router.navigate(['signup'])" style="cursor:pointer">회원가입</button>
+</div> -->
+
+<div class="mdl-layout mdl-js-layout">
+	<main class="mdl-layout__content">
+		<div class="mdl-card mdl-shadow--6dp">
+			<div id='login-title-background' class="mdl-card__title mdl-color--primary mdl-color-text--white">
+                <h2 id='login-title'>접속하기</h2>
+            </div>
+            <div *ngIf="userService.error == 'FAIL_SIGNIN'"> 아이디 혹은 비밀번호가 맞지 않습니다. </div>
+            <div class="mdl-card__supporting-text">
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input #signin_ID class="mdl-textfield__input" type="text" id="username" />
+                    <label class="mdl-textfield__label" for="username">ID</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input #signin_PW class="mdl-textfield__input" type="password" id="userpass" />
+                    <label class="mdl-textfield__label" for="userpass">PW</label>
+                </div>
+			</div>
+			<div id='login-button-background' class="mdl-card__actions mdl-card--border">
+                <button id='login-button' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="signIn(signin_ID.value, signin_PW.value);">들어가기</button>
+                <button style="float: right;" id='login-button' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="router.navigate(['signup'])">회원가입</button>
+			</div>
+		</div>
+	</main>
 </div>
-
-<div (click)="router.navigate(['signup'])" style="cursor:pointer">아직 계정이 없나요?</div>
-
-<br>
 
 

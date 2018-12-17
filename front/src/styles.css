@@ -1,6 +1,7 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .header {
+    font-weight: 900;
     padding-top: 10px;
     padding-bottom: 30px;
 }

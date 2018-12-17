@@ -1,5 +1,6 @@
 <div class="header">
-  <button mat-raised-button (click)="goBack()">돌아가기</button>
+  <h1>QR Code</h1>
+  <button style="float: right;" mat-raised-button (click)="router.navigate(['sign'])" >돌아가기</button>
 </div>
 
 <qrcode *ngIf="channelUrl; else empty" [qrdata]="channelUrl" [size]="256" [level]="'M'"></qrcode>

@@ -1,5 +1,30 @@
-.input {
+/* .input {
     min-width: 50px;
     max-width: 100px;
     width: 50%;
+} */
+
+.mdl-layout {
+	align-items: center;
+    justify-content: center;
+}
+.mdl-layout__content {
+	padding: 24px;
+	flex: none;
+}
+#login-title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+}
+#login-title-background {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    height: 80px;
+}
+#login-button {
+    color: rgba(0, 0, 0, 0.6);
+}
+#login-button-background {
+    border: none;
 }

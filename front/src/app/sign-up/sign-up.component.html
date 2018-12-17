@@ -1,14 +1,37 @@
-<div class="header">
-    <h1>회원 가입</h1>
+<!-- <div class="header">
+    <h1>회원가입</h1>
+    <button style="float: right;" mat-raised-button (click)="router.navigate(['sign'])">돌아가기</button>
 </div>
 
 <div class="mat-app-background">
-    <div *ngIf="userService.error == 'USERNAME_UNIQUE'"> 같은 아이디로 회원가입이 되어있습니다. </div>
+    <div *ngIf="userService.error == 'USERNAME_UNIQUE'"> 이미 같은 ID가 있습니다. </div>
     <mat-form-field class="input"><input matInput #signup_ID type="text" placeholder="ID"></mat-form-field>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <mat-form-field class="input"><input matInput #signup_PW type="text" placeholder="PW" type="password"></mat-form-field>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <button mat-raised-button name="signup" id="signup-button" (click)="signUp(signup_ID.value, signup_PW.value);">등록하기</button>
-</div>
+</div> -->
 
-<div (click)="router.navigate(['sign'])" style="cursor:pointer">뒤로 가기</div>
+<div class="mdl-layout mdl-js-layout">
+	<main class="mdl-layout__content">
+		<div class="mdl-card mdl-shadow--6dp">
+			<div id='login-title-background' class="mdl-card__title mdl-color--primary mdl-color-text--white">
+                <h2 id='login-title'>회원가입</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input #signup_ID class="mdl-textfield__input" type="text" id="username" />
+                    <label class="mdl-textfield__label" for="username">ID</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input #signup_PW class="mdl-textfield__input" type="password" id="userpass" />
+                    <label class="mdl-textfield__label" for="userpass">PW</label>
+                </div>
+			</div>
+			<div id='login-button-background' class="mdl-card__actions mdl-card--border">
+                <button id='login-button' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="signUp(signup_ID.value, signup_PW.value);">등록하기</button>
+                <button style="float: right;" id='login-button' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="router.navigate(['sign'])">돌아가기</button>
+			</div>
+		</div>
+	</main>
+</div>
