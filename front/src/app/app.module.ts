@@ -18,6 +18,7 @@ import { QrComponent } from './qr/qr.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SafePipe } from './safe.pipe';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     MainComponent,
     SafePipe,
     SignUpComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

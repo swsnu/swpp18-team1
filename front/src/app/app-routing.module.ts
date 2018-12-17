@@ -8,10 +8,10 @@ import { MainComponent } from './main/main.component';
 import { QrComponent } from './qr/qr.component';
 import { ChannelComponent } from './channel/channel.component';
 import { AccessComponent } from './access/access.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 const routes: Routes = [
-  // TODO: 제거
   { path: '', redirectTo: '/signin', pathMatch: 'full'},
   { path: 'signin', component: SignComponent },
   { path: 'signup', component: SignUpComponent },
@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'qr', component: QrComponent, canActivate: [AuthGuardService] },
   { path: 'channel/:channel_hash', component: ChannelComponent, canActivate: [AuthGuardService]},
   { path: 'access/:channel_hash', component: AccessComponent},
+  { path: '404', component: NotFoundComponent},
   { path: '**', redirectTo: '/signin' }
 ];
 

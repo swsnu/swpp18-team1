@@ -1,8 +1,8 @@
 <div class="header">
-  <h1 *ngIf="channelTitle">{{ channelTitle }}</h1>
+  <h1 *ngIf="channel">{{ channel.title }}</h1>
 </div>
 
-<div class="mat-app-background">
+<div *ngIf="channel" class="mat-app-background">
   <!-- <mat-form-field class="input"><input matInput [(ngModel)]="user.image" type="text" name="image" id="image-input" placeholder="사진"></mat-form-field> -->
   <mat-form-field class="input"><input matInput [(ngModel)]="user.username" type="text" name="nickname" id="nickname-input" placeholder="별명"></mat-form-field>
   &nbsp;&nbsp;&nbsp;&nbsp;
