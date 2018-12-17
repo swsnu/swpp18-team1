@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { Router } from '@angular/router';
 
 import { Channel } from '../model/channel';
 import { ChannelMessage } from '../model/channel-message';
@@ -23,6 +24,7 @@ export class ChannelService {
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     private userService: UserService
   ) { }
 
@@ -34,7 +36,10 @@ export class ChannelService {
       this.channel = channel
       return channel
     })
-    .catch(this.handleError<Channel>(`getChannel()`));
+    .catch((e) => {
+      this.router.navigate(['/404']);
+      return null
+    });
   }
 
   getChannelByManager(): Promise<Channel> {
@@ -44,8 +49,7 @@ export class ChannelService {
     .then(channel => {
       this.channel = channel;
       return channel
-    }
-    )
+    })
   }
 
   create(channel: Channel): Promise<Channel>{
