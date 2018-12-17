@@ -13,7 +13,7 @@ import WebSocketAsPromised from 'websocket-as-promised';
   providedIn: 'root'
 })
 export class ChatService {
-  private websoketUrl = `ws://${environment.domainName}/ws/chat/:channel_hash/token/:token`
+  private websoketUrl = `${environment.socketUrl}/ws/chat/:channel_hash/token/:token`
   private wsp: WebSocketAsPromised
 
   constructor(
