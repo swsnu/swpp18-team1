@@ -30,9 +30,11 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp(ID: string, PW: string): void {
-    this.user.username = ID;
-    this.user.password = PW;
-    this.userService.managerSignUp(this.user);
+    if(ID && PW){
+      this.user.username = ID;
+      this.user.password = PW;
+      this.userService.managerSignUp(this.user);
+    }
   }
 
 }

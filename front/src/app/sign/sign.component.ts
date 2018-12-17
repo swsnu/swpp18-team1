@@ -29,8 +29,10 @@ export class SignComponent implements OnInit {
   }
 
   signIn(ID: string, PW: string): void {
-    this.user.username = ID;
-    this.user.password = PW;
-    this.userService.managerSignIn(this.user);
+    if(ID && PW){
+      this.user.username = ID;
+      this.user.password = PW;
+      this.userService.managerSignIn(this.user);
+    }
   }
 }
