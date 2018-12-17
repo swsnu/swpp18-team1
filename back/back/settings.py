@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from dynaconf import settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,11 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    '52.79.237.239', # Kyunghwan
-    '13.125.153.189', # Kyungwan
-    'ec2-52-79-237-239.ap-northeast-2.compute.amazonaws.com',
-    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
-    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
+    'back.beforesunrise.me',
+    'beforesunrise.me',
+    'www.beforesunrise.me',
 ]
 
 
@@ -66,8 +65,8 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
-    'before-sunrise-s3.s3-website.ap-northeast-2.amazonaws.com',
-    'before-sunrise-exhibition.s3-website.ap-northeast-2.amazonaws.com',
+    'beforesunrise.me',
+    'www.beforesunrise.me'
 )
 
 # Channels
@@ -77,7 +76,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [(settings.get('REDIS_END_POINT'), 6379)],
         },
     },
 }
