@@ -116,14 +116,20 @@ WSGI_APPLICATION = 'back.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        # RDS의 mysql 내의 database name
+        'NAME': 'beforesunrise',
+        # AWS RDS Endpoint
+        'HOST': 'beforesunrise-mysql.c5lkdkwxxvhe.ap-northeast-2.rds.amazonaws.com',
+        'PORT': '3306',
+        # RDS의 mysql 의 password
+        "PASSWORD": settings.get('AWS_PASSWORD'),
+        # RDS의 mysql 의 user_name
+        'USER': 'master',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
