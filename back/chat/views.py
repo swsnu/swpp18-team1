@@ -44,8 +44,8 @@ def channel(request):
 def channel_detail(request, channel_hash):
     if request.method == 'GET':
         try:
-            channel = Channel.objects.get(channel_hash=channel_hash)
-            # channel = get_channel_with_cache(channel_hash)
+            # channel = Channel.objects.get(channel_hash=channel_hash)
+            channel = get_channel_with_cache(channel_hash)
         except Channel.DoesNotExist:
             return HttpResponseNotFound()
 
