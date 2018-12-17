@@ -81,6 +81,18 @@ CHANNEL_LAYERS = {
     },
 }
 
+#CACHES
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1", # 1번 DB 사용
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "channel" #접두사 설정
+    }
+}
+
 ROOT_URLCONF = 'back.urls'
 
 TEMPLATES = [
@@ -104,14 +116,20 @@ WSGI_APPLICATION = 'back.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        # RDS의 mysql 내의 database name
+        'NAME': 'beforesunrise',
+        # AWS RDS Endpoint
+        "HOST": settings.get('RDS_ENDPOINT'),
+        'PORT': '3306',
+        # RDS의 mysql 의 password
+        "PASSWORD": settings.get('RDS_PASSWORD'),
+        # RDS의 mysql 의 user_name
+        'USER': 'master',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
