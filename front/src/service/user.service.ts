@@ -18,7 +18,7 @@ const httpOptions = {
 export class UserService {
 
   private managerUrl: string = environment.apiUrl + '/api/manager';
-  private userUrl: string = environment.apiUrl + '/api/channel/:channel_id/user';
+  private userUrl: string = environment.apiUrl + '/api/channel/:channel_hash/user';
   private personUrl: string = environment.apiUrl + '/api/person';
   private peopleUrl: string = environment.apiUrl + '/api/people';
 
@@ -58,8 +58,8 @@ export class UserService {
   }
 
   // for user
-  createUser(channel_id: number, user: Partial<User>): Promise<User> {
-    return this.http.post<User>(this.userUrl.replace(":channel_id", channel_id.toString()), user, httpOptions)
+  createUser(channel_hash: string, user: Partial<User>): Promise<User> {
+    return this.http.post<User>(this.userUrl.replace(":channel_hash", channel_hash), user, httpOptions)
     .toPromise()
     .then(response => {
       this.token = response["token"];
@@ -69,7 +69,7 @@ export class UserService {
     .catch(this.handleError<any>('createUser()'));
   }
 
-  userSignOut(channel_hash: number): void {
+  userSignOut(channel_hash: string): void {
     this.cookieService.deleteAll("/");
     this.router.navigate([`access/${channel_hash}`]);
   }

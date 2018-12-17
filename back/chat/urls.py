@@ -7,7 +7,7 @@ urlpatterns = [
     path('manager/channel', views.manager_channel, name='manager_channel'),
 
     path('channel', views.channel, name="channel"),
-    path('channel/<int:channel_hash>', views.channel_detail, name="channel_detail"),
-    path('channel/<int:channel_hash>/user', views.user_access, name="user_access"),
-    path('channel/<int:channel_hash>/message', views.channel_message, name="channel_message"),
+    path('channel/<str:channel_hash>', views.channel_detail, name="channel_detail"),
+    path('channel/<str:channel_hash>/user', views.user_access, name="user_access"),
+    path('channel/<str:channel_hash>/message', views.channel_message, name="channel_message"),
 ]

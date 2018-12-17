@@ -14,8 +14,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.channel_hash = self.scope['url_route']['kwargs']['channel_hash']
 
         ## TODO check channel hash
-        self.channel_id = self.channel_hash
-
+        self.channel = Channel.objects.get(channel_hash = self.channel_hash)
+        
         ## TODO set group name by channel id decoded from channel_hash
         token = self.scope['url_route']['kwargs']['token']
 
@@ -60,7 +60,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = text_data_json['data']
 
         if event_type == EventType.SendChannelMessage:
-            message = ChannelMessage.objects.create(sender= self.user, content=data['content'], channel_id=self.channel_id)
+            message = ChannelMessage.objects.create(sender= self.user, content=data['content'], channel_id=self.channel.id)
 
             await self.channel_layer.group_send(
                 self.room_group_name,
